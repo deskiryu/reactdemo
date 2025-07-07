@@ -16,13 +16,15 @@ export default function Tabs({ onLogout }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: true,
+        tabBarActiveBackgroundColor: '#957DAD',
         tabBarLabelPosition: 'beside-icon',
+        tabBarIconStyle: { marginRight: 15, marginTop: -2 },
         tabBarItemStyle: { flexDirection: 'row' },
         tabBarLabel: ({ focused, color }) =>
           focused ? (
             <Text style={[styles.label, { color }]}>{route.name}</Text>
           ) : null,
-        tabBarActiveTintColor: '#957DAD',
+        tabBarActiveTintColor: '#ffffff',
         tabBarStyle: { height: 60 },
       })}
     >
