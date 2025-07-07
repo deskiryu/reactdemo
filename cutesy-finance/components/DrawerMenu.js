@@ -27,11 +27,14 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
     })
   ).current;
 
-  if (!visible) return null;
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-      <TouchableOpacity style={styles.backdrop} onPress={onClose} />
-      <Animated.View style={[styles.drawer, { transform: [{ translateX: transX }] }]} {...panResponder.panHandlers}>
+      {visible && <TouchableOpacity style={styles.backdrop} onPress={onClose} />}
+      <Animated.View
+        style={[styles.drawer, { transform: [{ translateX: transX }] }]}
+        pointerEvents={visible ? 'auto' : 'none'}
+        {...panResponder.panHandlers}
+      >
         {['Option A', 'Option B', 'Option C', 'Option D'].map((t) => (
           <Text key={t} style={styles.item}>{t}</Text>
         ))}
