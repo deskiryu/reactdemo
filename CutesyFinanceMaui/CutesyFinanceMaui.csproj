@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.Maui.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+</Project>
