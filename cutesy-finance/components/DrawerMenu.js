@@ -14,7 +14,16 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
       <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <TouchableOpacity style={styles.backdrop} onPress={onClose} />
         <View style={styles.menu} pointerEvents="auto">
-          {['Option A', 'Option B', 'Option C', 'Option D'].map((t) => (
+          {[
+            'Option A',
+            'Option B',
+            'Option C',
+            'Option D',
+            'Option E',
+            'Option F',
+            'Option G',
+            'Option H',
+          ].map((t) => (
             <Text key={t} style={styles.item}>{t}</Text>
           ))}
           <TouchableOpacity onPress={onLogout}>
@@ -34,17 +43,21 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    top: 70,
-    left: 20,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    width: 200,
     backgroundColor: '#957DAD',
-    padding: 20,
-    borderRadius: 10,
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    justifyContent: 'space-evenly',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
   },
   item: {
     color: '#fff',
     fontFamily: 'Poppins_400Regular',
     fontSize: 18,
-    marginVertical: 10,
   },
   logout: {
     marginTop: 20,
