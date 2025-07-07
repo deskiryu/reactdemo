@@ -1,23 +1,28 @@
 // Simple flyout menu displayed over the current screen.
 // No sliding drawer animation to keep it lightweight.
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 
 export default function DrawerMenu({ visible, onClose, onLogout }) {
-  if (!visible) return null;
-
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-      <TouchableOpacity style={styles.backdrop} onPress={onClose} />
-      <View style={styles.menu} pointerEvents="auto">
-        {['Option A', 'Option B', 'Option C', 'Option D'].map((t) => (
-          <Text key={t} style={styles.item}>{t}</Text>
-        ))}
-        <TouchableOpacity onPress={onLogout}>
-          <Text style={[styles.item, styles.logout]}>Logout</Text>
-        </TouchableOpacity>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+        <TouchableOpacity style={styles.backdrop} onPress={onClose} />
+        <View style={styles.menu} pointerEvents="auto">
+          {['Option A', 'Option B', 'Option C', 'Option D'].map((t) => (
+            <Text key={t} style={styles.item}>{t}</Text>
+          ))}
+          <TouchableOpacity onPress={onLogout}>
+            <Text style={[styles.item, styles.logout]}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </Modal>
   );
 }
 
