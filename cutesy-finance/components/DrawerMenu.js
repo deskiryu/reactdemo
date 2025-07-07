@@ -65,15 +65,15 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   item: {
-    color: '#fff',
+    color: '#000',
     fontFamily: 'Poppins_400Regular',
-    fontSize: 18,
+    fontSize: 14,
   },
   itemRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   itemIcon: {
