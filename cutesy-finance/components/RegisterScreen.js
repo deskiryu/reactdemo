@@ -1,3 +1,5 @@
+// Registration form allowing the user to sign up.
+// Includes a simple password strength meter for education.
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
@@ -6,6 +8,8 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [strength, setStrength] = useState('');
 
+  // Evaluate password complexity and update the "strength" state
+  // with a human readable value
   const checkStrength = (text) => {
     setPassword(text);
     let lvl = 0;
@@ -18,6 +22,7 @@ export default function RegisterScreen() {
     else setStrength('strong');
   };
 
+  // Map password strength keywords to colors shown in the UI
   const colorMap = { weak: 'red', medium: 'orange', strong: 'green' };
 
   return (
@@ -47,6 +52,7 @@ export default function RegisterScreen() {
   );
 }
 
+// Styles for the various elements on the screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
