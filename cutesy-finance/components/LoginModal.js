@@ -4,18 +4,18 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function LoginModal({ onClose, onSuccess }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   // Very basic credential check for demonstration.
   // In a real app you would make a request to your backend here.
   const handleLogin = () => {
-    if (email === 'a@b.com' && password === 'P@') {
+    if (username === 'a' && password === 'a') {
       setError('');
       onSuccess();
     } else {
-      setError('Incorrect email or password');
+      setError('Incorrect username or password');
     }
   };
 
@@ -25,11 +25,11 @@ export default function LoginModal({ onClose, onSuccess }) {
       <View style={styles.modal}>
         <Text style={styles.header}>Login</Text>
         <TextInput
-          placeholder="Email"
+          placeholder="Username"
           style={styles.input}
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setUsername}
         />
         <TextInput
           placeholder="Password"

@@ -16,8 +16,12 @@ export default function Tabs({ onLogout }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: true,
+        tabBarLabelPosition: 'beside-icon',
+        tabBarItemStyle: { flexDirection: 'row' },
         tabBarLabel: ({ focused, color }) =>
-          focused ? <Text style={[styles.label, { color }]}>{route.name}</Text> : null,
+          focused ? (
+            <Text style={[styles.label, { color }]}>{route.name}</Text>
+          ) : null,
         tabBarActiveTintColor: '#957DAD',
         tabBarStyle: { height: 60 },
       })}
@@ -74,5 +78,6 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: 'Poppins_400Regular',
     fontSize: 12,
+    marginLeft: 5,
   },
 });
