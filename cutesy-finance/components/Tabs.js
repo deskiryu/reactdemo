@@ -1,3 +1,5 @@
+// Bottom tab navigator that switches between the main dashboard and two
+// additional placeholder screens.  Also provides a logout tab.
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
@@ -10,6 +12,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Tabs({ onLogout }) {
   return (
+    // React Navigation bottom tabs component
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: true,
@@ -66,6 +69,7 @@ export default function Tabs({ onLogout }) {
   );
 }
 
+// Styling applied to tab labels
 const styles = StyleSheet.create({
   label: {
     fontFamily: 'Poppins_400Regular',

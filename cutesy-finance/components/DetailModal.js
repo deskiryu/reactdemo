@@ -1,13 +1,17 @@
+// Simple modal used to show additional information when a panel is tapped.
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
+// Grab the screen width so the modal pages can match the viewport size
 const { width } = Dimensions.get('window');
 
 export default function DetailModal({ onClose }) {
   return (
+    // Background dims the screen, inner view contains the pages of details
     <View style={styles.modalBg}>
       <View style={styles.modal}>
+        {/* Horizontal pager listing out a few sample items */}
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
           {['Item 1 - M2', 'Item 2 - You', 'Item 3 - A1'].map((item) => (
             <View key={item} style={styles.page}>
@@ -24,6 +28,7 @@ export default function DetailModal({ onClose }) {
   );
 }
 
+// Styling for the modal layout and pager pages
 const styles = StyleSheet.create({
   modalBg: {
     flex: 1,

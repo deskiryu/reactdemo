@@ -1,13 +1,18 @@
+// Welcome screen shown on first launch.  Provides options to register
+// or log in.  Also displays a fun image carousel at the top.
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Modal, Alert } from 'react-native';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+// Small modal component where the user can input their login details
 import LoginModal from './LoginModal';
 
 const { width } = Dimensions.get('window');
 
 export default function WelcomeScreen({ navigation, onLogin }) {
+  // Controls whether the login modal is shown
   const [loginVisible, setLoginVisible] = useState(false);
 
+  // Helper functions to open and close the modal
   const openLogin = () => setLoginVisible(true);
   const closeLogin = () => setLoginVisible(false);
 

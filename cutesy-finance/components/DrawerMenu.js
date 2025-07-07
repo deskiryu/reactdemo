@@ -1,9 +1,12 @@
+// Slide-out drawer that appears from the left side of the screen.
+// Can be dragged closed or dismissed by tapping the backdrop.
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, PanResponder } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export default function DrawerMenu({ visible, onClose, onLogout }) {
+  // Animated value controlling the drawer's X translation
   const transX = useRef(new Animated.Value(-width)).current;
 
   React.useEffect(() => {
@@ -14,6 +17,7 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
     }).start();
   }, [visible]);
 
+  // Allow the user to drag the drawer closed
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, g) => g.dx > 10,
@@ -39,6 +43,7 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
   );
 }
 
+// Styling for the drawer and its backdrop
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
