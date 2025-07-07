@@ -70,14 +70,14 @@ export default function Dashboard({ onLogout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 50,
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   burger: {
     position: 'absolute',
-    left: 20,
-    top: 20,
+    left: 10,
+    top: 50,
     padding: 6,
     zIndex: 1,
   },
