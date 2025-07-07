@@ -25,8 +25,9 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
       <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <TouchableOpacity style={styles.backdrop} onPress={onClose} />
         <View style={styles.menu} pointerEvents="auto">
-          <TouchableOpacity onPress={onClose} style={styles.homeButton}>
-            <Ionicons name="home" size={24} color="#fff" />
+          <TouchableOpacity onPress={onClose} style={[styles.itemRow, styles.homeButton]}>
+            <Ionicons name="home" size={20} color="#fff" style={styles.itemIcon} />
+            <Text style={styles.item}>Home</Text>
           </TouchableOpacity>
           {options.map((o) => (
             <View key={o.label} style={styles.itemRow}>
@@ -34,11 +35,9 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
               <Text style={styles.item}>{o.label}</Text>
             </View>
           ))}
-          <TouchableOpacity onPress={onLogout}>
-            <View style={styles.itemRow}>
-              <Ionicons name="log-out" size={20} color="#fff" style={styles.itemIcon} />
-              <Text style={[styles.item, styles.logout]}>Logout</Text>
-            </View>
+          <TouchableOpacity onPress={onLogout} style={[styles.itemRow, styles.logoutButton]}>
+            <Ionicons name="log-out" size={20} color="#fff" style={styles.itemIcon} />
+            <Text style={styles.item}>Logout</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#cebffa',
     paddingVertical: 40,
     paddingHorizontal: 20,
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
   },
@@ -73,15 +72,19 @@ const styles = StyleSheet.create({
   itemRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ccc',
   },
   itemIcon: {
     marginRight: 10,
   },
   homeButton: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     marginBottom: 20,
   },
-  logout: {
+  logoutButton: {
     marginTop: 20,
+    borderBottomWidth: 0,
   },
 });
