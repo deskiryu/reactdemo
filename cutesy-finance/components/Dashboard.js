@@ -15,7 +15,11 @@ export default function Dashboard({ onLogout }) {
   return (
     <View style={styles.container}>
       {/* Top burger menu */}
-      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
+      <TouchableOpacity
+        onPress={() => setMenuVisible(true)}
+        style={styles.burger}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
         <Ionicons name="menu" size={32} color="#957DAD" />
       </TouchableOpacity>
       <Text style={styles.header}>Dashboard</Text>
