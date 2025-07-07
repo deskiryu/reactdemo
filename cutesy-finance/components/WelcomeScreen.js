@@ -20,13 +20,13 @@ export default function WelcomeScreen({ navigation, onLogin }) {
     <View style={styles.container}>
       {/* Carousel of happy family images */}
       <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.carousel}>
-        <View style={[styles.slide, {backgroundColor: '#E0BBE4'}]}>
+        <View style={[styles.slide, { backgroundColor: '#E0BBE4' }]}>
           <Ionicons name="people" size={120} color="#fff" />
         </View>
-        <View style={[styles.slide, {backgroundColor: '#957DAD'}]}>
+        <View style={[styles.slide, { backgroundColor: '#cebffa' }]}>
           <FontAwesome5 name="dog" size={120} color="#fff" />
         </View>
-        <View style={[styles.slide, {backgroundColor: '#D291BC'}]}>
+        <View style={[styles.slide, { backgroundColor: '#D291BC' }]}>
           <MaterialIcons name="elderly" size={120} color="#fff" />
         </View>
       </ScrollView>
@@ -51,7 +51,7 @@ export default function WelcomeScreen({ navigation, onLogin }) {
       </TouchableOpacity>
       {/* Popup modal for login */}
       <Modal visible={loginVisible} animationType="slide" transparent>
-        <LoginModal onClose={closeLogin} onSuccess={() => {closeLogin(); onLogin();}} />
+        <LoginModal onClose={closeLogin} onSuccess={() => { closeLogin(); onLogin(); }} />
       </Modal>
     </View>
   );
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   loginText: {
-    color: '#957DAD',
+    color: '#cebffa',
     fontFamily: 'Poppins_400Regular',
     fontSize: 16,
   },

@@ -51,7 +51,7 @@ export default function RegisterScreen() {
       {strength ? (
         <Text style={[styles.strength, { color: colorMap[strength] }]}>Password strength: {strength}</Text>
       ) : null}
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity style={styles.button} onPress={() => { }}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </View>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   button: {
-    backgroundColor: '#957DAD',
+    backgroundColor: '#cebffa',
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',

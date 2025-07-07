@@ -15,7 +15,7 @@ export default function DetailModal({ onClose }) {
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
           {['Item 1 - M2', 'Item 2 - You', 'Item 3 - A1'].map((item) => (
             <View key={item} style={styles.page}>
-              <FontAwesome5 name="list" size={40} color="#957DAD" />
+              <FontAwesome5 name="list" size={40} color="#cebffa" />
               <Text style={styles.item}>{item}</Text>
             </View>
           ))}
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   closeText: {
-    color: '#957DAD',
+    color: '#cebffa',
     fontFamily: 'Poppins_400Regular',
   },
 });

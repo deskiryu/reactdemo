@@ -61,7 +61,7 @@ export default function Dashboard({ onLogout }) {
         }}
         style={styles.burger}
       >
-        <Ionicons name="menu" size={32} color="#957DAD" />
+        <Ionicons name="menu" size={32} color="#cebffa" />
       </TouchableOpacity>
       <Text style={styles.header}>Dashboard</Text>
       {showClickBox && (
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontFamily: 'Poppins_400Regular',
-    color: '#957DAD',
+    color: '#cebffa',
     marginBottom: 30,
   },
   panelRow: {
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
   },
   clickBoxText: {
     fontFamily: 'Poppins_400Regular',
-    color: '#957DAD',
+    color: '#cebffa',
   },
 });
