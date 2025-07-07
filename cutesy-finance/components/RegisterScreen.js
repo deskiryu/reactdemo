@@ -1,12 +1,13 @@
 // Registration form allowing the user to sign up.
 // Includes a simple password strength meter for education.
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [strength, setStrength] = useState('');
+  const passwordRef = useRef(null);
 
   // Evaluate password complexity and update the "strength" state
   // with a human readable value
@@ -32,13 +33,18 @@ export default function RegisterScreen() {
         placeholder="Email"
         style={styles.input}
         autoCapitalize="none"
+        returnKeyType="next"
+        blurOnSubmit={false}
         value={email}
         onChangeText={setEmail}
+        onSubmitEditing={() => passwordRef.current && passwordRef.current.focus()}
       />
       <TextInput
+        ref={passwordRef}
         placeholder="Password"
         style={styles.input}
         secureTextEntry
+        returnKeyType="done"
         value={password}
         onChangeText={checkStrength}
       />
