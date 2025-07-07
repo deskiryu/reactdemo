@@ -1,3 +1,4 @@
+// Placeholder screen for the second tab of the app
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -9,6 +10,7 @@ export default function Menu2Screen() {
   );
 }
 
+// Simple layout styling for this placeholder screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,

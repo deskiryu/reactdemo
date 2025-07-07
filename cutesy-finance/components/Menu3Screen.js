@@ -1,3 +1,4 @@
+// Another placeholder tab screen
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -9,6 +10,7 @@ export default function Menu3Screen() {
   );
 }
 
+// Layout styles for the placeholder tab
 const styles = StyleSheet.create({
   container: {
     flex: 1,

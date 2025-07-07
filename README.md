@@ -9,6 +9,10 @@ This is a small demo banking app built with Expo/React Native. It includes iOS a
 3. Start the development server with `npm start` (or `expo start`).
 4. Use the iOS Simulator, Android emulator or a physical device to run the app.
 
+This demo uses only the built-in React Native `Animated` API. The
+`react-native-reanimated` package was removed to avoid native initialization
+errors.
+
 The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first install will download the font.
 
 ## Project structure
@@ -21,7 +25,7 @@ The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first
 
 - Carousel on the welcome screen with sign-up/login options
 - Registration form with password strength indicator
-- Login modal accepting only `a@b.com` / `P@ssword1234`
+- Login modal accepting only `a@b.com` / `P@`
 - Dashboard with panels, bottom tabs, burger menu and logout
 
 Everything is heavily commented in the code for learning purposes.

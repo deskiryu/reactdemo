@@ -1,6 +1,9 @@
+// Bottom tab navigator that switches between the main dashboard and two
+// additional placeholder screens.  Also provides a logout tab.
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Text, StyleSheet } from 'react-native';
 import Dashboard from './Dashboard';
 import Menu2Screen from './Menu2Screen';
 import Menu3Screen from './Menu3Screen';
@@ -9,10 +12,12 @@ const Tab = createBottomTabNavigator();
 
 export default function Tabs({ onLogout }) {
   return (
+    // React Navigation bottom tabs component
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: true,
-        tabBarLabel: ({ focused }) => (focused ? route.name : ''),
+        tabBarLabel: ({ focused, color }) =>
+          focused ? <Text style={[styles.label, { color }]}>{route.name}</Text> : null,
         tabBarActiveTintColor: '#957DAD',
         tabBarStyle: { height: 60 },
       })}
@@ -50,7 +55,6 @@ export default function Tabs({ onLogout }) {
       />
       <Tab.Screen
         name="Logout"
-        component={() => null}
         listeners={{ tabPress: (e) => { e.preventDefault(); onLogout(); } }}
         options={{
           headerShown: false,
@@ -58,7 +62,17 @@ export default function Tabs({ onLogout }) {
             <Ionicons name="log-out" color={color} size={size} />
           ),
         }}
-      />
+      >
+        {() => null}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
+
+// Styling applied to tab labels
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+  },
+});
