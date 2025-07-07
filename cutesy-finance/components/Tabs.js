@@ -52,7 +52,6 @@ export default function Tabs({ onLogout }) {
       />
       <Tab.Screen
         name="Logout"
-        component={() => null}
         listeners={{ tabPress: (e) => { e.preventDefault(); onLogout(); } }}
         options={{
           headerShown: false,
@@ -60,7 +59,9 @@ export default function Tabs({ onLogout }) {
             <Ionicons name="log-out" color={color} size={size} />
           ),
         }}
-      />
+      >
+        {() => null}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
