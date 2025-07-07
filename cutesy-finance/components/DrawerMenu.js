@@ -2,8 +2,19 @@
 // No sliding drawer animation to keep it lightweight.
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function DrawerMenu({ visible, onClose, onLogout }) {
+  const options = [
+    { label: 'Option A', icon: 'star' },
+    { label: 'Option B', icon: 'planet' },
+    { label: 'Option C', icon: 'rocket' },
+    { label: 'Option D', icon: 'leaf' },
+    { label: 'Option E', icon: 'paw' },
+    { label: 'Option F', icon: 'snow' },
+    { label: 'Option G', icon: 'basket' },
+    { label: 'Option H', icon: 'bed' },
+  ];
   return (
     <Modal
       visible={visible}
@@ -14,20 +25,20 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
       <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <TouchableOpacity style={styles.backdrop} onPress={onClose} />
         <View style={styles.menu} pointerEvents="auto">
-          {[
-            'Option A',
-            'Option B',
-            'Option C',
-            'Option D',
-            'Option E',
-            'Option F',
-            'Option G',
-            'Option H',
-          ].map((t) => (
-            <Text key={t} style={styles.item}>{t}</Text>
+          <TouchableOpacity onPress={onClose} style={styles.homeButton}>
+            <Ionicons name="home" size={24} color="#fff" />
+          </TouchableOpacity>
+          {options.map((o) => (
+            <View key={o.label} style={styles.itemRow}>
+              <Ionicons name={o.icon} size={20} color="#fff" style={styles.itemIcon} />
+              <Text style={styles.item}>{o.label}</Text>
+            </View>
           ))}
           <TouchableOpacity onPress={onLogout}>
-            <Text style={[styles.item, styles.logout]}>Logout</Text>
+            <View style={styles.itemRow}>
+              <Ionicons name="log-out" size={20} color="#fff" style={styles.itemIcon} />
+              <Text style={[styles.item, styles.logout]}>Logout</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -58,6 +69,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Poppins_400Regular',
     fontSize: 18,
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemIcon: {
+    marginRight: 10,
+  },
+  homeButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 20,
   },
   logout: {
     marginTop: 20,
