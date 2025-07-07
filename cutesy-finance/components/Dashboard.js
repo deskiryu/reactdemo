@@ -1,6 +1,6 @@
 // Main screen users see after logging in. Displays simple panels
 // and allows opening a detail modal or the burger drawer menu.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import DetailModal from './DetailModal';
@@ -11,14 +11,35 @@ export default function Dashboard({ onLogout }) {
   const [detailVisible, setDetailVisible] = useState(false);
   // State that controls the side drawer visibility
   const [menuVisible, setMenuVisible] = useState(false);
+  // Temporary box proving the burger click was received
+  const [showClickBox, setShowClickBox] = useState(false);
+
+  // Hide the box after a short delay
+  useEffect(() => {
+    if (showClickBox) {
+      const t = setTimeout(() => setShowClickBox(false), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [showClickBox]);
 
   return (
     <View style={styles.container}>
       {/* Top burger menu */}
-      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
+      <TouchableOpacity
+        onPress={() => {
+          setMenuVisible(true);
+          setShowClickBox(true);
+        }}
+        style={styles.burger}
+      >
         <Ionicons name="menu" size={32} color="#957DAD" />
       </TouchableOpacity>
       <Text style={styles.header}>Dashboard</Text>
+      {showClickBox && (
+        <View style={styles.clickBox} pointerEvents="none">
+          <Text style={styles.clickBoxText}>Burger clicked!</Text>
+        </View>
+      )}
       {/* Interest panels */}
       <View style={styles.panelRow}>
         <TouchableOpacity style={[styles.panel, { backgroundColor: '#FEC8D8' }]} onPress={() => setDetailVisible(true)}>
@@ -82,5 +103,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     fontSize: 12,
     marginTop: 5,
+  },
+  clickBox: {
+    position: 'absolute',
+    top: 70,
+    right: 20,
+    backgroundColor: '#FFDFD3',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  clickBoxText: {
+    fontFamily: 'Poppins_400Regular',
+    color: '#957DAD',
   },
 });
