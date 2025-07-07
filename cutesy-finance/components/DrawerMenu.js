@@ -1,71 +1,91 @@
-// Slide-out drawer that appears from the left side of the screen.
-// Can be dragged closed or dismissed by tapping the backdrop.
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, PanResponder } from 'react-native';
-
-const { width } = Dimensions.get('window');
+// Simple flyout menu displayed over the current screen.
+// No sliding drawer animation to keep it lightweight.
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function DrawerMenu({ visible, onClose, onLogout }) {
-  // Animated value controlling the drawer's X translation
-  const transX = useRef(new Animated.Value(-width)).current;
-
-  React.useEffect(() => {
-    Animated.timing(transX, {
-      toValue: visible ? 0 : -width,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [visible]);
-
-  // Allow the user to drag the drawer closed
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, g) => g.dx > 10,
-      onPanResponderRelease: (_, g) => {
-        if (g.dx < -50) onClose();
-      },
-    })
-  ).current;
-
-  if (!visible) return null;
+  const options = [
+    { label: 'Option A', icon: 'star' },
+    { label: 'Option B', icon: 'planet' },
+    { label: 'Option C', icon: 'rocket' },
+    { label: 'Option D', icon: 'leaf' },
+    { label: 'Option E', icon: 'paw' },
+    { label: 'Option F', icon: 'snow' },
+    { label: 'Option G', icon: 'basket' },
+    { label: 'Option H', icon: 'bed' },
+  ];
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-      <TouchableOpacity style={styles.backdrop} onPress={onClose} />
-      <Animated.View style={[styles.drawer, { transform: [{ translateX: transX }] }]} {...panResponder.panHandlers}>
-        {['Option A', 'Option B', 'Option C', 'Option D'].map((t) => (
-          <Text key={t} style={styles.item}>{t}</Text>
-        ))}
-        <TouchableOpacity onPress={onLogout}>
-          <Text style={[styles.item, styles.logout]}>Logout</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+        <TouchableOpacity style={styles.backdrop} onPress={onClose} />
+        <View style={styles.menu} pointerEvents="auto">
+          <TouchableOpacity onPress={onClose} style={[styles.itemRow, styles.homeButton]}>
+            <Ionicons name="home" size={20} color="#fff" style={styles.itemIcon} />
+            <Text style={styles.item}>Home</Text>
+          </TouchableOpacity>
+          {options.map((o) => (
+            <View key={o.label} style={styles.itemRow}>
+              <Ionicons name={o.icon} size={20} color="#fff" style={styles.itemIcon} />
+              <Text style={styles.item}>{o.label}</Text>
+            </View>
+          ))}
+          <TouchableOpacity onPress={onLogout} style={[styles.itemRow, styles.logoutButton]}>
+            <Ionicons name="log-out" size={20} color="#fff" style={styles.itemIcon} />
+            <Text style={styles.item}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
-// Styling for the drawer and its backdrop
+// Styling for the flyout menu and its backdrop
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.3)',
   },
-  drawer: {
+  menu: {
     position: 'absolute',
-    left: 0,
     top: 0,
     bottom: 0,
-    width: width * 0.7,
-    backgroundColor: '#957DAD',
-    paddingTop: 60,
+    left: 0,
+    width: 200,
+    backgroundColor: '#cebffa',
+    paddingVertical: 40,
     paddingHorizontal: 20,
+    // Spread items so the list covers the whole height
+    justifyContent: 'space-between',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
   },
   item: {
-    color: '#fff',
+    color: '#000',
     fontFamily: 'Poppins_400Regular',
-    fontSize: 18,
-    marginVertical: 10,
+    fontSize: 14,
   },
-  logout: {
-    marginTop: 20,
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  itemIcon: {
+    marginRight: 10,
+  },
+  homeButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 0,
+  },
+  logoutButton: {
+    marginTop: 0,
+    borderBottomWidth: 0,
   },
 });

@@ -1,7 +1,7 @@
 // Main screen users see after logging in. Displays simple panels
 // and allows opening a detail modal or the burger drawer menu.
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated } from 'react-native';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import DetailModal from './DetailModal';
 import DrawerMenu from './DrawerMenu';
@@ -11,6 +11,8 @@ export default function Dashboard({ onLogout }) {
   const [detailVisible, setDetailVisible] = useState(false);
   // State that controls the side drawer visibility
   const [menuVisible, setMenuVisible] = useState(false);
+  // Animated value driving the drawer transformation
+  const drawerAnim = useRef(new Animated.Value(0)).current;
   // Temporary box proving the burger click was received
   const [showClickBox, setShowClickBox] = useState(false);
 
@@ -22,8 +24,35 @@ export default function Dashboard({ onLogout }) {
     }
   }, [showClickBox]);
 
+  // Animate the dashboard when the menu visibility changes
+  useEffect(() => {
+    Animated.timing(drawerAnim, {
+      toValue: menuVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [menuVisible, drawerAnim]);
+
+  // Transform style applied when menu is toggled
+  const animatedStyles = {
+    transform: [
+      {
+        translateX: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 180],
+        }),
+      },
+      {
+        scale: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.85],
+        }),
+      },
+    ],
+  };
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyles]}>
       {/* Top burger menu */}
       <TouchableOpacity
         onPress={() => {
@@ -32,7 +61,7 @@ export default function Dashboard({ onLogout }) {
         }}
         style={styles.burger}
       >
-        <Ionicons name="menu" size={32} color="#957DAD" />
+        <Ionicons name="menu" size={32} color="#cebffa" />
       </TouchableOpacity>
       <Text style={styles.header}>Dashboard</Text>
       {showClickBox && (
@@ -62,7 +91,7 @@ export default function Dashboard({ onLogout }) {
       </Modal>
       {/* Burger drawer menu */}
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -70,19 +99,21 @@ export default function Dashboard({ onLogout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 50,
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   burger: {
     position: 'absolute',
-    left: 20,
-    top: 20,
+    left: 10,
+    top: 50,
+    padding: 6,
+    zIndex: 1,
   },
   header: {
     fontSize: 24,
     fontFamily: 'Poppins_400Regular',
-    color: '#957DAD',
+    color: '#cebffa',
     marginBottom: 30,
   },
   panelRow: {
@@ -115,6 +146,6 @@ const styles = StyleSheet.create({
   },
   clickBoxText: {
     fontFamily: 'Poppins_400Regular',
-    color: '#957DAD',
+    color: '#cebffa',
   },
 });

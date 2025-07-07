@@ -1,21 +1,22 @@
 // Simple login form presented as a modal.
 // Accepts only a preset username/password for demo purposes.
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function LoginModal({ onClose, onSuccess }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const passwordRef = useRef(null);
   const [error, setError] = useState('');
 
   // Very basic credential check for demonstration.
   // In a real app you would make a request to your backend here.
   const handleLogin = () => {
-    if (email === 'a@b.com' && password === 'P@') {
+    if (username === 'a' && password === 'a') {
       setError('');
       onSuccess();
     } else {
-      setError('Incorrect email or password');
+      setError('Incorrect username or password');
     }
   };
 
@@ -25,16 +26,21 @@ export default function LoginModal({ onClose, onSuccess }) {
       <View style={styles.modal}>
         <Text style={styles.header}>Login</Text>
         <TextInput
-          placeholder="Email"
+          placeholder="Username"
           style={styles.input}
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          returnKeyType="next"
+          blurOnSubmit={false}
+          value={username}
+          onChangeText={setUsername}
+          onSubmitEditing={() => passwordRef.current && passwordRef.current.focus()}
         />
         <TextInput
+          ref={passwordRef}
           placeholder="Password"
           style={styles.input}
           secureTextEntry
+          returnKeyType="done"
           value={password}
           onChangeText={setPassword}
         />
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   button: {
-    backgroundColor: '#957DAD',
+    backgroundColor: '#cebffa',
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',
@@ -94,6 +100,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   closeText: {
-    color: '#957DAD',
+    color: '#cebffa',
   },
 });
