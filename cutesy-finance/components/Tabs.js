@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Text, StyleSheet } from 'react-native';
 import Dashboard from './Dashboard';
 import Menu2Screen from './Menu2Screen';
 import Menu3Screen from './Menu3Screen';
@@ -12,7 +13,8 @@ export default function Tabs({ onLogout }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: true,
-        tabBarLabel: ({ focused }) => (focused ? route.name : ''),
+        tabBarLabel: ({ focused, color }) =>
+          focused ? <Text style={[styles.label, { color }]}>{route.name}</Text> : null,
         tabBarActiveTintColor: '#957DAD',
         tabBarStyle: { height: 60 },
       })}
@@ -62,3 +64,10 @@ export default function Tabs({ onLogout }) {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+  },
+});

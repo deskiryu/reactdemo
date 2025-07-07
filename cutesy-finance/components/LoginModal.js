@@ -7,7 +7,7 @@ export default function LoginModal({ onClose, onSuccess }) {
   const [error, setError] = useState('');
 
   const handleLogin = () => {
-    if (email === 'a@b.com' && password === 'P@ssword1234') {
+    if (email === 'a@b.com' && password === 'P@') {
       setError('');
       onSuccess();
     } else {
