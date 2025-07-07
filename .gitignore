@@ -33,3 +33,4 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+cutesy-finance/node_modules/

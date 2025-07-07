@@ -1,0 +1,27 @@
+# Cutesy Finance React Native App
+
+This is a small demo banking app built with Expo/React Native. It includes iOS and Android support.
+
+## Setup
+
+1. Install [Node.js](https://nodejs.org/) and [Expo CLI](https://docs.expo.dev/get-started/installation/).
+2. Run `npm install` in the `cutesy-finance` directory.
+3. Start the development server with `npm start` (or `expo start`).
+4. Use the iOS Simulator, Android emulator or a physical device to run the app.
+
+The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first install will download the font.
+
+## Project structure
+
+- `App.js` – entry point and navigation
+- `components/` – UI components and screens
+- `assets/` – placeholder app icons
+
+## Functionality
+
+- Carousel on the welcome screen with sign-up/login options
+- Registration form with password strength indicator
+- Login modal accepting only `a@b.com` / `P@ssword1234`
+- Dashboard with panels, bottom tabs, burger menu and logout
+
+Everything is heavily commented in the code for learning purposes.
