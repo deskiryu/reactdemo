@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
 import { ActivityIndicator, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import WelcomeScreen from './components/WelcomeScreen';
 import RegisterScreen from './components/RegisterScreen';
 import Tabs from './components/Tabs';
@@ -22,21 +23,25 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!loggedIn ? (
-          <>
-            <Stack.Screen name="Welcome">
-              {(props) => <WelcomeScreen {...props} onLogin={() => setLoggedIn(true)} />}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {!loggedIn ? (
+            <>
+              <Stack.Screen name="Welcome">
+                {(props) => (
+                  <WelcomeScreen {...props} onLogin={() => setLoggedIn(true)} />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          ) : (
+            <Stack.Screen name="Tabs">
+              {(props) => <Tabs {...props} onLogout={() => setLoggedIn(false)} />}
             </Stack.Screen>
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        ) : (
-          <Stack.Screen name="Tabs">
-            {(props) => <Tabs {...props} onLogout={() => setLoggedIn(false)} />}
-          </Stack.Screen>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
