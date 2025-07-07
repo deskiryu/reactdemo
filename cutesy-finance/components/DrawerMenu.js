@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#cebffa',
     paddingVertical: 40,
     paddingHorizontal: 20,
-    justifyContent: 'flex-start',
+    // Spread items so the list covers the whole height
+    justifyContent: 'space-between',
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
   },
@@ -81,10 +82,10 @@ const styles = StyleSheet.create({
   },
   homeButton: {
     alignSelf: 'flex-start',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   logoutButton: {
-    marginTop: 20,
+    marginTop: 0,
     borderBottomWidth: 0,
   },
 });
