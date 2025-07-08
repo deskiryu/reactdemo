@@ -75,8 +75,8 @@ export default function ChatScreen({ onLogout }) {
           <View style={styles.audioContainer}>
             <Ionicons name="play" size={24} color="#fff" />
             <View style={styles.waveform}>
-              {[4,8,12,8,4].map((h,i) => (
-                <View key={i} style={[styles.bar,{height:h*2}]} />
+              {[4, 8, 12, 8, 4].map((h, i) => (
+                <View key={i} style={[styles.bar, { height: h * 2 }]} />
               ))}
             </View>
           </View>
@@ -108,8 +108,8 @@ export default function ChatScreen({ onLogout }) {
           <View style={styles.audioContainer}>
             <Ionicons name="play" size={24} color="#fff" />
             <View style={styles.waveform}>
-              {[4,8,12,8,4].map((h,i) => (
-                <View key={i} style={[styles.bar,{height:h*2}]} />
+              {[4, 8, 12, 8, 4].map((h, i) => (
+                <View key={i} style={[styles.bar, { height: h * 2 }]} />
               ))}
             </View>
           </View>
@@ -140,8 +140,8 @@ export default function ChatScreen({ onLogout }) {
           <View style={styles.audioContainer}>
             <Ionicons name="play" size={24} color="#fff" />
             <View style={styles.waveform}>
-              {[4,8,12,8,4].map((h,i) => (
-                <View key={i} style={[styles.bar,{height:h*2}]} />
+              {[4, 8, 12, 8, 4].map((h, i) => (
+                <View key={i} style={[styles.bar, { height: h * 2 }]} />
               ))}
             </View>
           </View>
@@ -174,6 +174,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     color: '#cebffa',
     marginBottom: 30,
+    marginLeft: 60,
+    marginTop: 5,
   },
   scroll: {
     paddingHorizontal: 10,
