@@ -3,12 +3,22 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function UploadsScreen() {
+  const uploads = [
+    { name: 'family_photo.jpg', desc: 'Family Photo', icon: 'image' },
+    { name: 'bank_statement.pdf', desc: 'Bank Statement', icon: 'document-text' },
+    { name: 'tax_docs.pdf', desc: 'Tax Documents', icon: 'document-text' },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.list}>
-        <Text style={styles.item}>family_photo.jpg</Text>
-        <Text style={styles.item}>bank_statement.pdf</Text>
-        <Text style={styles.item}>tax_docs.pdf</Text>
+        {uploads.map((u) => (
+          <View key={u.name} style={styles.itemRow}>
+            <Ionicons name={u.icon} size={20} color="#fff" style={styles.itemIcon} />
+            <Text style={styles.itemName}>{u.name}</Text>
+            <Text style={styles.itemDesc}>{u.desc}</Text>
+          </View>
+        ))}
       </View>
       <View style={styles.buttonRow}>
         <TouchableOpacity style={styles.button}>
@@ -29,16 +39,35 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: 50,
-    backgroundColor: '#FFDFD3',
+    backgroundColor: '#fff',
   },
   list: {
-    width: '80%',
+    width: '90%',
     marginBottom: 20,
   },
-  item: {
-    fontFamily: 'Poppins_400Regular',
-    fontSize: 16,
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FEC8D8',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
     marginVertical: 4,
+  },
+  itemIcon: {
+    marginRight: 8,
+  },
+  itemName: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    flex: 1,
+    color: '#555',
+  },
+  itemDesc: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#cebffa',
   },
   buttonRow: {
     flexDirection: 'row',
