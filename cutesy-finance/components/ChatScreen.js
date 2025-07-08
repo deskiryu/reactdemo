@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
@@ -6,6 +6,29 @@ import DrawerMenu from './DrawerMenu';
 export default function ChatScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const drawerAnim = useRef(new Animated.Value(0)).current;
+
+  const backgroundIcons = useMemo(() => {
+    const icons = [];
+    for (let row = 0; row < 12; row++) {
+      for (let col = 0; col < 5; col++) {
+        icons.push(
+          <Ionicons
+            key={`${row}-${col}`}
+            name="chatbubble"
+            size={48}
+            color="#cebffa"
+            style={{
+              position: 'absolute',
+              top: row * 70,
+              left: col * 80,
+              opacity: 0.08,
+            }}
+          />
+        );
+      }
+    }
+    return icons;
+  }, []);
 
   useEffect(() => {
     Animated.timing(drawerAnim, {
@@ -35,6 +58,9 @@ export default function ChatScreen({ onLogout }) {
   // Simple chat history with text, image, video thumbnail and audio entry
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
+      <View style={styles.iconBackground} pointerEvents="none">
+        {backgroundIcons}
+      </View>
       <TouchableOpacity
         onPress={() => setMenuVisible(true)}
         style={styles.burger}
@@ -161,6 +187,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 50,
+  },
+  iconBackground: {
+    ...StyleSheet.absoluteFillObject,
   },
   burger: {
     position: 'absolute',
