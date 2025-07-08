@@ -67,8 +67,12 @@ export default function Tabs({ onLogout }) {
         {() => <Dashboard onLogout={onLogout} />}
       </Tab.Screen>
 
-      <Tab.Screen name="Uploads" component={UploadsScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Uploads" options={{ headerShown: false }}>
+        {() => <UploadsScreen onLogout={onLogout} />}
+      </Tab.Screen>
+      <Tab.Screen name="Chat" options={{ headerShown: false }}>
+        {() => <ChatScreen onLogout={onLogout} />}
+      </Tab.Screen>
 
       <Tab.Screen
         name="Logout"

@@ -1,11 +1,47 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import DrawerMenu from './DrawerMenu';
 
-export default function ChatScreen() {
+export default function ChatScreen({ onLogout }) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const drawerAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(drawerAnim, {
+      toValue: menuVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [menuVisible, drawerAnim]);
+
+  const animatedStyles = {
+    transform: [
+      {
+        translateX: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 180],
+        }),
+      },
+      {
+        scale: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.85],
+        }),
+      },
+    ],
+  };
+
   // Simple chat history with text, image, video thumbnail and audio entry
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyles]}>
+      <TouchableOpacity
+        onPress={() => setMenuVisible(true)}
+        style={styles.burger}
+      >
+        <Ionicons name="menu" size={32} color="#cebffa" />
+      </TouchableOpacity>
+      <Text style={styles.header}>Chats</Text>
       <ScrollView contentContainerStyle={styles.scroll}>
         {/* Incoming text */}
         <View style={[styles.message, styles.theirMessage]}>
@@ -111,7 +147,12 @@ export default function ChatScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+      <DrawerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onLogout={onLogout}
+      />
+    </Animated.View>
   );
 }
 
@@ -120,6 +161,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 50,
+  },
+  burger: {
+    position: 'absolute',
+    left: 10,
+    top: 50,
+    padding: 6,
+    zIndex: 1,
+  },
+  header: {
+    fontSize: 24,
+    fontFamily: 'Poppins_400Regular',
+    color: '#cebffa',
+    marginBottom: 30,
   },
   scroll: {
     paddingHorizontal: 10,

@@ -1,8 +1,37 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import DrawerMenu from './DrawerMenu';
 
-export default function UploadsScreen() {
+export default function UploadsScreen({ onLogout }) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const drawerAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(drawerAnim, {
+      toValue: menuVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [menuVisible, drawerAnim]);
+
+  const animatedStyles = {
+    transform: [
+      {
+        translateX: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 180],
+        }),
+      },
+      {
+        scale: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.85],
+        }),
+      },
+    ],
+  };
+
   const uploads = [
     { name: 'family_photo.jpg', desc: 'Family Photo', icon: 'image' },
     { name: 'bank_statement.pdf', desc: 'Bank Statement', icon: 'document-text' },
@@ -10,7 +39,14 @@ export default function UploadsScreen() {
   ];
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyles]}>
+      <TouchableOpacity
+        onPress={() => setMenuVisible(true)}
+        style={styles.burger}
+      >
+        <Ionicons name="menu" size={32} color="#cebffa" />
+      </TouchableOpacity>
+      <Text style={styles.header}>Uploads</Text>
       <View style={styles.list}>
         {uploads.map((u) => (
           <View key={u.name} style={styles.itemRow}>
@@ -30,7 +66,12 @@ export default function UploadsScreen() {
           <Text style={styles.buttonText}>Upload Photo</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      <DrawerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onLogout={onLogout}
+      />
+    </Animated.View>
   );
 }
 
@@ -40,6 +81,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 50,
     backgroundColor: '#fff',
+  },
+  burger: {
+    position: 'absolute',
+    left: 10,
+    top: 50,
+    padding: 6,
+    zIndex: 1,
+  },
+  header: {
+    fontSize: 24,
+    fontFamily: 'Poppins_400Regular',
+    color: '#cebffa',
+    marginBottom: 30,
   },
   list: {
     width: '90%',
