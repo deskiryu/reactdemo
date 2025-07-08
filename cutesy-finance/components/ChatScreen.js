@@ -1,0 +1,115 @@
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+export default function ChatScreen() {
+  // Simple chat history with text, image, video thumbnail and audio entry
+  return (
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        {/* Incoming text */}
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Hi! How are you?</Text>
+        </View>
+        {/* Outgoing text */}
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Doing great! Check out this photo.</Text>
+        </View>
+        {/* Outgoing image */}
+        <View style={[styles.message, styles.myMessage]}>
+          <Image source={require('../assets/icon.png')} style={styles.image} />
+        </View>
+        {/* Incoming text */}
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Nice! Here is a short video.</Text>
+        </View>
+        {/* Incoming video thumbnail */}
+        <View style={[styles.message, styles.theirMessage]}>
+          <View style={styles.videoContainer}>
+            <Image source={require('../assets/splash.png')} style={styles.videoImg} />
+            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
+          </View>
+        </View>
+        {/* Outgoing text introducing audio */}
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
+        </View>
+        {/* Outgoing audio placeholder */}
+        <View style={[styles.message, styles.myMessage]}>
+          <View style={styles.audioContainer}>
+            <Ionicons name="play" size={24} color="#fff" />
+            <View style={styles.waveform}>
+              {[4,8,12,8,4].map((h,i) => (
+                <View key={i} style={[styles.bar,{height:h*2}]} />
+              ))}
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 50,
+  },
+  scroll: {
+    paddingHorizontal: 10,
+    paddingBottom: 20,
+  },
+  message: {
+    maxWidth: '75%',
+    borderRadius: 10,
+    padding: 8,
+    marginVertical: 5,
+  },
+  theirMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#FEC8D8',
+  },
+  myMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#cebffa',
+  },
+  text: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+  },
+  image: {
+    width: 160,
+    height: 120,
+    borderRadius: 8,
+  },
+  videoContainer: {
+    width: 160,
+    height: 120,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  videoImg: {
+    width: '100%',
+    height: '100%',
+  },
+  playIcon: {
+    position: 'absolute',
+    top: '40%',
+    left: '40%',
+  },
+  audioContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  waveform: {
+    flexDirection: 'row',
+    marginLeft: 8,
+  },
+  bar: {
+    width: 4,
+    backgroundColor: '#fff',
+    marginHorizontal: 1,
+  },
+});

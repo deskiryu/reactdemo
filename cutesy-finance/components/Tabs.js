@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { View, Text, StyleSheet } from 'react-native';
 import Dashboard from './Dashboard';
-import Menu2Screen from './Menu2Screen';
-import Menu3Screen from './Menu3Screen';
+import UploadsScreen from './UploadsScreen';
+import ChatScreen from './ChatScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,13 +32,13 @@ export default function Tabs({ onLogout }) {
               iconName = 'folder';
               IconComponent = Ionicons;
               break;
-            case 'Menu 2':
-              iconName = 'disc';
+            case 'Uploads':
+              iconName = 'arrow-up-circle';
               IconComponent = Ionicons;
               break;
-            case 'Menu 3':
-              iconName = 'check';
-              IconComponent = FontAwesome5;
+            case 'Chat':
+              iconName = 'chatbubbles';
+              IconComponent = Ionicons;
               break;
             case 'Logout':
               iconName = 'log-out';
@@ -67,8 +67,8 @@ export default function Tabs({ onLogout }) {
         {() => <Dashboard onLogout={onLogout} />}
       </Tab.Screen>
 
-      <Tab.Screen name="Menu 2" component={Menu2Screen} options={{ headerShown: false }} />
-      <Tab.Screen name="Menu 3" component={Menu3Screen} options={{ headerShown: false }} />
+      <Tab.Screen name="Uploads" component={UploadsScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
 
       <Tab.Screen
         name="Logout"
