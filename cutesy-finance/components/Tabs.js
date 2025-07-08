@@ -28,7 +28,7 @@ export default function Tabs({ onLogout }) {
           let iconName, IconComponent;
 
           switch (route.name) {
-            case 'Menu 1':
+            case 'Dashboard':
               iconName = 'folder';
               IconComponent = Ionicons;
               break;
@@ -63,7 +63,7 @@ export default function Tabs({ onLogout }) {
         },
       })}
     >
-      <Tab.Screen name="Menu 1" options={{ headerShown: false }}>
+      <Tab.Screen name="Dashboard" options={{ headerShown: false }}>
         {() => <Dashboard onLogout={onLogout} />}
       </Tab.Screen>
 

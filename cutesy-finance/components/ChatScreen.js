@@ -17,7 +17,7 @@ export default function ChatScreen() {
         </View>
         {/* Outgoing image */}
         <View style={[styles.message, styles.myMessage]}>
-          <Image source={require('../assets/icon.png')} style={styles.image} />
+          <Image source={require('../assets/fake-image.png')} style={styles.image} />
         </View>
         {/* Incoming text */}
         <View style={[styles.message, styles.theirMessage]}>
@@ -26,7 +26,7 @@ export default function ChatScreen() {
         {/* Incoming video thumbnail */}
         <View style={[styles.message, styles.theirMessage]}>
           <View style={styles.videoContainer}>
-            <Image source={require('../assets/splash.png')} style={styles.videoImg} />
+            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
             <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
           </View>
         </View>
@@ -35,6 +35,71 @@ export default function ChatScreen() {
           <Text style={styles.text}>Great! Listen to this voice memo.</Text>
         </View>
         {/* Outgoing audio placeholder */}
+        <View style={[styles.message, styles.myMessage]}>
+          <View style={styles.audioContainer}>
+            <Ionicons name="play" size={24} color="#fff" />
+            <View style={styles.waveform}>
+              {[4,8,12,8,4].map((h,i) => (
+                <View key={i} style={[styles.bar,{height:h*2}]} />
+              ))}
+            </View>
+          </View>
+        </View>
+        {/* Repeat messages to enable scrolling */}
+        {/* 2nd set */}
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Hi! How are you?</Text>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Doing great! Check out this photo.</Text>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Image source={require('../assets/fake-image.png')} style={styles.image} />
+        </View>
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Nice! Here is a short video.</Text>
+        </View>
+        <View style={[styles.message, styles.theirMessage]}>
+          <View style={styles.videoContainer}>
+            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
+            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
+          </View>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <View style={styles.audioContainer}>
+            <Ionicons name="play" size={24} color="#fff" />
+            <View style={styles.waveform}>
+              {[4,8,12,8,4].map((h,i) => (
+                <View key={i} style={[styles.bar,{height:h*2}]} />
+              ))}
+            </View>
+          </View>
+        </View>
+        {/* 3rd set */}
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Hi! How are you?</Text>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Doing great! Check out this photo.</Text>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Image source={require('../assets/fake-image.png')} style={styles.image} />
+        </View>
+        <View style={[styles.message, styles.theirMessage]}>
+          <Text style={styles.text}>Nice! Here is a short video.</Text>
+        </View>
+        <View style={[styles.message, styles.theirMessage]}>
+          <View style={styles.videoContainer}>
+            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
+            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
+          </View>
+        </View>
+        <View style={[styles.message, styles.myMessage]}>
+          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
+        </View>
         <View style={[styles.message, styles.myMessage]}>
           <View style={styles.audioContainer}>
             <Ionicons name="play" size={24} color="#fff" />
