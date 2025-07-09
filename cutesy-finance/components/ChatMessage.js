@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 
+
 const WaveformIcon = ({ styles }) => (
   <View style={styles.waveformIcon}>
     {[4, 7, 5, 6, 4].map((h, i) => (
@@ -58,6 +59,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
           )}
           {item.isAudio && item.audioUrl && (
             <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.videoContainer}>
+
               <WaveformIcon styles={styles} />
             </TouchableOpacity>
           )}
