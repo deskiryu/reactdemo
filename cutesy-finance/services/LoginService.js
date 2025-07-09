@@ -26,6 +26,7 @@ export const login = async (emailAddress, password) => {
   });
 
   const data = await response.json();
+
   if (data && (data.token || data.Token)) {
     token = data.token || data.Token;
     await SecureStore.setItemAsync('authToken', token);
@@ -37,6 +38,7 @@ export const login = async (emailAddress, password) => {
   const mbid = data.masterBrokerId ?? data.MasterBrokerId;
   if (mbid !== undefined) {
     await SecureStore.setItemAsync('masterBrokerId', String(mbid));
+
   }
   return data;
 };
