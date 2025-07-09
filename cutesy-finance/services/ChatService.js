@@ -1,7 +1,7 @@
 import { getBaseUrl, getToken } from './LoginService';
 import * as SecureStore from 'expo-secure-store';
 
-const CHAT_PATH = 'Chat/GetChat';
+const CHAT_PATH = 'Chat/pagedchat';
 const PAGE_SIZE = 15;
 
 export const getChatMessages = async (pageNumber = 1) => {
