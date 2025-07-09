@@ -95,6 +95,8 @@ export default function ChatScreen({ onLogout }) {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderMessage}
         contentContainerStyle={styles.scroll}
+        inverted
+        initialNumToRender={15}
         onEndReachedThreshold={0.2}
         onEndReached={handleEndReached}
       />
@@ -154,6 +156,8 @@ const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 10,
     paddingBottom: 20,
+    flexGrow: 1,
+    justifyContent: 'flex-end',
   },
   message: {
     maxWidth: '75%',
@@ -228,5 +232,17 @@ const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
     color: 'blue',
+  },
+  waveformIcon: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: '100%',
+    height: 30,
+  },
+  waveBar: {
+    width: 4,
+    backgroundColor: '#fff',
+    marginHorizontal: 2,
   },
 });
