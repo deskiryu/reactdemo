@@ -1,3 +1,5 @@
+import * as SecureStore from 'expo-secure-store';
+
 const LOGIN_PATH = 'Auth/SignIn';
 
 let baseUrl = '';
@@ -24,8 +26,17 @@ export const login = async (emailAddress, password) => {
   });
 
   const data = await response.json();
-  if (data && data.token) {
-    token = data.token;
+  if (data && (data.token || data.Token)) {
+    token = data.token || data.Token;
+    await SecureStore.setItemAsync('authToken', token);
+  }
+  const uid = data.userId ?? data.UserId;
+  if (uid !== undefined) {
+    await SecureStore.setItemAsync('userId', String(uid));
+  }
+  const mbid = data.masterBrokerId ?? data.MasterBrokerId;
+  if (mbid !== undefined) {
+    await SecureStore.setItemAsync('masterBrokerId', String(mbid));
   }
   return data;
 };
