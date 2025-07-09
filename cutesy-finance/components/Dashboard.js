@@ -2,7 +2,7 @@
 // and allows opening a detail modal or the burger drawer menu.
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated } from 'react-native';
-import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import DetailModal from './DetailModal';
 import DrawerMenu from './DrawerMenu';
 
@@ -69,20 +69,32 @@ export default function Dashboard({ onLogout }) {
           <Text style={styles.clickBoxText}>Burger clicked!</Text>
         </View>
       )}
-      {/* Interest panels */}
-      <View style={styles.panelRow}>
-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#FEC8D8' }]} onPress={() => setDetailVisible(true)}>
-          <FontAwesome5 name="piggy-bank" size={40} color="#fff" />
-          <Text style={styles.panelText}>Interest Area 1</Text>
+      {/* Dashboard content recreated in code */}
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={[styles.card, { backgroundColor: '#FEC8D8' }]}
+          onPress={() => setDetailVisible(true)}
+        >
+          <Text style={styles.cardTitle}>Balance</Text>
+          <Text style={styles.cardValue}>$5,250.00</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#FFDFD3' }]} onPress={() => setDetailVisible(true)}>
-          <Ionicons name="card" size={40} color="#fff" />
-          <Text style={styles.panelText}>Interest Area 2</Text>
+        <TouchableOpacity
+          style={[styles.card, { backgroundColor: '#FFDFD3' }]}
+          onPress={() => setDetailVisible(true)}
+        >
+          <Text style={styles.cardTitle}>Savings</Text>
+          <Text style={styles.cardValue}>$12,800.00</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#E0BBE4' }]} onPress={() => setDetailVisible(true)}>
-          <Ionicons name="checkmark-circle" color="#fff" size={40} />
-
-          <Text style={styles.panelText}>Interest Area 3</Text>
+      </View>
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={[styles.card, styles.wideCard, { backgroundColor: '#E0BBE4' }]}
+          onPress={() => setDetailVisible(true)}
+        >
+          <Text style={styles.cardTitle}>Recent Activity</Text>
+          <Text style={styles.activityItem}>- Coffee Shop $4.75</Text>
+          <Text style={styles.activityItem}>- Grocery $36.20</Text>
+          <Text style={styles.activityItem}>+ Paycheck $1,200.00</Text>
         </TouchableOpacity>
       </View>
       {/* Detail modal popup */}
@@ -116,24 +128,39 @@ const styles = StyleSheet.create({
     color: '#cebffa',
     marginBottom: 30,
   },
-  panelRow: {
+  row: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: '100%',
     justifyContent: 'center',
+    marginBottom: 15,
+    paddingHorizontal: 20,
   },
-  panel: {
-    width: 110,
-    height: 110,
-    margin: 10,
-    borderRadius: 10,
+  card: {
+    flex: 1,
+    marginHorizontal: 5,
+    borderRadius: 12,
+    padding: 15,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  panelText: {
-    color: '#fff',
+  wideCard: {
+    flex: 1,
+  },
+  cardTitle: {
     fontFamily: 'Poppins_400Regular',
+    color: '#fff',
+    marginBottom: 8,
+    fontSize: 16,
+  },
+  cardValue: {
+    fontFamily: 'Poppins_400Regular',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  activityItem: {
+    fontFamily: 'Poppins_400Regular',
+    color: '#fff',
     fontSize: 12,
-    marginTop: 5,
   },
   clickBox: {
     position: 'absolute',

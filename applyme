@@ -1,0 +1,454 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/cutesy-finance/assets/fake-image.png b/cutesy-finance/assets/fake-image.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..a11612b0158b71d767e682e5f52a98f79a4b1f0c
+GIT binary patch
+literal 69
+zcmeAS@N?(olHy`uVBq!ia0vp^j3CSbBp9sfW`_bPZci7-kcv6Uf6jlHFUP>z%v8U4
+Q#x{_=r>mdKI;Vst0LmN?m;e9(
+
+literal 0
+HcmV?d00001
+
+diff --git a/cutesy-finance/assets/fake-video.png b/cutesy-finance/assets/fake-video.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..6c49eddfad0febdad7a6bacecd94b3c22e6c6637
+GIT binary patch
+literal 67
+zcmeAS@N?(olHy`uVBq!ia0vp^j3CSbBp9sfW`_bPZci7-kcv6UfByfsXJGxu^l$lp
+OkgTVxpUXO@geCyF@(~CC
+
+literal 0
+HcmV?d00001
+
+diff --git a/cutesy-finance/components/ChatScreen.js b/cutesy-finance/components/ChatScreen.js
+index 33fd70fd9adfa258a0b3889a54ee1443a45a2a8f..fa7abbe99eb306438c6811d532e86b20ef3e5107 100644
+--- a/cutesy-finance/components/ChatScreen.js
++++ b/cutesy-finance/components/ChatScreen.js
+@@ -1,72 +1,137 @@
+ import React from 'react';
+ import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+ import { Ionicons } from '@expo/vector-icons';
+ 
+ export default function ChatScreen() {
+   // Simple chat history with text, image, video thumbnail and audio entry
+   return (
+     <View style={styles.container}>
+       <ScrollView contentContainerStyle={styles.scroll}>
+         {/* Incoming text */}
+         <View style={[styles.message, styles.theirMessage]}>
+           <Text style={styles.text}>Hi! How are you?</Text>
+         </View>
+         {/* Outgoing text */}
+         <View style={[styles.message, styles.myMessage]}>
+           <Text style={styles.text}>Doing great! Check out this photo.</Text>
+         </View>
+         {/* Outgoing image */}
+         <View style={[styles.message, styles.myMessage]}>
+-          <Image source={require('../assets/icon.png')} style={styles.image} />
++          <Image source={require('../assets/fake-image.png')} style={styles.image} />
+         </View>
+         {/* Incoming text */}
+         <View style={[styles.message, styles.theirMessage]}>
+           <Text style={styles.text}>Nice! Here is a short video.</Text>
+         </View>
+         {/* Incoming video thumbnail */}
+         <View style={[styles.message, styles.theirMessage]}>
+           <View style={styles.videoContainer}>
+-            <Image source={require('../assets/splash.png')} style={styles.videoImg} />
++            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
+             <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
+           </View>
+         </View>
+         {/* Outgoing text introducing audio */}
+         <View style={[styles.message, styles.myMessage]}>
+           <Text style={styles.text}>Great! Listen to this voice memo.</Text>
+         </View>
+         {/* Outgoing audio placeholder */}
+         <View style={[styles.message, styles.myMessage]}>
+           <View style={styles.audioContainer}>
+             <Ionicons name="play" size={24} color="#fff" />
+             <View style={styles.waveform}>
+               {[4,8,12,8,4].map((h,i) => (
+                 <View key={i} style={[styles.bar,{height:h*2}]} />
+               ))}
+             </View>
+           </View>
+         </View>
++        {/* Repeat messages to enable scrolling */}
++        {/* 2nd set */}
++        <View style={[styles.message, styles.theirMessage]}>
++          <Text style={styles.text}>Hi! How are you?</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Text style={styles.text}>Doing great! Check out this photo.</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Image source={require('../assets/fake-image.png')} style={styles.image} />
++        </View>
++        <View style={[styles.message, styles.theirMessage]}>
++          <Text style={styles.text}>Nice! Here is a short video.</Text>
++        </View>
++        <View style={[styles.message, styles.theirMessage]}>
++          <View style={styles.videoContainer}>
++            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
++            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
++          </View>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <View style={styles.audioContainer}>
++            <Ionicons name="play" size={24} color="#fff" />
++            <View style={styles.waveform}>
++              {[4,8,12,8,4].map((h,i) => (
++                <View key={i} style={[styles.bar,{height:h*2}]} />
++              ))}
++            </View>
++          </View>
++        </View>
++        {/* 3rd set */}
++        <View style={[styles.message, styles.theirMessage]}>
++          <Text style={styles.text}>Hi! How are you?</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Text style={styles.text}>Doing great! Check out this photo.</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Image source={require('../assets/fake-image.png')} style={styles.image} />
++        </View>
++        <View style={[styles.message, styles.theirMessage]}>
++          <Text style={styles.text}>Nice! Here is a short video.</Text>
++        </View>
++        <View style={[styles.message, styles.theirMessage]}>
++          <View style={styles.videoContainer}>
++            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
++            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
++          </View>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
++        </View>
++        <View style={[styles.message, styles.myMessage]}>
++          <View style={styles.audioContainer}>
++            <Ionicons name="play" size={24} color="#fff" />
++            <View style={styles.waveform}>
++              {[4,8,12,8,4].map((h,i) => (
++                <View key={i} style={[styles.bar,{height:h*2}]} />
++              ))}
++            </View>
++          </View>
++        </View>
+       </ScrollView>
+     </View>
+   );
+ }
+ 
+ const styles = StyleSheet.create({
+   container: {
+     flex: 1,
+     backgroundColor: '#fff',
+     paddingTop: 50,
+   },
+   scroll: {
+     paddingHorizontal: 10,
+     paddingBottom: 20,
+   },
+   message: {
+     maxWidth: '75%',
+     borderRadius: 10,
+     padding: 8,
+     marginVertical: 5,
+   },
+   theirMessage: {
+     alignSelf: 'flex-start',
+     backgroundColor: '#FEC8D8',
+   },
+diff --git a/cutesy-finance/components/Dashboard.js b/cutesy-finance/components/Dashboard.js
+index 710c383f6107ec130b3574aeaec61f9cba331600..e555770cea844cba2f0624302cd6edcdefc063b7 100644
+--- a/cutesy-finance/components/Dashboard.js
++++ b/cutesy-finance/components/Dashboard.js
+@@ -1,30 +1,30 @@
+ // Main screen users see after logging in. Displays simple panels
+ // and allows opening a detail modal or the burger drawer menu.
+ import React, { useState, useEffect, useRef } from 'react';
+ import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated } from 'react-native';
+-import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
++import { Ionicons } from '@expo/vector-icons';
+ import DetailModal from './DetailModal';
+ import DrawerMenu from './DrawerMenu';
+ 
+ export default function Dashboard({ onLogout }) {
+   // State that controls the detail popup visibility
+   const [detailVisible, setDetailVisible] = useState(false);
+   // State that controls the side drawer visibility
+   const [menuVisible, setMenuVisible] = useState(false);
+   // Animated value driving the drawer transformation
+   const drawerAnim = useRef(new Animated.Value(0)).current;
+   // Temporary box proving the burger click was received
+   const [showClickBox, setShowClickBox] = useState(false);
+ 
+   // Hide the box after a short delay
+   useEffect(() => {
+     if (showClickBox) {
+       const t = setTimeout(() => setShowClickBox(false), 1000);
+       return () => clearTimeout(t);
+     }
+   }, [showClickBox]);
+ 
+   // Animate the dashboard when the menu visibility changes
+   useEffect(() => {
+     Animated.timing(drawerAnim, {
+       toValue: menuVisible ? 1 : 0,
+@@ -47,105 +47,132 @@ export default function Dashboard({ onLogout }) {
+           inputRange: [0, 1],
+           outputRange: [1, 0.85],
+         }),
+       },
+     ],
+   };
+ 
+   return (
+     <Animated.View style={[styles.container, animatedStyles]}>
+       {/* Top burger menu */}
+       <TouchableOpacity
+         onPress={() => {
+           setMenuVisible(true);
+           setShowClickBox(true);
+         }}
+         style={styles.burger}
+       >
+         <Ionicons name="menu" size={32} color="#cebffa" />
+       </TouchableOpacity>
+       <Text style={styles.header}>Dashboard</Text>
+       {showClickBox && (
+         <View style={styles.clickBox} pointerEvents="none">
+           <Text style={styles.clickBoxText}>Burger clicked!</Text>
+         </View>
+       )}
+-      {/* Interest panels */}
+-      <View style={styles.panelRow}>
+-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#FEC8D8' }]} onPress={() => setDetailVisible(true)}>
+-          <FontAwesome5 name="piggy-bank" size={40} color="#fff" />
+-          <Text style={styles.panelText}>Interest Area 1</Text>
++      {/* Dashboard content recreated in code */}
++      <View style={styles.row}>
++        <TouchableOpacity
++          style={[styles.card, { backgroundColor: '#FEC8D8' }]}
++          onPress={() => setDetailVisible(true)}
++        >
++          <Text style={styles.cardTitle}>Balance</Text>
++          <Text style={styles.cardValue}>$5,250.00</Text>
+         </TouchableOpacity>
+-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#FFDFD3' }]} onPress={() => setDetailVisible(true)}>
+-          <Ionicons name="card" size={40} color="#fff" />
+-          <Text style={styles.panelText}>Interest Area 2</Text>
++        <TouchableOpacity
++          style={[styles.card, { backgroundColor: '#FFDFD3' }]}
++          onPress={() => setDetailVisible(true)}
++        >
++          <Text style={styles.cardTitle}>Savings</Text>
++          <Text style={styles.cardValue}>$12,800.00</Text>
+         </TouchableOpacity>
+-        <TouchableOpacity style={[styles.panel, { backgroundColor: '#E0BBE4' }]} onPress={() => setDetailVisible(true)}>
+-          <Ionicons name="checkmark-circle" color="#fff" size={40} />
+-
+-          <Text style={styles.panelText}>Interest Area 3</Text>
++      </View>
++      <View style={styles.row}>
++        <TouchableOpacity
++          style={[styles.card, styles.wideCard, { backgroundColor: '#E0BBE4' }]}
++          onPress={() => setDetailVisible(true)}
++        >
++          <Text style={styles.cardTitle}>Recent Activity</Text>
++          <Text style={styles.activityItem}>- Coffee Shop $4.75</Text>
++          <Text style={styles.activityItem}>- Grocery $36.20</Text>
++          <Text style={styles.activityItem}>+ Paycheck $1,200.00</Text>
+         </TouchableOpacity>
+       </View>
+       {/* Detail modal popup */}
+       <Modal visible={detailVisible} transparent animationType="slide">
+         <DetailModal onClose={() => setDetailVisible(false)} />
+       </Modal>
+       {/* Burger drawer menu */}
+       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+     </Animated.View>
+   );
+ }
+ 
+ // Layout styling for the dashboard screen
+ const styles = StyleSheet.create({
+   container: {
+     flex: 1,
+     paddingTop: 50,
+     alignItems: 'center',
+     backgroundColor: '#fff',
+   },
+   burger: {
+     position: 'absolute',
+     left: 10,
+     top: 50,
+     padding: 6,
+     zIndex: 1,
+   },
+   header: {
+     fontSize: 24,
+     fontFamily: 'Poppins_400Regular',
+     color: '#cebffa',
+     marginBottom: 30,
+   },
+-  panelRow: {
++  row: {
+     flexDirection: 'row',
+-    flexWrap: 'wrap',
++    width: '100%',
+     justifyContent: 'center',
++    marginBottom: 15,
++    paddingHorizontal: 20,
+   },
+-  panel: {
+-    width: 110,
+-    height: 110,
+-    margin: 10,
+-    borderRadius: 10,
++  card: {
++    flex: 1,
++    marginHorizontal: 5,
++    borderRadius: 12,
++    padding: 15,
+     alignItems: 'center',
+-    justifyContent: 'center',
+   },
+-  panelText: {
++  wideCard: {
++    flex: 1,
++  },
++  cardTitle: {
++    fontFamily: 'Poppins_400Regular',
++    color: '#fff',
++    marginBottom: 8,
++    fontSize: 16,
++  },
++  cardValue: {
++    fontFamily: 'Poppins_400Regular',
+     color: '#fff',
++    fontSize: 20,
++    fontWeight: '600',
++  },
++  activityItem: {
+     fontFamily: 'Poppins_400Regular',
++    color: '#fff',
+     fontSize: 12,
+-    marginTop: 5,
+   },
+   clickBox: {
+     position: 'absolute',
+     top: 70,
+     right: 20,
+     backgroundColor: '#FFDFD3',
+     paddingHorizontal: 15,
+     paddingVertical: 8,
+     borderRadius: 8,
+   },
+   clickBoxText: {
+     fontFamily: 'Poppins_400Regular',
+     color: '#cebffa',
+   },
+ });
+diff --git a/cutesy-finance/components/Tabs.js b/cutesy-finance/components/Tabs.js
+index cdbc52def757d40e177bd35de98a1b03107a6c43..39cb384912adee09d9a0f431b8a1880ae8f6ef3d 100644
+--- a/cutesy-finance/components/Tabs.js
++++ b/cutesy-finance/components/Tabs.js
+@@ -6,86 +6,86 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+ import { View, Text, StyleSheet } from 'react-native';
+ import Dashboard from './Dashboard';
+ import UploadsScreen from './UploadsScreen';
+ import ChatScreen from './ChatScreen';
+ 
+ const Tab = createBottomTabNavigator();
+ 
+ export default function Tabs({ onLogout }) {
+   return (
+     // React Navigation bottom tabs component
+     <Tab.Navigator
+       screenOptions={({ route }) => ({
+         tabBarShowLabel: false,
+         tabBarStyle: {
+           height: 70,
+           backgroundColor: '#cebffa', // purple background
+           borderTopWidth: 0,
+         },
+         tabBarItemStyle: {
+           padding: 5,
+         },
+         tabBarIcon: ({ focused, size }) => {
+           let iconName, IconComponent;
+ 
+           switch (route.name) {
+-            case 'Menu 1':
++            case 'Dashboard':
+               iconName = 'folder';
+               IconComponent = Ionicons;
+               break;
+             case 'Uploads':
+               iconName = 'arrow-up-circle';
+               IconComponent = Ionicons;
+               break;
+             case 'Chat':
+               iconName = 'chatbubbles';
+               IconComponent = Ionicons;
+               break;
+             case 'Logout':
+               iconName = 'log-out';
+               IconComponent = Ionicons;
+               break;
+           }
+ 
+           const iconColor = focused ? '#cebffa' : '#ffffff';
+ 
+           if (route.name === 'Logout') {
+             return <IconComponent name={iconName} size={size} color={iconColor} />;
+           }
+ 
+           return focused ? (
+             <View style={styles.pill}>
+               <IconComponent name={iconName} size={size} color="#cebffa" />
+               <Text style={styles.pillText}>{route.name}</Text>
+             </View>
+           ) : (
+             <IconComponent name={iconName} size={size} color="#ffffff" />
+           );
+         },
+       })}
+     >
+-      <Tab.Screen name="Menu 1" options={{ headerShown: false }}>
++      <Tab.Screen name="Dashboard" options={{ headerShown: false }}>
+         {() => <Dashboard onLogout={onLogout} />}
+       </Tab.Screen>
+ 
+       <Tab.Screen name="Uploads" component={UploadsScreen} options={{ headerShown: false }} />
+       <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
+ 
+       <Tab.Screen
+         name="Logout"
+         listeners={{
+           tabPress: (e) => {
+             e.preventDefault();
+             onLogout();
+           },
+         }}
+         options={{ headerShown: false }}
+       >
+         {() => null}
+       </Tab.Screen>
+     </Tab.Navigator>
+ 
+ 
+   );
+ }
+ 
+ // Styling applied to tab labels
+ 
+EOF
+)
