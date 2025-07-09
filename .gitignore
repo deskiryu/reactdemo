@@ -39,3 +39,5 @@ cutesy-finance/node_modules/
 # Mac and Expo files
 .DS_Store
 .expo/
+
+cutesy-finance/appsettings.json
