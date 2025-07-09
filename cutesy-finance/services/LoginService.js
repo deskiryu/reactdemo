@@ -1,3 +1,5 @@
+import * as SecureStore from 'expo-secure-store';
+
 const LOGIN_PATH = 'Auth/SignIn';
 
 let baseUrl = '';
@@ -26,6 +28,13 @@ export const login = async (emailAddress, password) => {
   const data = await response.json();
   if (data && data.token) {
     token = data.token;
+    await SecureStore.setItemAsync('authToken', data.token);
+  }
+  if (data && data.userId) {
+    await SecureStore.setItemAsync('userId', String(data.userId));
+  }
+  if (data && data.masterBrokerId) {
+    await SecureStore.setItemAsync('masterBrokerId', String(data.masterBrokerId));
   }
   return data;
 };
