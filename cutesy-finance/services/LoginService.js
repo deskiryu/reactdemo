@@ -26,15 +26,19 @@ export const login = async (emailAddress, password) => {
   });
 
   const data = await response.json();
-  if (data && data.token) {
-    token = data.token;
-    await SecureStore.setItemAsync('authToken', data.token);
+
+  if (data && (data.token || data.Token)) {
+    token = data.token || data.Token;
+    await SecureStore.setItemAsync('authToken', token);
   }
-  if (data && data.userId) {
-    await SecureStore.setItemAsync('userId', String(data.userId));
+  const uid = data.userId ?? data.UserId;
+  if (uid !== undefined) {
+    await SecureStore.setItemAsync('userId', String(uid));
   }
-  if (data && data.masterBrokerId) {
-    await SecureStore.setItemAsync('masterBrokerId', String(data.masterBrokerId));
+  const mbid = data.masterBrokerId ?? data.MasterBrokerId;
+  if (mbid !== undefined) {
+    await SecureStore.setItemAsync('masterBrokerId', String(mbid));
+
   }
   return data;
 };
