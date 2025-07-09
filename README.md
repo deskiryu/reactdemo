@@ -6,9 +6,8 @@ This is a small demo banking app built with Expo/React Native. It includes iOS a
 
 1. Install [Node.js](https://nodejs.org/) and [Expo CLI](https://docs.expo.dev/get-started/installation/).
 2. Run `npm install` in the `cutesy-finance` directory.
-3. Copy `appsettings.example.json` to `appsettings.json` in the `cutesy-finance` directory and edit the `baseUrl` value.
-4. Start the development server with `npm start` (or `expo start`).
-5. Use the iOS Simulator, Android emulator or a physical device to run the app.
+3. Start the development server with `npm start` (or `expo start`).
+4. Use the iOS Simulator, Android emulator or a physical device to run the app.
 
 This demo uses only the built-in React Native `Animated` API. The
 `react-native-reanimated` package was removed to avoid native initialization

@@ -15,7 +15,6 @@ import WelcomeScreen from './components/WelcomeScreen';
 import RegisterScreen from './components/RegisterScreen';
 import Tabs from './components/Tabs';
 import { setBaseUrl } from './services/LoginService';
-import appSettings from './appsettings.json';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +25,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({ Poppins_400Regular });
 
   useEffect(() => {
-    setBaseUrl(appSettings.baseUrl);
+    setBaseUrl('http://example.com');
   }, []);
 
   // Show a loader until fonts are ready
