@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Anima
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
+import ChatMessage from './ChatMessage';
 import { getChatMessages } from '../services/ChatService';
 
 export default function ChatScreen({ onLogout }) {
@@ -60,65 +61,22 @@ export default function ChatScreen({ onLogout }) {
     ],
   };
 
-  const renderMessage = ({ item, index }) => {
-    const previous = messages[index - 1];
-    const showDate = !previous || Math.abs(new Date(item.sentTime) - new Date(previous.sentTime)) > 30 * 60 * 1000;
-    const [showTime, setShowTime] = useState(false);
-    const messageText = item.hasEmbeddedUrl ? parseEmbeddedUrl(item.message) : item.message;
-
-    return (
-      <View>
-        {showDate && <Text style={styles.date}>{new Date(item.sentTime).toLocaleString()}</Text>}
-        <TouchableOpacity
-          onPress={() => setShowTime(!showTime)}
-          style={[styles.message, item.brokerSource ? styles.theirMessage : styles.myMessage]}
-        >
-          {item.image && (
-            <Image source={{ uri: `data:image/png;base64,${item.image}` }} style={styles.image} />
-          )}
-          {item.isVideo && item.videoUrl && (
-            <TouchableOpacity onPress={() => setVideoUrl(item.videoUrl)} style={styles.videoContainer}>
-              {item.image ? (
-                <Image source={{ uri: `data:image/png;base64,${item.image}` }} style={styles.videoImg} />
-              ) : (
-                <View style={[styles.videoImg, styles.videoPlaceholder]} />
-              )}
-              <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
-            </TouchableOpacity>
-          )}
-          {item.isAudio && item.audioUrl && (
-            <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.videoContainer}>
-              <Ionicons name="musical-notes" size={48} color="#fff" style={styles.playIcon} />
-            </TouchableOpacity>
-          )}
-          {typeof messageText === 'string' ? (
-            <Text style={styles.text}>{messageText}</Text>
-          ) : (
-            <Text style={styles.text}>{messageText.prefix}<Text style={styles.link} onPress={() => openUrl(messageText.url)}>{messageText.url}</Text>{messageText.suffix}</Text>
-          )}
-          {showTime && <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>}
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const renderMessage = ({ item, index }) => (
+    <ChatMessage
+      item={item}
+      previous={messages[index - 1]}
+      styles={styles}
+      setVideoUrl={setVideoUrl}
+      setAudioUrl={setAudioUrl}
+      openUrl={openUrl}
+    />
+  );
 
   const openUrl = async (url) => {
     const WebBrowser = await import('expo-web-browser');
     WebBrowser.openBrowserAsync(url);
   };
 
-  const parseEmbeddedUrl = (msg) => {
-    const start = msg.indexOf('<--');
-    const end = msg.indexOf('-->');
-    if (start !== -1 && end !== -1 && end > start) {
-      return {
-        prefix: msg.substring(0, start),
-        url: msg.substring(start + 3, end).trim(),
-        suffix: msg.substring(end + 3),
-      };
-    }
-    return msg;
-  };
 
   const handleEndReached = () => {
     if (!loading && more) {
