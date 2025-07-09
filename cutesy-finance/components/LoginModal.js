@@ -1,7 +1,8 @@
 // Simple login form presented as a modal.
 // Accepts only a preset username/password for demo purposes.
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { login as loginRequest } from '../services/LoginService';
 
 export default function LoginModal({ onClose, onSuccess }) {
   const [username, setUsername] = useState('');
@@ -9,14 +10,18 @@ export default function LoginModal({ onClose, onSuccess }) {
   const passwordRef = useRef(null);
   const [error, setError] = useState('');
 
-  // Very basic credential check for demonstration.
-  // In a real app you would make a request to your backend here.
-  const handleLogin = () => {
-    if (username === 'a' && password === 'a') {
-      setError('');
-      onSuccess();
-    } else {
-      setError('Incorrect username or password');
+  const handleLogin = async () => {
+    try {
+      const result = await loginRequest(username, password);
+      if (result && result.loggedIn) {
+        setError('');
+        Alert.alert('Login Successful', `${result.firstName} ${result.lastName}`);
+        onSuccess();
+      } else {
+        setError('Login failed');
+      }
+    } catch (e) {
+      setError('Login failed');
     }
   };
 

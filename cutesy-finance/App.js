@@ -3,7 +3,7 @@
 // The gesture handler import must be first as per the library docs.
 import "react-native-gesture-handler";
 // React and hooks used throughout the app
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Third party components used for navigation and fonts
@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import WelcomeScreen from './components/WelcomeScreen';
 import RegisterScreen from './components/RegisterScreen';
 import Tabs from './components/Tabs';
+import { setBaseUrl } from './services/LoginService';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,10 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   // Load the custom font before rendering anything else
   const [fontsLoaded] = useFonts({ Poppins_400Regular });
+
+  useEffect(() => {
+    setBaseUrl('http://example.com');
+  }, []);
 
   // Show a loader until fonts are ready
   if (!fontsLoaded) {
