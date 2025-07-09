@@ -26,6 +26,7 @@ The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first
 - Carousel on the welcome screen with sign-up/login options
 - Registration form with password strength indicator
 - Login modal accepting only `a@b.com` / `P@`
+- Password visibility toggle and optional Face ID login
 - Dashboard with panels, bottom tabs, burger menu and logout
 
 Everything is heavily commented in the code for learning purposes.

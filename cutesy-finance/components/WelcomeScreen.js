@@ -1,8 +1,10 @@
 // Welcome screen shown on first launch.  Provides options to register
 // or log in.  Also displays a fun image carousel at the top.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Modal, Alert } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { login as loginRequest } from '../services/LoginService';
 // Small modal component where the user can input their login details
 import LoginModal from './LoginModal';
 
@@ -11,10 +13,37 @@ const { width } = Dimensions.get('window');
 export default function WelcomeScreen({ navigation, onLogin }) {
   // Controls whether the login modal is shown
   const [loginVisible, setLoginVisible] = useState(false);
+  const [faceIdAvailable, setFaceIdAvailable] = useState(false);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('faceidEnabled').then((v) => {
+      setFaceIdAvailable(v === 'true');
+    });
+  }, []);
 
   // Helper functions to open and close the modal
   const openLogin = () => setLoginVisible(true);
   const closeLogin = () => setLoginVisible(false);
+
+  const handleFaceIdLogin = async () => {
+    const username = await SecureStore.getItemAsync('savedUsername');
+    const password = await SecureStore.getItemAsync('faceidPassword');
+    if (!username || !password) {
+      Alert.alert('Face ID not set up');
+      return;
+    }
+    Alert.alert('Face ID', 'Simulating Face ID...');
+    try {
+      const result = await loginRequest(username, password);
+      if (result && result.loggedIn) {
+        onLogin();
+      } else {
+        Alert.alert('Login failed');
+      }
+    } catch (e) {
+      Alert.alert('Login failed');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -49,6 +78,11 @@ export default function WelcomeScreen({ navigation, onLogin }) {
       <TouchableOpacity onPress={openLogin} style={styles.loginButton}>
         <Text style={styles.loginText}>Existing user? Login</Text>
       </TouchableOpacity>
+      {faceIdAvailable && (
+        <TouchableOpacity onPress={handleFaceIdLogin} style={styles.faceButton}>
+          <Text style={styles.loginText}>Use Face ID</Text>
+        </TouchableOpacity>
+      )}
       {/* Popup modal for login */}
       <Modal visible={loginVisible} animationType="slide" transparent>
         <LoginModal onClose={closeLogin} onSuccess={() => { closeLogin(); onLogin(); }} />
@@ -91,6 +125,10 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 30,
+    padding: 10,
+  },
+  faceButton: {
+    marginTop: 10,
     padding: 10,
   },
   loginText: {

@@ -22,5 +22,6 @@
     "@expo/vector-icons": "^14.0.0",
     "expo-font": "^11.4.0",
     "@expo-google-fonts/poppins": "^0.3.0"
+    ,"expo-secure-store": "^12.4.0"
   }
 }
