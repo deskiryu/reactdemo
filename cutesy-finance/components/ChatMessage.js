@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
+import { getChatDocument } from '../services/ChatService';
 
 
 const WaveformIcon = ({ styles }) => (
@@ -14,6 +15,14 @@ const WaveformIcon = ({ styles }) => (
 
 export default function ChatMessage({ item, previous, styles, setVideoUrl, setAudioUrl, openUrl }) {
   const [showTime, setShowTime] = useState(false);
+
+  const isPdf =
+    item?.documentType === 'PDF' ||
+    item?.documentTypeEnum === 1 ||
+    item?.supportingDocumentType === 1 ||
+    item?.supportingDocumentType === 'PDF';
+
+  const chatDocumentId = item?.chatDocumentId || item?.chatDocument?.id;
 
   const showDate = !previous || Math.abs(new Date(item.sentTime) - new Date(previous.sentTime)) > 30 * 60 * 1000;
 
@@ -31,6 +40,19 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
   };
 
   const messageText = item.hasEmbeddedUrl ? parseEmbeddedUrl(item.message) : item.message;
+
+  const handlePdfPress = async () => {
+    if (!chatDocumentId) return;
+    try {
+      const doc = await getChatDocument(chatDocumentId);
+      if (doc && (doc.file || doc.File)) {
+        const file = doc.file || doc.File;
+        openUrl(`data:application/pdf;base64,${file}`);
+      }
+    } catch (e) {
+      console.warn('Failed to load pdf', e);
+    }
+  };
 
   return (
     <View>
@@ -56,6 +78,11 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
             </TouchableOpacity>
           ) : (
             item.image && <Image source={{ uri: `data:image/png;base64,${item.image}` }} style={styles.image} />
+          )}
+          {isPdf && (
+            <TouchableOpacity onPress={handlePdfPress} style={styles.pdfContainer}>
+              <Ionicons name="document" size={40} color="#fff" />
+            </TouchableOpacity>
           )}
           {item.isAudio && item.audioUrl && (
             <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.videoContainer}>

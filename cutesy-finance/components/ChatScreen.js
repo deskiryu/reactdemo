@@ -190,6 +190,13 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 5,
   },
+  pdfContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 80,
+    height: 80,
+    marginBottom: 5,
+  },
   videoImg: {
     width: '100%',
     height: '100%',
