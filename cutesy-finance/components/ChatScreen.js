@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
 import ChatMessage from './ChatMessage';
-import { getChatMessages } from '../services/ChatService';
+import { getChatMessages, getChatDocument } from '../services/ChatService';
 
 export default function ChatScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -80,10 +80,20 @@ export default function ChatScreen({ onLogout }) {
     WebBrowser.openBrowserAsync(url);
   };
 
-  const openPdf = async (base64) => {
-    if (!base64) return;
+  const openPdf = async (docId, base64) => {
+    let data = base64;
+    if (!data && docId) {
+      try {
+        const doc = await getChatDocument(docId);
+        data = doc.File || doc.file;
+      } catch (e) {
+        console.warn('Failed to load document', e);
+      }
+    }
+
+    if (!data) return;
     const WebBrowser = await import('expo-web-browser');
-    WebBrowser.openBrowserAsync(`data:application/pdf;base64,${base64}`);
+    WebBrowser.openBrowserAsync(`data:application/pdf;base64,${data}`);
   };
 
 
