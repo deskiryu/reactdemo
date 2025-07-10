@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { PrimaryButton } from './Theme';
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 
@@ -57,14 +58,14 @@ export default function UploadsScreen({ onLogout }) {
         ))}
       </View>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}>
+        <PrimaryButton style={styles.button}>
           <Ionicons name="document" size={20} color="#fff" />
           <Text style={styles.buttonText}>Upload PDF</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        </PrimaryButton>
+        <PrimaryButton style={styles.button}>
           <Ionicons name="image" size={20} color="#fff" />
           <Text style={styles.buttonText}>Upload Photo</Text>
-        </TouchableOpacity>
+        </PrimaryButton>
       </View>
       <DrawerMenu
         visible={menuVisible}
@@ -127,12 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#cebffa',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
     marginHorizontal: 5,
   },
   buttonText: {
