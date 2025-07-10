@@ -45,7 +45,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       attachment = (
         <TouchableOpacity onPress={() => openPdf(docGuid || item.chatDocumentId, item.chatDocument?.File)}>
           <Ionicons
-            name="document"
+            name="document-text"
             size={48}
             color="#555"
             style={styles.docIcon}
@@ -65,6 +65,18 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
         );
       }
     }
+  }
+
+  const hasContent =
+    (typeof messageText === 'string' && messageText) ||
+    messageText ||
+    attachment ||
+    item.image ||
+    (item.isVideo && item.videoUrl) ||
+    (item.isAudio && item.audioUrl);
+
+  if (!hasContent) {
+    return null;
   }
 
   return (
@@ -97,9 +109,13 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
             )
           )}
           {item.isAudio && item.audioUrl && (
-            <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.videoContainer}>
-
-              <WaveformIcon styles={styles} />
+            <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.audioContainer}>
+              <View style={styles.audioPlay}>
+                <Ionicons name="play-circle" size={32} color="#fff" />
+              </View>
+              <View style={styles.audioWave}>
+                <WaveformIcon styles={styles} />
+              </View>
             </TouchableOpacity>
           )}
           {typeof messageText === 'string' && messageText ? (
