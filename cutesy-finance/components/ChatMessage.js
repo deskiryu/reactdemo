@@ -38,13 +38,26 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
 
   const docType = parseInt(item.chatDocument?.supportingDocumentType, 10);
 
-  let docLabel = null;
+  let attachment = null;
   if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
-    if (docType === 1) docLabel = 'PDFPDFPDF';
-    else if (docType === 2) docLabel = 'pngpngpng';
-    else if (docType === 3) docLabel = 'JPGJPGJPG';
-  } else {
-    docLabel = 'No doc attached';
+    if (docType === 1) {
+      attachment = (
+        <Ionicons
+          name="document"
+          size={48}
+          color="#555"
+          style={styles.docIcon}
+        />
+      );
+    } else if (docType === 2 || docType === 3) {
+      const type = docType === 2 ? 'png' : 'jpeg';
+      attachment = (
+        <Image
+          source={{ uri: `data:image/${type};base64,${item.chatDocument?.File}` }}
+          style={styles.image}
+        />
+      );
+    }
   }
 
   return (
@@ -89,7 +102,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               {messageText.suffix}
             </Text>
           ) : null}
-          <Text style={styles.text}>{docLabel}</Text>
+          {attachment}
           {showTime && (
             <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>
           )}
