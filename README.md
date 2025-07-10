@@ -30,3 +30,24 @@ The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first
 - Dashboard with panels, bottom tabs, burger menu and logout
 
 Everything is heavily commented in the code for learning purposes.
+
+## Troubleshooting
+
+If Metro fails with an error resolving `react-dom` from `@syncfusion/ej2-react-base`,
+create a `metro.config.js` in the `cutesy-finance` directory that maps
+`react-dom` to a stub module. A minimal config is already included in the repo:
+
+```js
+const { getDefaultConfig } = require('@expo/metro-config');
+const path = require('path');
+
+const config = getDefaultConfig(__dirname);
+config.resolver.extraNodeModules = {
+  ...(config.resolver.extraNodeModules || {}),
+  'react-dom': path.resolve(__dirname, 'react-dom.js'),
+};
+module.exports = config;
+```
+
+The `react-dom.js` stub simply exports an empty object so that Syncfusion's
+React components load without requiring the real React DOM library.
