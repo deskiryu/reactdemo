@@ -250,7 +250,12 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 10,
     color: '#555',
+  },
+  timeRight: {
     alignSelf: 'flex-end',
+  },
+  timeLeft: {
+    alignSelf: 'flex-start',
   },
   date: {
     alignSelf: 'center',
