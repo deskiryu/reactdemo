@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
 import ChatMessage from './ChatMessage';
-import { getChatMessages, getChatDocument } from '../services/ChatService';
+import { getChatMessages, getChatDocument, sendChatMessage } from '../services/ChatService';
 import PdfViewerModal from './PdfViewer';
 
 export default function ChatScreen({ onLogout }) {
@@ -17,6 +17,7 @@ export default function ChatScreen({ onLogout }) {
   const [audioUrl, setAudioUrl] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [pdfData, setPdfData] = useState(null);
+  const [messageText, setMessageText] = useState('');
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -100,6 +101,18 @@ export default function ChatScreen({ onLogout }) {
     setPdfData(data);
   };
 
+  const handleSendMessage = async () => {
+    const text = messageText.trim();
+    if (!text) return;
+    try {
+      await sendChatMessage(text);
+      setMessageText('');
+      await loadMessages(1);
+    } catch (e) {
+      console.warn('Failed to send message', e);
+    }
+  };
+
 
   const handleEndReached = () => {
     if (!loading && more) {
@@ -123,6 +136,17 @@ export default function ChatScreen({ onLogout }) {
         onEndReachedThreshold={0.2}
         onEndReached={handleEndReached}
       />
+      <View style={styles.inputRow}>
+        <TextInput
+          style={styles.input}
+          value={messageText}
+          onChangeText={setMessageText}
+          placeholder="Type a message"
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
+          <Ionicons name="paper-plane" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
       <Modal visible={!!videoUrl} transparent onRequestClose={() => setVideoUrl(null)}>
         <View style={styles.modalBg}>
@@ -309,5 +333,29 @@ const styles = StyleSheet.create({
   docIcon: {
     marginTop: 5,
     alignSelf: 'center',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    fontFamily: 'Poppins_400Regular',
+    marginRight: 8,
+  },
+  sendButton: {
+    backgroundColor: '#cebffa',
+    padding: 10,
+    borderRadius: 20,
   },
 });
