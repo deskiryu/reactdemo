@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { PdfViewer } from '@syncfusion/ej2-react-pdfviewer';
+
 
 export default function PdfViewerModal({ visible, onClose, base64 }) {
   return (
@@ -11,7 +11,7 @@ export default function PdfViewerModal({ visible, onClose, base64 }) {
           <TouchableOpacity style={styles.close} onPress={onClose}>
             <Ionicons name="close" size={32} color="#fff" />
           </TouchableOpacity>
-          {base64 ? (
+          {/* {base64 ? (
             <PdfViewer
               document={{ base64String: base64 }}
               enableAnnotation={false}
@@ -19,7 +19,7 @@ export default function PdfViewerModal({ visible, onClose, base64 }) {
               toolbarEnabled={false}
               style={styles.viewer}
             />
-          ) : null}
+          ) : null} */}
         </View>
       </View>
     </Modal>
