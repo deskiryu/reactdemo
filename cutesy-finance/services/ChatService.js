@@ -45,15 +45,16 @@ export const getChatMessages = async (pageNumber = 1) => {
   return data;
 };
 
-export const getChatDocument = async (docId) => {
+export const getChatDocument = async (docGuid) => {
   const baseUrl = getBaseUrl();
   const token = getToken();
 
-  if (!baseUrl || !token || !docId) {
+  if (!baseUrl || !token || !docGuid) {
     throw new Error('Missing chat configuration');
   }
 
-  const url = `${baseUrl.replace(/\/+$/, '')}/${DOCUMENT_PATH}?docId=${docId}`;
+  // Endpoint expects the chat document GUID string as the docId query parameter
+  const url = `${baseUrl.replace(/\/+$/, '')}/${DOCUMENT_PATH}?docId=${encodeURIComponent(docGuid)}`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {

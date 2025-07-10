@@ -37,12 +37,13 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       : item.message;
 
   const docType = parseInt(item.chatDocument?.supportingDocumentType, 10);
+  const docGuid = item.chatDocument?.guidId;
 
   let attachment = null;
-  if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
+  if ((docGuid || (item.chatDocumentId && item.chatDocumentId > 0)) && !isNaN(docType)) {
     if (docType === 1) {
       attachment = (
-        <TouchableOpacity onPress={() => openPdf(item.chatDocumentId, item.chatDocument?.File)}>
+        <TouchableOpacity onPress={() => openPdf(docGuid || item.chatDocumentId, item.chatDocument?.File)}>
           <Ionicons
             name="document"
             size={48}
