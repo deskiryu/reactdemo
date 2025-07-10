@@ -43,6 +43,8 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
     if (docType === 1) docLabel = 'PDFPDFPDF';
     else if (docType === 2) docLabel = 'pngpngpng';
     else if (docType === 3) docLabel = 'JPGJPGJPG';
+  } else {
+    docLabel = 'No doc attached';
   }
 
   return (
@@ -87,7 +89,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               {messageText.suffix}
             </Text>
           ) : null}
-          {docLabel && <Text style={styles.text}>{docLabel}</Text>}
+          <Text style={styles.text}>{docLabel}</Text>
           {showTime && (
             <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>
           )}
