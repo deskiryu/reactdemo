@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Dimensions } from 'react-native';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export const COLORS = {
   primary: '#cebffa',
@@ -7,6 +9,7 @@ export const COLORS = {
   tertiary: '#FFDFD3',
   white: '#fff',
   textDark: '#555',
+  black: '#000',
 };
 
 export const SIZES = {
@@ -25,6 +28,74 @@ export function PrimaryButton({ children, style, textStyle, ...props }) {
     </TouchableOpacity>
   );
 }
+
+export const CHAT_STYLES = {
+  message: {
+    width: '90%',
+    borderRadius: SIZES.radius,
+    padding: SIZES.padding / 2,
+    marginVertical: 5,
+  },
+  theirMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.white,
+  },
+  myMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: COLORS.primary,
+  },
+  text: {
+    color: COLORS.black,
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+  },
+  image: {
+    width: '100%',
+    height: SCREEN_HEIGHT * 0.25,
+    borderRadius: SIZES.radius,
+    marginBottom: 5,
+  },
+  videoContainer: {
+    width: '100%',
+    height: SCREEN_HEIGHT * 0.25,
+    borderRadius: SIZES.radius,
+    overflow: 'hidden',
+    position: 'relative',
+    marginBottom: 5,
+  },
+  audioContainer: {
+    flexDirection: 'row',
+    width: '90%',
+    aspectRatio: 9,
+    borderRadius: SIZES.radius,
+    overflow: 'hidden',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    marginBottom: 5,
+  },
+  audioPlay: {
+    width: '11%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  audioWave: {
+    width: '89%',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  waveformIcon: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  waveBar: {
+    width: 4,
+    backgroundColor: COLORS.white,
+    marginHorizontal: 2,
+  },
+};
 
 const styles = StyleSheet.create({
   primaryButton: {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated, TextInput } from 'react-native';
+import { CHAT_STYLES, COLORS } from './Theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
@@ -135,7 +136,7 @@ export default function ChatScreen({ onLogout }) {
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={32} color="#cebffa" />
+        <Ionicons name="menu" size={32} color={COLORS.primary} />
       </TouchableOpacity>
       <Text style={styles.header}>Chats</Text>
       <FlatList
@@ -207,6 +208,7 @@ export default function ChatScreen({ onLogout }) {
 }
 
 const styles = StyleSheet.create({
+  ...CHAT_STYLES,
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -222,7 +224,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontFamily: 'Poppins_400Regular',
-    color: '#cebffa',
+    color: COLORS.primary,
     marginBottom: 30,
     marginLeft: 60,
     marginTop: 5,
@@ -232,56 +234,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexGrow: 1,
     justifyContent: 'flex-end',
-  },
-  message: {
-    maxWidth: '75%',
-    borderRadius: 10,
-    padding: 8,
-    marginVertical: 5,
-  },
-  theirMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#FEC8D8',
-  },
-  myMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#cebffa',
-  },
-  text: {
-    fontFamily: 'Poppins_400Regular',
-    fontSize: 14,
-  },
-  image: {
-    width: 160,
-    height: 120,
-    borderRadius: 8,
-  },
-  videoContainer: {
-    width: 160,
-    height: 120,
-    borderRadius: 8,
-    overflow: 'hidden',
-    position: 'relative',
-    marginBottom: 5,
-  },
-  audioContainer: {
-    flexDirection: 'row',
-    width: 200,
-    height: 40,
-    borderRadius: 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-    backgroundColor: '#cebffa',
-    marginBottom: 5,
-  },
-  audioPlay: {
-    width: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  audioWave: {
-    width: '80%',
-    justifyContent: 'center',
   },
   videoImg: {
     width: '100%',
@@ -330,18 +282,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: 'blue',
   },
-  waveformIcon: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    width: '100%',
-    height: 30,
-  },
-  waveBar: {
-    width: 4,
-    backgroundColor: '#fff',
-    marginHorizontal: 2,
-  },
   docIcon: {
     marginTop: 5,
     alignSelf: 'center',
@@ -366,7 +306,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   sendButton: {
-    backgroundColor: '#cebffa',
+    backgroundColor: COLORS.primary,
     padding: 10,
     borderRadius: 20,
   },
