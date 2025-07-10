@@ -14,6 +14,7 @@ export default function ChatScreen({ onLogout }) {
   const [loading, setLoading] = useState(false);
   const [videoUrl, setVideoUrl] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [imageUri, setImageUri] = useState(null);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -68,6 +69,8 @@ export default function ChatScreen({ onLogout }) {
       styles={styles}
       setVideoUrl={setVideoUrl}
       setAudioUrl={setAudioUrl}
+      setImageUri={setImageUri}
+      openPdf={openPdf}
       openUrl={openUrl}
     />
   );
@@ -75,6 +78,12 @@ export default function ChatScreen({ onLogout }) {
   const openUrl = async (url) => {
     const WebBrowser = await import('expo-web-browser');
     WebBrowser.openBrowserAsync(url);
+  };
+
+  const openPdf = async (base64) => {
+    if (!base64) return;
+    const WebBrowser = await import('expo-web-browser');
+    WebBrowser.openBrowserAsync(`data:application/pdf;base64,${base64}`);
   };
 
 
@@ -125,6 +134,16 @@ export default function ChatScreen({ onLogout }) {
                 if (status.didJustFinish) setAudioUrl(null);
               }}
             />
+          )}
+        </View>
+      </Modal>
+      <Modal visible={!!imageUri} transparent onRequestClose={() => setImageUri(null)}>
+        <View style={styles.modalBg}>
+          <TouchableOpacity style={styles.close} onPress={() => setImageUri(null)}>
+            <Ionicons name="close" size={32} color="#fff" />
+          </TouchableOpacity>
+          {imageUri && (
+            <Image source={{ uri: imageUri }} style={styles.media} resizeMode="contain" />
           )}
         </View>
       </Modal>

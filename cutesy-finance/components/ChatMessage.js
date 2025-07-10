@@ -12,7 +12,7 @@ const WaveformIcon = ({ styles }) => (
   </View>
 );
 
-export default function ChatMessage({ item, previous, styles, setVideoUrl, setAudioUrl, openUrl }) {
+export default function ChatMessage({ item, previous, styles, setVideoUrl, setAudioUrl, setImageUri, openPdf, openUrl }) {
   const [showTime, setShowTime] = useState(false);
 
   const showDate = !previous || Math.abs(new Date(item.sentTime) - new Date(previous.sentTime)) > 30 * 60 * 1000;
@@ -42,20 +42,22 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
   if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
     if (docType === 1) {
       attachment = (
-        <Ionicons
-          name="document"
-          size={48}
-          color="#555"
-          style={styles.docIcon}
-        />
+        <TouchableOpacity onPress={() => openPdf(item.chatDocument?.File)}>
+          <Ionicons
+            name="document"
+            size={48}
+            color="#555"
+            style={styles.docIcon}
+          />
+        </TouchableOpacity>
       );
     } else if (docType === 2 || docType === 3) {
       const type = docType === 2 ? 'png' : 'jpeg';
+      const uri = `data:image/${type};base64,${item.chatDocument?.File}`;
       attachment = (
-        <Image
-          source={{ uri: `data:image/${type};base64,${item.chatDocument?.File}` }}
-          style={styles.image}
-        />
+        <TouchableOpacity onPress={() => setImageUri(uri)}>
+          <Image source={{ uri }} style={styles.image} />
+        </TouchableOpacity>
       );
     }
   }
@@ -83,7 +85,11 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
             </TouchableOpacity>
           ) : (
-            item.image && <Image source={{ uri: `data:image/png;base64,${item.image}` }} style={styles.image} />
+            item.image && (
+              <TouchableOpacity onPress={() => setImageUri(`data:image/png;base64,${item.image}`)}>
+                <Image source={{ uri: `data:image/png;base64,${item.image}` }} style={styles.image} />
+              </TouchableOpacity>
+            )
           )}
           {item.isAudio && item.audioUrl && (
             <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.videoContainer}>
