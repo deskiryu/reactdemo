@@ -5,6 +5,7 @@ import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
 import ChatMessage from './ChatMessage';
 import { getChatMessages, getChatDocument } from '../services/ChatService';
+import PdfViewerModal from './PdfViewer';
 
 export default function ChatScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -15,6 +16,7 @@ export default function ChatScreen({ onLogout }) {
   const [videoUrl, setVideoUrl] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [imageUri, setImageUri] = useState(null);
+  const [pdfData, setPdfData] = useState(null);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -80,8 +82,8 @@ export default function ChatScreen({ onLogout }) {
     WebBrowser.openBrowserAsync(url);
   };
 
-  // Open a PDF document. If base64 content isn't already available,
-  // fetch it from the API using the document GUID.
+  // Open a PDF document in an in-app viewer. If base64 content isn't already
+  // available, fetch it from the API using the document GUID.
   const openPdf = async (docGuid, base64) => {
     let data = base64;
     if (!data && docGuid) {
@@ -95,8 +97,7 @@ export default function ChatScreen({ onLogout }) {
 
     if (!data) return;
     data = data.replace(/\s/g, '');
-    const WebBrowser = await import('expo-web-browser');
-    WebBrowser.openBrowserAsync(`data:application/pdf;base64,${data}`);
+    setPdfData(data);
   };
 
 
@@ -160,6 +161,11 @@ export default function ChatScreen({ onLogout }) {
           )}
         </View>
       </Modal>
+      <PdfViewerModal
+        visible={!!pdfData}
+        base64={pdfData}
+        onClose={() => setPdfData(null)}
+      />
     </Animated.View>
   );
 }
