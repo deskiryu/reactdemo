@@ -2,7 +2,7 @@ import { getBaseUrl, getToken } from './LoginService';
 import * as SecureStore from 'expo-secure-store';
 
 const CHAT_PATH = 'Chat/pagedchat';
-const DOCUMENT_PATH = 'Document';
+const DOCUMENT_PATH = 'Chat/Document';
 const PAGE_SIZE = 15;
 
 export const getChatMessages = async (pageNumber = 1) => {
