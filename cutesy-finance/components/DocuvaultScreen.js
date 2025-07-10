@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  ScrollView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
+import { COLORS } from './Theme';
+import { getRequiredDocuments } from '../services/DocumentsRequirementService';
 
 export default function DocuvaultScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('requested');
+  const [requirements, setRequirements] = useState([]);
+  const [loadingReqs, setLoadingReqs] = useState(false);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -15,6 +26,24 @@ export default function DocuvaultScreen({ onLogout }) {
       useNativeDriver: true,
     }).start();
   }, [menuVisible, drawerAnim]);
+
+  useEffect(() => {
+    if (activeTab === 'requested' && requirements.length === 0 && !loadingReqs) {
+      loadRequirements();
+    }
+  }, [activeTab]);
+
+  const loadRequirements = async () => {
+    setLoadingReqs(true);
+    try {
+      const data = await getRequiredDocuments();
+      setRequirements(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.warn('Failed to load requirements', e);
+    } finally {
+      setLoadingReqs(false);
+    }
+  };
 
   const animatedStyles = {
     transform: [
@@ -33,7 +62,7 @@ export default function DocuvaultScreen({ onLogout }) {
     ],
   };
 
-  const uploadsRequested = 3;
+  const uploadsRequested = requirements.length;
   const myUploads = 5;
 
   return (
@@ -83,7 +112,27 @@ export default function DocuvaultScreen({ onLogout }) {
         </TouchableOpacity>
       </View>
 
-      {/* Bottom content will be implemented later */}
+      {activeTab === 'requested' && (
+        <ScrollView style={styles.reqList} contentContainerStyle={styles.reqContent}>
+          {loadingReqs && <Text style={styles.loadingText}>Loading...</Text>}
+          {requirements.map((r) => (
+            <View key={r.id} style={styles.reqPanel}>
+              <View style={styles.reqTop}>
+                <Ionicons name="document-text" size={24} color={COLORS.textDark} style={styles.reqIcon} />
+                <Text style={styles.reqDesc}>{r.description}</Text>
+                <TouchableOpacity style={styles.uploadBtn}>
+                  <Text style={styles.uploadBtnText}>Upload Now</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.reqBottom}>
+                <View style={styles.pendingPill}>
+                  <Text style={styles.pendingText}>Pending</Text>
+                </View>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      )}
 
       <DrawerMenu
         visible={menuVisible}
@@ -110,7 +159,7 @@ const styles = StyleSheet.create({
   },
   summaryBox: {
     width: '90%',
-    backgroundColor: '#E0BBE4',
+    backgroundColor: 'rgba(206,191,250,0.2)',
     borderRadius: 12,
     padding: 15,
     marginTop: 10,
@@ -137,7 +186,7 @@ const styles = StyleSheet.create({
   },
   countBox: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#fff',
     borderRadius: 8,
     padding: 10,
     marginHorizontal: 4,
@@ -160,7 +209,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     borderRadius: 30,
-    backgroundColor: '#E0BBE4',
+    backgroundColor: 'rgba(206,191,250,0.2)',
     marginTop: 20,
     overflow: 'hidden',
   },
@@ -179,5 +228,67 @@ const styles = StyleSheet.create({
   },
   activeText: {
     fontWeight: '600',
+  },
+  reqList: {
+    width: '90%',
+    marginTop: 20,
+  },
+  reqContent: {
+    paddingBottom: 20,
+  },
+  reqPanel: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#eee',
+    padding: 15,
+    marginBottom: 15,
+  },
+  reqTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  reqIcon: {
+    marginRight: 10,
+  },
+  reqDesc: {
+    flex: 1,
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.textDark,
+    fontSize: 14,
+  },
+  uploadBtn: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  uploadBtnText: {
+    color: '#000',
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+  },
+  reqBottom: {
+    marginTop: 10,
+  },
+  pendingPill: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(206,191,250,0.6)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  pendingText: {
+    fontFamily: 'Poppins_400Regular',
+    color: '#000',
+    fontSize: 12,
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.textDark,
   },
 });
