@@ -141,7 +141,7 @@ export default function ChatScreen({ onLogout }) {
               source={{ uri: audioUrl }}
               useNativeControls
               resizeMode="contain"
-              style={styles.media}
+              style={styles.audioPlayer}
               shouldPlay
               onPlaybackStatusUpdate={(status) => {
                 if (status.didJustFinish) setAudioUrl(null);
@@ -222,6 +222,25 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 5,
   },
+  audioContainer: {
+    flexDirection: 'row',
+    width: 200,
+    height: 40,
+    borderRadius: 8,
+    overflow: 'hidden',
+    alignItems: 'center',
+    backgroundColor: '#cebffa',
+    marginBottom: 5,
+  },
+  audioPlay: {
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  audioWave: {
+    width: '80%',
+    justifyContent: 'center',
+  },
   videoImg: {
     width: '100%',
     height: '100%',
@@ -260,6 +279,10 @@ const styles = StyleSheet.create({
   media: {
     width: '90%',
     height: '70%',
+  },
+  audioPlayer: {
+    width: 250,
+    height: 50,
   },
   link: {
     textDecorationLine: 'underline',
