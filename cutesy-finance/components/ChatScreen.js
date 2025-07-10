@@ -80,11 +80,13 @@ export default function ChatScreen({ onLogout }) {
     WebBrowser.openBrowserAsync(url);
   };
 
-  const openPdf = async (docId, base64) => {
+  // Open a PDF document. If base64 content isn't already available,
+  // fetch it from the API using the document GUID.
+  const openPdf = async (docGuid, base64) => {
     let data = base64;
-    if (!data && docId) {
+    if (!data && docGuid) {
       try {
-        const doc = await getChatDocument(docId);
+        const doc = await getChatDocument(docGuid);
         data = doc.File || doc.file;
       } catch (e) {
         console.warn('Failed to load document', e);
