@@ -18,6 +18,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
   const showDate = !previous || Math.abs(new Date(item.sentTime) - new Date(previous.sentTime)) > 30 * 60 * 1000;
 
   const parseEmbeddedUrl = (msg) => {
+    if (!msg) return msg;
     const start = msg.indexOf('<--');
     const end = msg.indexOf('-->');
     if (start !== -1 && end !== -1 && end > start) {
@@ -30,7 +31,10 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
     return msg;
   };
 
-  const messageText = item.hasEmbeddedUrl ? parseEmbeddedUrl(item.message) : item.message;
+  const messageText =
+    item.hasEmbeddedUrl && item.message
+      ? parseEmbeddedUrl(item.message)
+      : item.message;
 
   return (
     <View>
@@ -63,9 +67,9 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               <WaveformIcon styles={styles} />
             </TouchableOpacity>
           )}
-          {typeof messageText === 'string' ? (
+          {typeof messageText === 'string' && messageText ? (
             <Text style={styles.text}>{messageText}</Text>
-          ) : (
+          ) : messageText ? (
             <Text style={styles.text}>
               {messageText.prefix}
               <Text style={styles.link} onPress={() => openUrl(messageText.url)}>
@@ -73,7 +77,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               </Text>
               {messageText.suffix}
             </Text>
-          )}
+          ) : null}
           {showTime && (
             <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>
           )}
