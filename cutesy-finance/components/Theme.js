@@ -39,6 +39,8 @@ export const CHAT_STYLES = {
   theirMessage: {
     alignSelf: 'flex-start',
     backgroundColor: COLORS.white,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#ccc',
   },
   myMessage: {
     alignSelf: 'flex-end',
@@ -86,7 +88,7 @@ export const CHAT_STYLES = {
   waveformIcon: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '100%',
     height: '100%',
   },
