@@ -42,7 +42,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
   if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
     if (docType === 1) {
       attachment = (
-        <TouchableOpacity onPress={() => openPdf(item.chatDocument?.File)}>
+        <TouchableOpacity onPress={() => openPdf(item.chatDocumentId, item.chatDocument?.File)}>
           <Ionicons
             name="document"
             size={48}
