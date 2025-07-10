@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
@@ -14,6 +14,7 @@ export default function ChatScreen({ onLogout }) {
   const [loading, setLoading] = useState(false);
   const [videoUrl, setVideoUrl] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [inputText, setInputText] = useState('');
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -77,6 +78,24 @@ export default function ChatScreen({ onLogout }) {
     WebBrowser.openBrowserAsync(url);
   };
 
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+    const newMsg = {
+      id: Date.now(),
+      message: inputText,
+      sentTime: new Date().toISOString(),
+      brokerSource: false,
+      isVideo: false,
+      isAudio: false,
+      image: null,
+      videoUrl: null,
+      audioUrl: null,
+      hasEmbeddedUrl: false,
+    };
+    setMessages((prev) => [...prev, newMsg]);
+    setInputText('');
+  };
+
 
   const handleEndReached = () => {
     if (!loading && more) {
@@ -100,6 +119,19 @@ export default function ChatScreen({ onLogout }) {
         onEndReachedThreshold={0.2}
         onEndReached={handleEndReached}
       />
+      <View style={styles.inputRow}>
+        <TextInput
+          style={styles.input}
+          placeholder="Type a message"
+          value={inputText}
+          onChangeText={setInputText}
+          onSubmitEditing={handleSend}
+          returnKeyType="send"
+        />
+        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <Ionicons name="send" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
       <Modal visible={!!videoUrl} transparent onRequestClose={() => setVideoUrl(null)}>
         <View style={styles.modalBg}>
@@ -244,5 +276,27 @@ const styles = StyleSheet.create({
     width: 4,
     backgroundColor: '#fff',
     marginHorizontal: 2,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginRight: 10,
+  },
+  sendButton: {
+    backgroundColor: '#cebffa',
+    padding: 10,
+    borderRadius: 20,
   },
 });
