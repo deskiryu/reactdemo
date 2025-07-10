@@ -36,7 +36,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       ? parseEmbeddedUrl(item.message)
       : item.message;
 
-  const docType = parseInt(item.supportingDocumentType, 10);
+  const docType = parseInt(item.chatDocument?.supportingDocumentType, 10);
 
   let docLabel = null;
   if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
