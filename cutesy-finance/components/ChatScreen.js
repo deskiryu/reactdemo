@@ -166,7 +166,15 @@ export default function ChatScreen({ onLogout }) {
           <TouchableOpacity style={styles.close} onPress={() => setVideoUrl(null)}>
             <Ionicons name="close" size={32} color="#fff" />
           </TouchableOpacity>
-          {videoUrl && <Video source={{ uri: videoUrl }} style={styles.media} useNativeControls resizeMode="contain" />}
+          {videoUrl && (
+            <Video
+              source={{ uri: videoUrl }}
+              style={styles.media}
+              useNativeControls
+              resizeMode="contain"
+              shouldPlay
+            />
+          )}
         </View>
       </Modal>
       <Modal visible={!!audioUrl} transparent onRequestClose={() => setAudioUrl(null)}>
@@ -265,7 +273,7 @@ const styles = StyleSheet.create({
   },
   modalBg: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
