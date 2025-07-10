@@ -94,7 +94,13 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       <Swipeable renderLeftActions={() => <View />} renderRightActions={() => <View /> }>
         <TouchableOpacity
           activeOpacity={0.8}
-          style={[styles.message, item.brokerSource ? styles.theirMessage : styles.myMessage]}
+          style={[
+            styles.message,
+            item.brokerSource ? styles.theirMessage : styles.myMessage,
+            !item.isVideo && !item.image && !item.isAudio && !attachment
+              ? { width: undefined, maxWidth: '70%' }
+              : null,
+          ]}
         >
           {item.isVideo && item.videoUrl ? (
             <TouchableOpacity onPress={() => setVideoUrl(item.videoUrl)} style={styles.videoContainer}>
