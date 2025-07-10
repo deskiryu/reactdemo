@@ -190,20 +190,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+        color: '#000',
     marginBottom: 10,
   },
   summaryTitle: {
-    color: '#fff',
+        color: '#000',
     fontFamily: 'Poppins_400Regular',
     fontSize: 16,
   },
   summarySubtitle: {
-    color: '#fff',
+        color: '#000',
     fontFamily: 'Poppins_400Regular',
     fontSize: 14,
   },
   summaryCounts: {
     flexDirection: 'row',
+        color: '#000',
     justifyContent: 'space-between',
   },
   countBox: {
@@ -215,13 +217,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   countLabel: {
-    color: '#fff',
+        color: '#000',
     fontFamily: 'Poppins_400Regular',
     fontSize: 12,
     marginBottom: 4,
   },
   count: {
-    color: '#fff',
+        color: '#000',
     fontFamily: 'Poppins_400Regular',
     fontSize: 18,
     fontWeight: '600',
@@ -244,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#cebffa',
   },
   switchText: {
-    color: '#fff',
+        color: '#000',
     fontFamily: 'Poppins_400Regular',
     fontSize: 13,
   },
