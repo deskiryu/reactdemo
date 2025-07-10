@@ -63,13 +63,14 @@ export default function DocuvaultScreen({ onLogout }) {
   };
 
   const uploadsRequested = requirements.length;
-  const myUploads = 5;
+  const myUploads = 0;
 
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
         <Ionicons name="menu" size={32} color="#cebffa" />
       </TouchableOpacity>
+      <Text style={styles.header}>Docuvault</Text>
 
       <View style={styles.summaryBox}>
         <View style={styles.summaryHeader}>
@@ -134,6 +135,21 @@ export default function DocuvaultScreen({ onLogout }) {
         </ScrollView>
       )}
 
+      {activeTab === 'uploads' && (
+        <View style={styles.uploadPlaceholder}>
+          <Ionicons
+            name="cloud-upload-outline"
+            size={80}
+            color={COLORS.textDark}
+            style={styles.uploadIcon}
+          />
+          <Text style={styles.uploadHeader}>You can upload your documents here</Text>
+          <Text style={styles.uploadSubtext}>
+            You haven't uploaded any documents yet. Tap the icon above to upload a photo or PDF and share it with your broker
+          </Text>
+        </View>
+      )}
+
       <DrawerMenu
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
@@ -156,6 +172,12 @@ const styles = StyleSheet.create({
     top: 50,
     padding: 6,
     zIndex: 1,
+  },
+  header: {
+    fontSize: 24,
+    fontFamily: 'Poppins_400Regular',
+    color: '#cebffa',
+    marginBottom: 30,
   },
   summaryBox: {
     width: '90%',
@@ -289,6 +311,34 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
     fontFamily: 'Poppins_400Regular',
+    color: COLORS.textDark,
+  },
+  uploadPlaceholder: {
+    width: '90%',
+    height: '40%',
+    marginTop: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  uploadIcon: {
+    marginBottom: 10,
+  },
+  uploadHeader: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 6,
+    color: COLORS.textDark,
+  },
+  uploadSubtext: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    textAlign: 'center',
     color: COLORS.textDark,
   },
 });
