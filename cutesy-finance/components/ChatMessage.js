@@ -36,21 +36,13 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       ? parseEmbeddedUrl(item.message)
       : item.message;
 
-  const fileName =
-    item.fileName ||
-    item.FileName ||
-    item.documentName ||
-    item.DocumentName ||
-    item.originalFileName ||
-    item.OriginalFileName ||
-    '';
+  const docType = parseInt(item.supportingDocumentType, 10);
 
   let docLabel = null;
-  if (item.chatDocumentId && item.chatDocumentId > 0 && fileName) {
-    const ext = fileName.split('.').pop().toLowerCase();
-    if (ext === 'pdf') docLabel = 'PDFPDFPDF';
-    else if (ext === 'jpg' || ext === 'jpeg') docLabel = 'JPGJPGJPG';
-    else if (ext === 'png') docLabel = 'pngpngpng';
+  if (item.chatDocumentId && item.chatDocumentId > 0 && !isNaN(docType)) {
+    if (docType === 1) docLabel = 'PDFPDFPDF';
+    else if (docType === 2) docLabel = 'pngpngpng';
+    else if (docType === 3) docLabel = 'JPGJPGJPG';
   }
 
   return (
