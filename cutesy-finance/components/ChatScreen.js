@@ -1,34 +1,43 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
+import ChatMessage from './ChatMessage';
+import { getChatMessages, getChatDocument } from '../services/ChatService';
+import PdfViewerModal from './PdfViewer';
 
 export default function ChatScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [more, setMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [imageUri, setImageUri] = useState(null);
+  const [pdfData, setPdfData] = useState(null);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
-  const backgroundIcons = useMemo(() => {
-    const icons = [];
-    for (let row = 0; row < 12; row++) {
-      for (let col = 0; col < 5; col++) {
-        icons.push(
-          <Ionicons
-            key={`${row}-${col}`}
-            name="chatbubble"
-            size={48}
-            color="#cebffa"
-            style={{
-              position: 'absolute',
-              top: row * 70,
-              left: col * 80,
-              opacity: 0.08,
-            }}
-          />
-        );
-      }
-    }
-    return icons;
+  useEffect(() => {
+    loadMessages(1);
   }, []);
+
+  const loadMessages = async (p) => {
+    if (loading || !more) return;
+    setLoading(true);
+    try {
+      const data = await getChatMessages(p);
+      const newMsgs = data && data.messages ? data.messages : [];
+      setMessages((prev) => (p === 1 ? newMsgs : [...prev, ...newMsgs]));
+      setMore(data ? data.moreMessagesAvailable : false);
+      setPage(p);
+    } catch (e) {
+      console.warn('Failed loading chat', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     Animated.timing(drawerAnim, {
@@ -55,128 +64,107 @@ export default function ChatScreen({ onLogout }) {
     ],
   };
 
-  // Simple chat history with text, image, video thumbnail and audio entry
+  const renderMessage = ({ item, index }) => (
+    <ChatMessage
+      item={item}
+      previous={messages[index - 1]}
+      styles={styles}
+      setVideoUrl={setVideoUrl}
+      setAudioUrl={setAudioUrl}
+      setImageUri={setImageUri}
+      openPdf={openPdf}
+      openUrl={openUrl}
+    />
+  );
+
+  const openUrl = async (url) => {
+    const WebBrowser = await import('expo-web-browser');
+    WebBrowser.openBrowserAsync(url);
+  };
+
+  // Open a PDF document in an in-app viewer. If base64 content isn't already
+  // available, fetch it from the API using the document GUID.
+  const openPdf = async (docGuid, base64) => {
+    let data = base64;
+    if (!data && docGuid) {
+      try {
+        const doc = await getChatDocument(docGuid);
+        data = doc.File || doc.file;
+      } catch (e) {
+        console.warn('Failed to load document', e);
+      }
+    }
+
+    if (!data) return;
+    data = data.replace(/\s/g, '');
+    setPdfData(data);
+  };
+
+
+  const handleEndReached = () => {
+    if (!loading && more) {
+      loadMessages(page + 1);
+    }
+  };
+
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
-      <View style={styles.iconBackground} pointerEvents="none">
-        {backgroundIcons}
-      </View>
-      <TouchableOpacity
-        onPress={() => setMenuVisible(true)}
-        style={styles.burger}
-      >
+      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
         <Ionicons name="menu" size={32} color="#cebffa" />
       </TouchableOpacity>
       <Text style={styles.header}>Chats</Text>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        {/* Incoming text */}
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Hi! How are you?</Text>
+      <FlatList
+        data={messages}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderMessage}
+        contentContainerStyle={styles.scroll}
+        inverted
+        initialNumToRender={15}
+        onEndReachedThreshold={0.2}
+        onEndReached={handleEndReached}
+      />
+      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+      <Modal visible={!!videoUrl} transparent onRequestClose={() => setVideoUrl(null)}>
+        <View style={styles.modalBg}>
+          <TouchableOpacity style={styles.close} onPress={() => setVideoUrl(null)}>
+            <Ionicons name="close" size={32} color="#fff" />
+          </TouchableOpacity>
+          {videoUrl && <Video source={{ uri: videoUrl }} style={styles.media} useNativeControls resizeMode="contain" />}
         </View>
-        {/* Outgoing text */}
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Doing great! Check out this photo.</Text>
+      </Modal>
+      <Modal visible={!!audioUrl} transparent onRequestClose={() => setAudioUrl(null)}>
+        <View style={styles.modalBg}>
+          <TouchableOpacity style={styles.close} onPress={() => setAudioUrl(null)}>
+            <Ionicons name="close" size={32} color="#fff" />
+          </TouchableOpacity>
+          {audioUrl && (
+            <Video
+              source={{ uri: audioUrl }}
+              useNativeControls
+              resizeMode="contain"
+              style={styles.audioPlayer}
+              shouldPlay
+              onPlaybackStatusUpdate={(status) => {
+                if (status.didJustFinish) setAudioUrl(null);
+              }}
+            />
+          )}
         </View>
-        {/* Outgoing image */}
-        <View style={[styles.message, styles.myMessage]}>
-          <Image source={require('../assets/fake-image.png')} style={styles.image} />
+      </Modal>
+      <Modal visible={!!imageUri} transparent onRequestClose={() => setImageUri(null)}>
+        <View style={styles.modalBg}>
+          <TouchableOpacity style={styles.close} onPress={() => setImageUri(null)}>
+            <Ionicons name="close" size={32} color="#fff" />
+          </TouchableOpacity>
+          {imageUri && (
+            <Image source={{ uri: imageUri }} style={styles.media} resizeMode="contain" />
+          )}
         </View>
-        {/* Incoming text */}
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Nice! Here is a short video.</Text>
-        </View>
-        {/* Incoming video thumbnail */}
-        <View style={[styles.message, styles.theirMessage]}>
-          <View style={styles.videoContainer}>
-            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
-            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
-          </View>
-        </View>
-        {/* Outgoing text introducing audio */}
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
-        </View>
-        {/* Outgoing audio placeholder */}
-        <View style={[styles.message, styles.myMessage]}>
-          <View style={styles.audioContainer}>
-            <Ionicons name="play" size={24} color="#fff" />
-            <View style={styles.waveform}>
-              {[4, 8, 12, 8, 4].map((h, i) => (
-                <View key={i} style={[styles.bar, { height: h * 2 }]} />
-              ))}
-            </View>
-          </View>
-        </View>
-        {/* Repeat messages to enable scrolling */}
-        {/* 2nd set */}
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Hi! How are you?</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Doing great! Check out this photo.</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Image source={require('../assets/fake-image.png')} style={styles.image} />
-        </View>
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Nice! Here is a short video.</Text>
-        </View>
-        <View style={[styles.message, styles.theirMessage]}>
-          <View style={styles.videoContainer}>
-            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
-            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
-          </View>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <View style={styles.audioContainer}>
-            <Ionicons name="play" size={24} color="#fff" />
-            <View style={styles.waveform}>
-              {[4, 8, 12, 8, 4].map((h, i) => (
-                <View key={i} style={[styles.bar, { height: h * 2 }]} />
-              ))}
-            </View>
-          </View>
-        </View>
-        {/* 3rd set */}
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Hi! How are you?</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Doing great! Check out this photo.</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Image source={require('../assets/fake-image.png')} style={styles.image} />
-        </View>
-        <View style={[styles.message, styles.theirMessage]}>
-          <Text style={styles.text}>Nice! Here is a short video.</Text>
-        </View>
-        <View style={[styles.message, styles.theirMessage]}>
-          <View style={styles.videoContainer}>
-            <Image source={require('../assets/fake-video.png')} style={styles.videoImg} />
-            <Ionicons name="play-circle" size={48} color="#fff" style={styles.playIcon} />
-          </View>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <Text style={styles.text}>Great! Listen to this voice memo.</Text>
-        </View>
-        <View style={[styles.message, styles.myMessage]}>
-          <View style={styles.audioContainer}>
-            <Ionicons name="play" size={24} color="#fff" />
-            <View style={styles.waveform}>
-              {[4, 8, 12, 8, 4].map((h, i) => (
-                <View key={i} style={[styles.bar, { height: h * 2 }]} />
-              ))}
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-      <DrawerMenu
-        visible={menuVisible}
-        onClose={() => setMenuVisible(false)}
-        onLogout={onLogout}
+      </Modal>
+      <PdfViewerModal
+        visible={!!pdfData}
+        base64={pdfData}
+        onClose={() => setPdfData(null)}
       />
     </Animated.View>
   );
@@ -187,9 +175,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 50,
-  },
-  iconBackground: {
-    ...StyleSheet.absoluteFillObject,
   },
   burger: {
     position: 'absolute',
@@ -209,6 +194,8 @@ const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 10,
     paddingBottom: 20,
+    flexGrow: 1,
+    justifyContent: 'flex-end',
   },
   message: {
     maxWidth: '75%',
@@ -239,6 +226,26 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     position: 'relative',
+    marginBottom: 5,
+  },
+  audioContainer: {
+    flexDirection: 'row',
+    width: 200,
+    height: 40,
+    borderRadius: 8,
+    overflow: 'hidden',
+    alignItems: 'center',
+    backgroundColor: '#cebffa',
+    marginBottom: 5,
+  },
+  audioPlay: {
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  audioWave: {
+    width: '80%',
+    justifyContent: 'center',
   },
   videoImg: {
     width: '100%',
@@ -249,17 +256,58 @@ const styles = StyleSheet.create({
     top: '40%',
     left: '40%',
   },
-  audioContainer: {
-    flexDirection: 'row',
+  videoPlaceholder: {
+    backgroundColor: '#ccc',
+  },
+  time: {
+    fontSize: 10,
+    color: '#555',
+    alignSelf: 'flex-end',
+  },
+  date: {
+    alignSelf: 'center',
+    fontSize: 12,
+    marginVertical: 10,
+    color: '#888',
+  },
+  modalBg: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  waveform: {
-    flexDirection: 'row',
-    marginLeft: 8,
+  close: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 1,
   },
-  bar: {
+  media: {
+    width: '90%',
+    height: '70%',
+  },
+  audioPlayer: {
+    width: 250,
+    height: 50,
+  },
+  link: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+  },
+  waveformIcon: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: '100%',
+    height: 30,
+  },
+  waveBar: {
     width: 4,
     backgroundColor: '#fff',
-    marginHorizontal: 1,
+    marginHorizontal: 2,
+  },
+  docIcon: {
+    marginTop: 5,
+    alignSelf: 'center',
   },
 });
