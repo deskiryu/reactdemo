@@ -36,6 +36,23 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       ? parseEmbeddedUrl(item.message)
       : item.message;
 
+  const fileName =
+    item.fileName ||
+    item.FileName ||
+    item.documentName ||
+    item.DocumentName ||
+    item.originalFileName ||
+    item.OriginalFileName ||
+    '';
+
+  let docLabel = null;
+  if (item.chatDocumentId && item.chatDocumentId > 0 && fileName) {
+    const ext = fileName.split('.').pop().toLowerCase();
+    if (ext === 'pdf') docLabel = 'PDFPDFPDF';
+    else if (ext === 'jpg' || ext === 'jpeg') docLabel = 'JPGJPGJPG';
+    else if (ext === 'png') docLabel = 'pngpngpng';
+  }
+
   return (
     <View>
       {showDate && <Text style={styles.date}>{new Date(item.sentTime).toLocaleString()}</Text>}
@@ -78,6 +95,7 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
               {messageText.suffix}
             </Text>
           ) : null}
+          {docLabel && <Text style={styles.text}>{docLabel}</Text>}
           {showTime && (
             <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>
           )}
