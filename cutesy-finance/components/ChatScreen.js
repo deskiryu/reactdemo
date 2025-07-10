@@ -245,4 +245,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 2,
   },
+  docIcon: {
+    marginTop: 5,
+    alignSelf: 'center',
+  },
 });
