@@ -105,9 +105,14 @@ export default function ChatScreen({ onLogout }) {
     const text = messageText.trim();
     if (!text) return;
     try {
-      await sendChatMessage(text);
+      const tempMsg = {
+        id: Date.now(),
+        message: text,
+        sentTime: new Date().toISOString(),
+      };
+      setMessages((prev) => [tempMsg, ...prev]);
       setMessageText('');
-      await loadMessages(1);
+      await sendChatMessage(text);
     } catch (e) {
       console.warn('Failed to send message', e);
     }
