@@ -54,12 +54,16 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
       );
     } else if (docType === 2 || docType === 3) {
       const type = docType === 2 ? 'png' : 'jpeg';
-      const uri = `data:image/${type};base64,${item.chatDocument?.File}`;
-      attachment = (
-        <TouchableOpacity onPress={() => setImageUri(uri)}>
-          <Image source={{ uri }} style={styles.image} />
-        </TouchableOpacity>
-      );
+      const fileData = (item.chatDocument?.File || item.chatDocument?.file || '')
+        .replace(/\s/g, '');
+      if (fileData) {
+        const uri = `data:image/${type};base64,${fileData}`;
+        attachment = (
+          <TouchableOpacity onPress={() => setImageUri(uri)}>
+            <Image source={{ uri }} style={styles.image} />
+          </TouchableOpacity>
+        );
+      }
     }
   }
 

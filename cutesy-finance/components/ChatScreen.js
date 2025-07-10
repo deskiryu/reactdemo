@@ -94,6 +94,7 @@ export default function ChatScreen({ onLogout }) {
     }
 
     if (!data) return;
+    data = data.replace(/\s/g, '');
     const WebBrowser = await import('expo-web-browser');
     WebBrowser.openBrowserAsync(`data:application/pdf;base64,${data}`);
   };
