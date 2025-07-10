@@ -55,8 +55,9 @@ export const getChatDocument = async (docGuid) => {
 
   // Endpoint expects the chat document GUID string as the docId query parameter
   const url = `${baseUrl.replace(/\/+$/, '')}/${DOCUMENT_PATH}?docId=${docGuid}`;
+  // The document endpoint uses an HTTP GET
   const response = await fetch(url, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
     },
