@@ -2,6 +2,7 @@
 // Accepts only a preset username/password for demo purposes.
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { PrimaryButton } from './Theme';
 import { Ionicons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { login as loginRequest } from '../services/LoginService';
@@ -91,9 +92,7 @@ export default function LoginModal({ onClose, onSuccess }) {
           </TouchableOpacity>
         </View>
         {error ? <Text style={styles.error}>{error}</Text> : null}
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+        <PrimaryButton onPress={handleLogin}>Login</PrimaryButton>
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
@@ -139,17 +138,6 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     marginVertical: 5,
-  },
-  button: {
-    backgroundColor: '#cebffa',
-    padding: 12,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontFamily: 'Poppins_400Regular',
   },
   closeButton: {
     alignItems: 'center',
