@@ -30,7 +30,14 @@ export default function ChatScreen({ onLogout }) {
     try {
       const data = await getChatMessages(p);
       const newMsgs = data && data.messages ? data.messages : [];
-      setMessages((prev) => (p === 1 ? newMsgs : [...prev, ...newMsgs]));
+      setMessages((prev) => {
+        if (p === 1) {
+          return newMsgs;
+        }
+        const existingIds = new Set(prev.map((m) => m.id));
+        const filtered = newMsgs.filter((m) => !existingIds.has(m.id));
+        return [...prev, ...filtered];
+      });
       setMore(data ? data.moreMessagesAvailable : false);
       setPage(p);
     } catch (e) {
