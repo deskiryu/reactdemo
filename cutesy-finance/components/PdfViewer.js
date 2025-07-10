@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { PdfViewer } from '@syncfusion/react-native-pdfviewer';
+import { PdfViewer } from '@syncfusion/ej2-react-pdfviewer';
 
 export default function PdfViewerModal({ visible, onClose, base64 }) {
   return (

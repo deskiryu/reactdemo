@@ -20,7 +20,7 @@
     "expo-font": "^11.4.0",
     "expo-secure-store": "^12.4.0",
     "expo-web-browser": "~12.8.2",
-    "@syncfusion/react-native-pdfviewer": "^26.1.35",
+    "@syncfusion/ej2-react-pdfviewer": "^30.1.39",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-gesture-handler": "~2.14.0",
