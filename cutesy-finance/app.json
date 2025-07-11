@@ -18,22 +18,24 @@
     ],
     "ios": {
       "bundleIdentifier": "com.dev.yavia.com",
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "39eea044-5a8a-49d6-b6ef-beb04cbbaeb6"
-      }
-    },
-    "owner": "deskiryu"
+      "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": "#FFFFFF"
+        }
+      },
+      "web": {
+        "favicon": "./assets/favicon.png"
+      },
+      "extra": {
+        "eas": {
+          "projectId": "39eea044-5a8a-49d6-b6ef-beb04cbbaeb6"
+        }
+      },
+      "owner": "deskiryu"
+    }
   }
-}
