@@ -1,16 +1,11 @@
 {
   "build": {
     "production": {
-      "ios": {
-        "workflow": "managed",
-        "scheme": "release"
-      }
+      "ios": {}
     }
   },
   "submit": {
     "production": {}
   },
-  "cli": {
-    "version": ">= 1.0.0"
-  }
+  "cli": { "version": ">= 3.0.0" }
 }
