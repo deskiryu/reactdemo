@@ -17,6 +17,7 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.dev.yavia.com",
       "supportsTablet": true
     },
     "android": {
