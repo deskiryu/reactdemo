@@ -5,6 +5,8 @@ const CHAT_PATH = 'Chat/pagedchat';
 const DOCUMENT_PATH = 'Chat/Document';
 const PAGE_SIZE = 15;
 
+const SEND_CHAT_PATH = 'Chat';
+
 export const getChatMessages = async (pageNumber = 1) => {
   const baseUrl = getBaseUrl();
   const token = getToken();
@@ -68,4 +70,39 @@ export const getChatDocument = async (docGuid) => {
   }
 
   return await response.json();
+};
+
+export const sendChatMessage = async (message) => {
+  const baseUrl = getBaseUrl();
+  const token = getToken();
+  const userId = await SecureStore.getItemAsync('userId');
+  const masterBrokerId = await SecureStore.getItemAsync('masterBrokerId');
+
+  if (!baseUrl || !token || !userId || !masterBrokerId) {
+    throw new Error('Missing chat configuration');
+  }
+
+  const payload = {
+    CustomerId: parseInt(userId, 10),
+    BrokerId: parseInt(masterBrokerId, 10),
+    Message: message,
+  };
+
+  const response = await fetch(
+    `${baseUrl.replace(/\/+$/, '')}/${SEND_CHAT_PATH}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to send chat message');
+  }
+
+  return await response.json().catch(() => ({}));
 };

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Modal, Animated, TextInput } from 'react-native';
+import { CHAT_STYLES, COLORS } from './Theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import DrawerMenu from './DrawerMenu';
 import ChatMessage from './ChatMessage';
-import { getChatMessages, getChatDocument } from '../services/ChatService';
+import { getChatMessages, getChatDocument, sendChatMessage } from '../services/ChatService';
 import PdfViewerModal from './PdfViewer';
 
 export default function ChatScreen({ onLogout }) {
@@ -17,6 +18,7 @@ export default function ChatScreen({ onLogout }) {
   const [audioUrl, setAudioUrl] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [pdfData, setPdfData] = useState(null);
+  const [messageText, setMessageText] = useState('');
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -29,7 +31,14 @@ export default function ChatScreen({ onLogout }) {
     try {
       const data = await getChatMessages(p);
       const newMsgs = data && data.messages ? data.messages : [];
-      setMessages((prev) => (p === 1 ? newMsgs : [...prev, ...newMsgs]));
+      setMessages((prev) => {
+        if (p === 1) {
+          return newMsgs;
+        }
+        const existingIds = new Set(prev.map((m) => m.id));
+        const filtered = newMsgs.filter((m) => !existingIds.has(m.id));
+        return [...prev, ...filtered];
+      });
       setMore(data ? data.moreMessagesAvailable : false);
       setPage(p);
     } catch (e) {
@@ -100,6 +109,23 @@ export default function ChatScreen({ onLogout }) {
     setPdfData(data);
   };
 
+  const handleSendMessage = async () => {
+    const text = messageText.trim();
+    if (!text) return;
+    try {
+      const tempMsg = {
+        id: Date.now(),
+        message: text,
+        sentTime: new Date().toISOString(),
+      };
+      setMessages((prev) => [tempMsg, ...prev]);
+      setMessageText('');
+      await sendChatMessage(text);
+    } catch (e) {
+      console.warn('Failed to send message', e);
+    }
+  };
+
 
   const handleEndReached = () => {
     if (!loading && more) {
@@ -110,7 +136,7 @@ export default function ChatScreen({ onLogout }) {
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={32} color="#cebffa" />
+        <Ionicons name="menu" size={32} color={COLORS.primary} />
       </TouchableOpacity>
       <Text style={styles.header}>Chats</Text>
       <FlatList
@@ -123,13 +149,32 @@ export default function ChatScreen({ onLogout }) {
         onEndReachedThreshold={0.2}
         onEndReached={handleEndReached}
       />
+      <View style={styles.inputRow}>
+        <TextInput
+          style={styles.input}
+          value={messageText}
+          onChangeText={setMessageText}
+          placeholder="Type a message"
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
+          <Ionicons name="paper-plane" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
       <Modal visible={!!videoUrl} transparent onRequestClose={() => setVideoUrl(null)}>
         <View style={styles.modalBg}>
           <TouchableOpacity style={styles.close} onPress={() => setVideoUrl(null)}>
             <Ionicons name="close" size={32} color="#fff" />
           </TouchableOpacity>
-          {videoUrl && <Video source={{ uri: videoUrl }} style={styles.media} useNativeControls resizeMode="contain" />}
+          {videoUrl && (
+            <Video
+              source={{ uri: videoUrl }}
+              style={styles.media}
+              useNativeControls
+              resizeMode="contain"
+              shouldPlay
+            />
+          )}
         </View>
       </Modal>
       <Modal visible={!!audioUrl} transparent onRequestClose={() => setAudioUrl(null)}>
@@ -171,6 +216,7 @@ export default function ChatScreen({ onLogout }) {
 }
 
 const styles = StyleSheet.create({
+  ...CHAT_STYLES,
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -186,7 +232,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontFamily: 'Poppins_400Regular',
-    color: '#cebffa',
+    color: COLORS.primary,
     marginBottom: 30,
     marginLeft: 60,
     marginTop: 5,
@@ -196,56 +242,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexGrow: 1,
     justifyContent: 'flex-end',
-  },
-  message: {
-    maxWidth: '75%',
-    borderRadius: 10,
-    padding: 8,
-    marginVertical: 5,
-  },
-  theirMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#FEC8D8',
-  },
-  myMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#cebffa',
-  },
-  text: {
-    fontFamily: 'Poppins_400Regular',
-    fontSize: 14,
-  },
-  image: {
-    width: 160,
-    height: 120,
-    borderRadius: 8,
-  },
-  videoContainer: {
-    width: 160,
-    height: 120,
-    borderRadius: 8,
-    overflow: 'hidden',
-    position: 'relative',
-    marginBottom: 5,
-  },
-  audioContainer: {
-    flexDirection: 'row',
-    width: 200,
-    height: 40,
-    borderRadius: 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-    backgroundColor: '#cebffa',
-    marginBottom: 5,
-  },
-  audioPlay: {
-    width: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  audioWave: {
-    width: '80%',
-    justifyContent: 'center',
   },
   videoImg: {
     width: '100%',
@@ -262,7 +258,12 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 10,
     color: '#555',
+  },
+  timeRight: {
     alignSelf: 'flex-end',
+  },
+  timeLeft: {
+    alignSelf: 'flex-start',
   },
   date: {
     alignSelf: 'center',
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
   },
   modalBg: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -294,20 +295,32 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: 'blue',
   },
-  waveformIcon: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    width: '100%',
-    height: 30,
-  },
-  waveBar: {
-    width: 4,
-    backgroundColor: '#fff',
-    marginHorizontal: 2,
-  },
   docIcon: {
     marginTop: 5,
     alignSelf: 'center',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    fontFamily: 'Poppins_400Regular',
+    marginRight: 8,
+  },
+  sendButton: {
+    backgroundColor: COLORS.primary,
+    padding: 10,
+    borderRadius: 20,
   },
 });

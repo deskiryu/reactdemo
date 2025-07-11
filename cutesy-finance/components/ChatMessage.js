@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 
 
-const WaveformIcon = ({ styles }) => (
-  <View style={styles.waveformIcon}>
-    {[4, 7, 5, 6, 4].map((h, i) => (
-      <View key={i} style={[styles.waveBar, { height: h * 2 }]} />
-    ))}
-  </View>
-);
+const WaveformIcon = ({ styles }) => {
+  const pattern = [4, 7, 5, 6, 4];
+  const bars = [];
+  for (let r = 0; r < 3; r++) {
+    pattern.forEach((h, i) => {
+      bars.push(
+        <View key={`${r}-${i}`} style={[styles.waveBar, { height: h * 2 }]} />
+      );
+    });
+  }
+  return <View style={styles.waveformIcon}>{bars}</View>;
+};
 
 export default function ChatMessage({ item, previous, styles, setVideoUrl, setAudioUrl, setImageUri, openPdf, openUrl }) {
-  const [showTime, setShowTime] = useState(false);
 
-  const showDate = !previous || Math.abs(new Date(item.sentTime) - new Date(previous.sentTime)) > 30 * 60 * 1000;
+  const showDate =
+    !previous ||
+    new Date(item.sentTime).toDateString() !==
+      new Date(previous.sentTime).toDateString();
 
   const parseEmbeddedUrl = (msg) => {
     if (!msg) return msg;
@@ -81,16 +88,19 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
 
   return (
     <View>
-      {showDate && <Text style={styles.date}>{new Date(item.sentTime).toLocaleString()}</Text>}
-      <Swipeable
-        renderLeftActions={() => <View />}
-        renderRightActions={() => <View />}
-        onSwipeableOpen={() => setShowTime(true)}
-        onSwipeableClose={() => setShowTime(false)}
-      >
+      {showDate && (
+        <Text style={styles.date}>{new Date(item.sentTime).toLocaleDateString()}</Text>
+      )}
+      <Swipeable renderLeftActions={() => <View />} renderRightActions={() => <View /> }>
         <TouchableOpacity
           activeOpacity={0.8}
-          style={[styles.message, item.brokerSource ? styles.theirMessage : styles.myMessage]}
+          style={[
+            styles.message,
+            item.brokerSource ? styles.theirMessage : styles.myMessage,
+            !item.isVideo && !item.image && !item.isAudio && !attachment
+              ? { width: undefined, maxWidth: '70%' }
+              : null,
+          ]}
         >
           {item.isVideo && item.videoUrl ? (
             <TouchableOpacity onPress={() => setVideoUrl(item.videoUrl)} style={styles.videoContainer}>
@@ -130,9 +140,17 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
             </Text>
           ) : null}
           {attachment}
-          {showTime && (
-            <Text style={styles.time}>{new Date(item.sentTime).toLocaleTimeString()}</Text>
-          )}
+          <Text
+            style={[
+              styles.time,
+              item.brokerSource ? styles.timeLeft : styles.timeRight,
+            ]}
+          >
+            {new Date(item.sentTime).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
         </TouchableOpacity>
       </Swipeable>
     </View>
