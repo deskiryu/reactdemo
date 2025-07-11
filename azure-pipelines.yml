@@ -2,7 +2,9 @@ trigger:
 - devops
 
 pool:
-  vmImage: 'macOS-latest'
+  vmImage: 'macOS-15'
+
+  
 
 variables:
   APP_IDENTIFIER: 'com.dev.yavia.com'
@@ -10,6 +12,44 @@ variables:
   ASC_APP_ID: '6746633933'
 
 steps:
+
+- script: |
+    echo Mac OS version:
+    sw_vers -productVersion
+    echo
+    echo Installed Xcode versions:
+    ls /Applications | grep 'Xcode'
+    echo trying to elect:
+    sudo xcode-select -switch /Applications/Xcode_16.3.app/Contents/Developer
+    echo currently selected xcode:
+    xcrun xcode-select --print-path
+    echo
+  displayName: Show Xcode Version
+
+- task: PowerShell@2
+  displayName: Install build scripts
+  continueOnError: true
+  inputs:
+    targetType: inline
+    scriptName: ''
+    script: >-
+      Set-Location -Path '$(Agent.HomeDirectory)'
+
+      Invoke-WebRequest -Uri
+      'https://appcenterbuildassets.azureedge.net/buildscripts/appcenter-build-assets-latest.zip'
+      -OutFile 'appcenter-build-assets-latest.zip'
+
+      if (Test-Path ./scripts) { Remove-Item -Path ./scripts -Force
+      -Recurse }
+
+      New-Item -ItemType directory -Path 'scripts' | Out-Null
+
+      unzip -q -d 'scripts' 'appcenter-build-assets-latest.zip'
+
+      Invoke-Expression 'bash ./scripts/init.sh'
+    failOnStderr: true
+
+
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
@@ -19,6 +59,18 @@ steps:
     npm install -g expo-cli eas-cli
   displayName: 'Install Expo CLI'
 
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'CertificatesDistribIOS26.p12'
+    certPwd: '$(DistribIOS26)'
+    keychain: 'temp'
+
+- task: InstallAppleProvisioningProfile@1
+  displayName: Install Apple Provisioning Profile
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'dev_yavia_react_distrib_pp.mobileprovision'  
+
 - script: |
     cd cutesy-finance
     npm ci
@@ -27,7 +79,7 @@ steps:
 
 - script: |
     cd cutesy-finance
-    eas build --platform ios --non-interactive --profile production
+    eas build --platform ios --local --non-interactive --profile production
   env:
     EXPO_TOKEN: $(EXPO_TOKEN)
 
