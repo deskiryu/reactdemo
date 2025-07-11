@@ -6,6 +6,8 @@ pool:
 
 variables:
   APP_IDENTIFIER: 'com.dev.yavia.com'
+  APPLE_ID: '5B43L7AV6M'
+  ASC_APP_ID: '6746633933'
 
 steps:
 - task: NodeTool@0
