@@ -1,12 +1,5 @@
 trigger:
-  branches:
-    exclude:
-      - '*'
-
-pr:
-  branches:
-    include:
-     - devops
+- devops
 
 pool:
   vmImage: 'macOS-latest'
