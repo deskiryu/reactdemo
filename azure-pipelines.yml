@@ -22,12 +22,24 @@ steps:
     npm ci
   displayName: 'Install dependencies'
 
+steps:
+- task: DownloadSecureFile@1
+  name: getCert
+  inputs:
+    secureFile: 'dev_yavia_react_distrib_pp.mobileprovision'        
+
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'CertificatesDistribIOS26.p12'
+    certPwd: '$(DistribIOS26)'
+    keychain: 'temp'
+
 - script: |
     cd cutesy-finance
     eas build --platform ios --non-interactive --profile production
   env:
     EXPO_TOKEN: $(EXPO_TOKEN)
-  displayName: 'Build iOS app'
+
 
 - script: |
     cd cutesy-finance
