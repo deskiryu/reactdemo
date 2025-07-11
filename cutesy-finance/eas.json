@@ -7,9 +7,9 @@
   "submit": {
     "production": {}
   },
-"cli": { 
+"cli": {
   "version": ">=3.0.0",
-  "appVersionSource": "expo-project-version"
+  "appVersionSource": "remote"
 }
 
 }
