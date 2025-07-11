@@ -1,5 +1,5 @@
 trigger:
-- main
+- devopsandroid
 
 pool:
   vmImage: 'ubuntu-latest'
