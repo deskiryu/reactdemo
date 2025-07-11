@@ -1,7 +1,8 @@
 // Registration form allowing the user to sign up.
 // Includes a simple password strength meter for education.
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { PrimaryButton } from './Theme';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -51,9 +52,9 @@ export default function RegisterScreen() {
       {strength ? (
         <Text style={[styles.strength, { color: colorMap[strength] }]}>Password strength: {strength}</Text>
       ) : null}
-      <TouchableOpacity style={styles.button} onPress={() => { }}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+      <PrimaryButton onPress={() => { }}>
+        Register
+      </PrimaryButton>
     </View>
   );
 }
@@ -79,16 +80,5 @@ const styles = StyleSheet.create({
   },
   strength: {
     marginVertical: 5,
-  },
-  button: {
-    backgroundColor: '#cebffa',
-    padding: 12,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontFamily: 'Poppins_400Regular',
   },
 });

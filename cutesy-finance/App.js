@@ -25,7 +25,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({ Poppins_400Regular });
 
   useEffect(() => {
-    setBaseUrl('http://example.com');
+    setBaseUrl('https://brokeriqcustomerapidevelop.azurewebsites.net/api/');
   }, []);
 
   // Show a loader until fonts are ready
