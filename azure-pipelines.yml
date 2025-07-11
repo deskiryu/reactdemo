@@ -1,5 +1,5 @@
 trigger:
-- main
+- devops
 
 pool:
   vmImage: 'macOS-latest'
