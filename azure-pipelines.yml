@@ -22,7 +22,7 @@ steps:
     npm ci
   displayName: 'Install dependencies'
 
-steps:
+
 - task: DownloadSecureFile@1
   name: getCert
   inputs:
