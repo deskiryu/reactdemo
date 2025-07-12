@@ -68,7 +68,7 @@ export default function DocuvaultScreen({ onLogout }) {
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={32} color="#cebffa" />
+        <Ionicons name="menu" size={24} color={COLORS.textDark} />
       </TouchableOpacity>
       <Text style={styles.header}>Docuvault</Text>
 
@@ -163,21 +163,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 40,
     backgroundColor: '#fff',
   },
   burger: {
     position: 'absolute',
     left: 10,
-    top: 50,
-    padding: 6,
+    top: 40,
+    padding: 4,
     zIndex: 1,
   },
   header: {
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: 'Poppins_400Regular',
     color: '#cebffa',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   summaryBox: {
     width: '90%',

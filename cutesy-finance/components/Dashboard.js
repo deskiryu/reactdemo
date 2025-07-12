@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated } from 'react
 import { Ionicons } from '@expo/vector-icons';
 import DetailModal from './DetailModal';
 import DrawerMenu from './DrawerMenu';
+import { COLORS } from './Theme';
 
 export default function Dashboard({ onLogout }) {
   // State that controls the detail popup visibility
@@ -61,7 +62,7 @@ export default function Dashboard({ onLogout }) {
         }}
         style={styles.burger}
       >
-        <Ionicons name="menu" size={32} color="#cebffa" />
+        <Ionicons name="menu" size={24} color={COLORS.textDark} />
       </TouchableOpacity>
       <Text style={styles.header}>Dashboard</Text>
       {showClickBox && (
@@ -111,22 +112,22 @@ export default function Dashboard({ onLogout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 40,
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   burger: {
     position: 'absolute',
     left: 10,
-    top: 50,
-    padding: 6,
+    top: 40,
+    padding: 4,
     zIndex: 1,
   },
   header: {
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: 'Poppins_400Regular',
     color: '#cebffa',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   row: {
     flexDirection: 'row',

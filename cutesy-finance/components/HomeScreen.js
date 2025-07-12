@@ -46,8 +46,10 @@ export default function HomeScreen({ navigation, onLogout }) {
   return (
     <Animated.ScrollView style={[styles.container, animatedStyles]} contentContainerStyle={styles.content}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={32} color={COLORS.primary} />
+        <Ionicons name="menu" size={24} color={COLORS.textDark} />
       </TouchableOpacity>
+
+      <Text style={styles.header}>Home</Text>
 
       <View style={styles.budgetBox}>
         <View style={styles.budgetText}>
@@ -82,7 +84,8 @@ export default function HomeScreen({ navigation, onLogout }) {
       <Text style={styles.sectionTitle}>{STRINGS.myProducts}</Text>
 
       <View style={styles.productsBox}>
-        <Ionicons name="folder" size={80} color="#fff" style={styles.folderIcon} />
+        <View style={styles.folderLayerTwo} />
+        <View style={styles.folderLayerOne} />
         <TouchableOpacity style={styles.explorePanel} onPress={() => navigation.navigate('Products')}>
           <View style={styles.exploreTextBox}>
             <Text style={styles.exploreText}>{STRINGS.exploreText}</Text>
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 50,
+    paddingTop: 40,
   },
   content: {
     alignItems: 'center',
@@ -110,9 +113,16 @@ const styles = StyleSheet.create({
   burger: {
     position: 'absolute',
     left: 10,
-    top: 50,
-    padding: 6,
+    top: 40,
+    padding: 4,
     zIndex: 1,
+  },
+  header: {
+    fontSize: 18,
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.primary,
+    marginTop: 10,
+    marginBottom: 10,
   },
   budgetBox: {
     flexDirection: 'row',
@@ -225,11 +235,28 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 15,
     minHeight: SCREEN_HEIGHT * 0.3,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+    position: 'relative',
   },
-  folderIcon: {
+  folderLayerOne: {
+    position: 'absolute',
+    top: 5,
     alignSelf: 'center',
-    marginBottom: 10,
+    width: '90%',
+    height: 20,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  folderLayerTwo: {
+    position: 'absolute',
+    top: 0,
+    alignSelf: 'center',
+    width: '80%',
+    height: 20,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   explorePanel: {
     flexDirection: 'row',
@@ -237,6 +264,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 15,
     alignItems: 'center',
+    marginTop: 30,
   },
   exploreTextBox: {
     flex: 1,
