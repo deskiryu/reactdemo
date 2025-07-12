@@ -55,12 +55,13 @@ export default function HomeScreen({ navigation, onLogout }) {
   ];
 
   return (
-    <Animated.ScrollView style={[styles.container, animatedStyles]} contentContainerStyle={styles.content}>
+    <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
         <Ionicons name="menu" size={24} color={COLORS.textDark} />
       </TouchableOpacity>
 
-      <Text style={styles.header}>Home</Text>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.header}>Home</Text>
 
       <View style={styles.budgetBox}>
         <View style={styles.budgetText}>
@@ -126,8 +127,9 @@ export default function HomeScreen({ navigation, onLogout }) {
         </View>
       </View>
 
-      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
-    </Animated.ScrollView>
+        <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+      </ScrollView>
+    </Animated.View>
   );
 }
 
