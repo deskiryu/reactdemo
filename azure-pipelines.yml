@@ -59,17 +59,39 @@ steps:
     npm install -g expo-cli eas-cli
   displayName: 'Install Expo CLI'
 
-- task: InstallAppleCertificate@2
+- task: DownloadSecureFile@1
+  name: iosCert
   inputs:
-    certSecureFile: 'CertificatesDistribIOS26.p12'
-    certPwd: '$(DistribIOS26)'
-    keychain: 'temp'
+    secureFile: 'CertificatesDistribIOS26.p12'
 
-- task: InstallAppleProvisioningProfile@1
-  displayName: Install Apple Provisioning Profile
+- task: DownloadSecureFile@1
+  name: iosProfile
   inputs:
-    provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'dev_yavia_react_distrib_pp.mobileprovision'  
+    secureFile: 'dev_yavia_react_distrib_pp.mobileprovision'
+
+- script: |
+    security create-keychain -p "" build.keychain
+    security import $(iosCert.secureFilePath) -k build.keychain -P $(DistribIOS26) -T /usr/bin/codesign
+    security list-keychains -d user -s build.keychain
+    mkdir -p $HOME/Library/MobileDevice/Provisioning\ Profiles
+    cp $(iosProfile.secureFilePath) $HOME/Library/MobileDevice/Provisioning\ Profiles/
+  displayName: 'Install iOS credentials'
+
+- script: |
+    cd cutesy-finance
+    cat > credentials.json <<EOF
+    {
+      "ios": {
+        "provisioningProfilePath": "$(iosProfile.secureFilePath)",
+        "distributionCertificate": {
+          "path": "$(iosCert.secureFilePath)",
+          "password": "$(DistribIOS26)"
+        }
+      }
+    }
+    EOF
+  displayName: 'Create credentials.json'
+
 
 - script: |
     cd cutesy-finance
