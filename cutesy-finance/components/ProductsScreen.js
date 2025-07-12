@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
-import { COLORS, PrimaryButton } from './Theme';
+import { COLORS, PrimaryButton, withOpacity } from './Theme';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -39,22 +39,25 @@ export default function ProductsScreen({ onLogout }) {
       key: 'mortgage',
       title: 'My Mortgage',
       text: 'Explore your mortgage options — from first-time buyers to remortgaging.',
-      color: 'rgba(206,191,250,0.6)',
+      color: withOpacity(COLORS.primary, 0.8),
+      buttonColor: withOpacity(COLORS.primary, 0.8),
       icon: { lib: Ionicons, name: 'home', color: COLORS.primary },
     },
     {
       key: 'insurance',
       title: 'My Insurance',
       text: 'Discover how to protect your home, income, & more with right coverage.',
-      color: 'rgba(238,154,12,0.6)',
+      color: withOpacity(COLORS.secondary, 0.8),
+      buttonColor: withOpacity(COLORS.secondary, 0.8),
       icon: { lib: Ionicons, name: 'document-text', color: COLORS.secondary },
     },
     {
       key: 'wealth',
       title: 'My Wealth',
       text: 'Learn how to grow, manage, and protect your financial future.',
-      color: 'rgba(42,126,53,0.6)',
-      icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.primary },
+      color: withOpacity(COLORS.tertiary, 0.8),
+      buttonColor: withOpacity(COLORS.tertiary, 0.8),
+      icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.tertiary },
     },
   ];
 
@@ -77,7 +80,7 @@ export default function ProductsScreen({ onLogout }) {
             <View style={styles.panelInner}>
               <View style={styles.textBox}>
                 <Text style={styles.panelText}>{p.text}</Text>
-                <PrimaryButton style={styles.exploreButton}>Explore Now</PrimaryButton>
+                <PrimaryButton style={[styles.exploreButton, { backgroundColor: p.buttonColor }]}>Explore Now</PrimaryButton>
               </View>
               <IconComponent
                 name={p.icon.name}
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '90%',
     height: 20,
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: withOpacity(COLORS.white, 0.8),
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -153,13 +156,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
     height: 20,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: withOpacity(COLORS.white, 0.6),
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
   panelInner: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     padding: 15,
     alignItems: 'center',
@@ -177,6 +180,9 @@ const styles = StyleSheet.create({
   exploreButton: {
     alignSelf: 'flex-start',
     marginTop: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   icon: {
     marginLeft: 5,
