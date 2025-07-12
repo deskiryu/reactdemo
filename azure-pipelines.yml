@@ -20,7 +20,7 @@ steps:
     echo Installed Xcode versions:
     ls /Applications | grep 'Xcode'
     echo trying to elect:
-    sudo xcode-select -switch /Applications/Xcode_16.3.app/Contents/Developer
+    sudo xcode-select -switch /Applications/Xcode_16.2.app/Contents/Developer
     echo currently selected xcode:
     xcrun xcode-select --print-path
     echo
