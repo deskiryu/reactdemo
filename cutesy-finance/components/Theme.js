@@ -5,8 +5,8 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export const COLORS = {
   primary: '#cebffa',
-  secondary: '#FEC8D8',
-  tertiary: '#FFDFD3',
+  secondary: '#ee9a0c',
+  tertiary: '#2a7e35',
   white: '#fff',
   textDark: '#555',
   black: '#000',
