@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   folderLayerOne: {
     position: 'absolute',
-    bottom: 65,
+    bottom: 145,
     alignSelf: 'center',
     width: '90%',
     height: 20,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   folderLayerTwo: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 160,
     alignSelf: 'center',
     width: '80%',
     height: 20,
