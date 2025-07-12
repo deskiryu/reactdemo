@@ -53,7 +53,7 @@ export default function ProductsScreen({ onLogout }) {
       key: 'wealth',
       title: 'My Wealth',
       text: 'Learn how to grow, manage, and protect your financial future.',
-      color: 'rgba(42,126,53,0.6)',
+      color: 'rgba(42,126,53,0.4)',
       icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.primary },
     },
   ];
