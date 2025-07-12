@@ -74,6 +74,9 @@ export default function HomeScreen({ navigation, onLogout }) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.actionScroll} contentContainerStyle={styles.actionContent}>
         {actions.map((a) => (
           <View key={a} style={styles.actionPanel}>
+            <View style={styles.actionIconContainer}>
+              <Ionicons name="add" size={14} color={COLORS.white} />
+            </View>
             <Text style={styles.actionText}>{a}</Text>
           </View>
         ))}
@@ -81,19 +84,20 @@ export default function HomeScreen({ navigation, onLogout }) {
 
       <View style={styles.separator} />
 
-      <Text style={styles.sectionTitle}>{STRINGS.myProducts}</Text>
+      <Text style={styles.sectionTitle}>Products</Text>
 
-      <View style={styles.productsBox}>
+      <TouchableOpacity style={styles.productsBox} activeOpacity={0.8} onPress={() => navigation.navigate('Products')}>
+        <Text style={styles.productsHeader}>{STRINGS.myProducts}</Text>
         <View style={styles.folderLayerTwo} />
         <View style={styles.folderLayerOne} />
-        <TouchableOpacity style={styles.explorePanel} onPress={() => navigation.navigate('Products')}>
+        <View style={styles.explorePanel} pointerEvents="none">
           <View style={styles.exploreTextBox}>
             <Text style={styles.exploreText}>{STRINGS.exploreText}</Text>
             <PrimaryButton style={styles.exploreButton}>{STRINGS.exploreButton}</PrimaryButton>
           </View>
           <Ionicons name="briefcase" size={40} color={COLORS.primary} style={styles.exploreIcon} />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
 
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
     </Animated.ScrollView>
@@ -210,6 +214,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginRight: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionIconContainer: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 6,
   },
   actionText: {
     fontFamily: 'Poppins_400Regular',
@@ -238,9 +253,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     position: 'relative',
   },
+  productsHeader: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 16,
+    color: COLORS.black,
+    marginBottom: 10,
+  },
   folderLayerOne: {
     position: 'absolute',
-    top: 5,
+    bottom: 65,
     alignSelf: 'center',
     width: '90%',
     height: 20,
@@ -250,7 +271,7 @@ const styles = StyleSheet.create({
   },
   folderLayerTwo: {
     position: 'absolute',
-    top: 0,
+    bottom: 70,
     alignSelf: 'center',
     width: '80%',
     height: 20,
