@@ -55,9 +55,8 @@ export default function ProductsScreen({ onLogout }) {
       key: 'wealth',
       title: 'My Wealth',
       text: 'Learn how to grow, manage, and protect your financial future.',
-      color: withOpacity(COLORS.tertiary, 0.8),
-      buttonColor: withOpacity(COLORS.tertiary, 0.8),
-      icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.tertiary },
+      color: 'rgba(42,126,53,0.4)',
+      icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.primary },
     },
   ];
 
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
   },
   folderLayerOne: {
     position: 'absolute',
-    bottom: 65,
+    bottom: 145,
     alignSelf: 'center',
     width: '90%',
     height: 20,
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   },
   folderLayerTwo: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 160,
     alignSelf: 'center',
     width: '80%',
     height: 20,
