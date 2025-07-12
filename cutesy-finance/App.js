@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import WelcomeScreen from './components/WelcomeScreen';
 import RegisterScreen from './components/RegisterScreen';
 import Tabs from './components/Tabs';
+import InsuranceListScreen from './components/InsuranceListScreen';
 import { setBaseUrl } from './services/LoginService';
 
 const Stack = createNativeStackNavigator();
@@ -54,10 +55,15 @@ export default function App() {
               <Stack.Screen name="Register" component={RegisterScreen} />
             </>
           ) : (
-            // Once authenticated show the main tab navigator
-            <Stack.Screen name="Tabs">
-              {(props) => <Tabs {...props} onLogout={() => setLoggedIn(false)} />}
-            </Stack.Screen>
+            // Once authenticated show the main tab navigator and additional screens
+            <>
+              <Stack.Screen name="Tabs">
+                {(props) => (
+                  <Tabs {...props} onLogout={() => setLoggedIn(false)} />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="InsuranceList" component={InsuranceListScreen} />
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

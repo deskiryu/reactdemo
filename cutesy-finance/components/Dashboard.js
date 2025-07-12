@@ -103,7 +103,12 @@ export default function Dashboard({ onLogout }) {
         <DetailModal onClose={() => setDetailVisible(false)} />
       </Modal>
       {/* Burger drawer menu */}
-      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+      <DrawerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onLogout={onLogout}
+        onHome={() => navigation.navigate('Home')}
+      />
     </Animated.View>
   );
 }

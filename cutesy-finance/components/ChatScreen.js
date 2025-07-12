@@ -160,7 +160,12 @@ export default function ChatScreen({ onLogout }) {
           <Ionicons name="paper-plane" size={20} color="#fff" />
         </TouchableOpacity>
       </View>
-      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+      <DrawerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onLogout={onLogout}
+        onHome={() => navigation.navigate('Chat')}
+      />
       <Modal visible={!!videoUrl} transparent onRequestClose={() => setVideoUrl(null)}>
         <View style={styles.modalBg}>
           <TouchableOpacity style={styles.close} onPress={() => setVideoUrl(null)}>
