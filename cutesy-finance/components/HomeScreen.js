@@ -103,7 +103,10 @@ export default function HomeScreen({ navigation, onLogout }) {
               {STRINGS.exploreButton}
             </PrimaryButton>
           </View>
-          <Ionicons name="briefcase" size={40} color={COLORS.primary} style={styles.exploreIcon} />
+          <Image
+            source={require('../assets/Acknowledgment.png')}
+            style={styles.productsImage}
+          />
         </View>
       </View>
 
@@ -163,10 +166,20 @@ const styles = StyleSheet.create({
   },
   budgetBtn: {
     alignSelf: 'flex-start',
+    marginTop: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   budgetImage: {
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
+    marginLeft: 10,
+    resizeMode: 'contain',
+  },
+  productsImage: {
+    width: 70,
+    height: 70,
     marginLeft: 10,
     resizeMode: 'contain',
   },
@@ -210,7 +223,11 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   profileBtn: {
-    paddingHorizontal: 12,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   actionScroll: {
     width: '100%',

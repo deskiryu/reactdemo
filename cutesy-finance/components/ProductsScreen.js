@@ -115,10 +115,11 @@ export default function ProductsScreen({ onLogout }) {
                   <Text style={styles.insuranceType}>{String(ins.insType || ins.InsType)}</Text>
                   <View style={styles.insuranceNameRow}>
                     <Text style={styles.insuranceName}>{ins.name || ins.Name}</Text>
-                    <PrimaryButton style={styles.reviewButton} textStyle={styles.reviewButtonText}>
-                      Book review
-                    </PrimaryButton>
+
                   </View>
+                  <PrimaryButton style={styles.reviewButton} textStyle={styles.reviewButtonText}>
+                    Book review
+                  </PrimaryButton>
                 </View>
                 <View style={styles.reviewSection}>
                   <Text style={styles.reviewLabel}>Review date</Text>
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
   },
   folderLayerTwo: {
     position: 'absolute',
-    bottom: 157,
+    bottom: 155,
     alignSelf: 'center',
     width: '80%',
     height: 20,
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     borderRadius: 12,
-    minHeight: SCREEN_HEIGHT * 0.18,    
+    minHeight: SCREEN_HEIGHT * 0.18,
     padding: 15,
     alignItems: 'center',
     marginTop: 30,
@@ -241,8 +242,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 5,
-    width: 40,
-    height: 40,
+    width: 70,
+    height: 70,
     resizeMode: 'contain',
   },
   insurancePanel: {
@@ -250,8 +251,8 @@ const styles = StyleSheet.create({
   },
   insuranceIcon: {
     marginRight: 10,
-    width: 30,
-    height: 30,
+    width: 70,
+    height: 70,
     resizeMode: 'contain',
   },
   insuranceInfo: {
@@ -276,6 +277,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 20,
+    width: '80%',
   },
   reviewButtonText: {
     fontSize: 12,
