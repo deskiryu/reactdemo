@@ -154,9 +154,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
     color: COLORS.black,
-    marginTop: 10,
     marginBottom: 10,
     marginLeft: 50,
+    marginTop: 5,
     alignSelf: 'flex-start',
   },
   budgetBox: {
