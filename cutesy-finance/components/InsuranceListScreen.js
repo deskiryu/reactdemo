@@ -90,10 +90,10 @@ export default function InsuranceListScreen({ navigation, route }) {
           return (
             <View key={idx} style={styles.panel}>
               <View style={styles.topRow}>
-                <Image
-                  source={require('../assets/shield-halved-solid.png')}
-                  style={styles.typeIcon}
-                />
+        <Image
+          source={require('../assets/myinsurance.png')}
+          style={styles.insuranceImage}
+        />
                 <View style={styles.nameBox}>
                   <Text style={styles.name}>{ins.name || ins.Name}</Text>
                   <Text style={styles.type}>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  typeIcon: {
+  insuranceImage: {
     width: '20%',
     height: 40,
     resizeMode: 'contain',
@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
   costFreq: {
     fontFamily: 'Poppins_400Regular',
     color: 'rgba(0,0,0,0.6)',
+      backgroundColor: withOpacity(COLORS.secondary, 0.8), 
   },
   separator: {
     height: 1,
