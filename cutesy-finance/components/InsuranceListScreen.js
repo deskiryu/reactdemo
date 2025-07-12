@@ -148,15 +148,51 @@ export default function InsuranceListScreen({ navigation, route }) {
                 5,
                 true
               )}
+              {!!notes && (
+                <>
+                  <View style={styles.fullSeparator} />
+                  <View style={styles.addonHeader}>
+                    <Image
+                      source={require('../assets/receipt-text.png')}
+                      style={styles.addonIcon}
+                    />
+                    <Text style={styles.addonTitleText}>Add on Benefits</Text>
+                  </View>
+                  {renderBenefits(notes)}
+                </>
+              )}
+
+              {Array.isArray(ins.supportingDocuments || ins.SupportingDocuments) &&
+              (ins.supportingDocuments || ins.SupportingDocuments).length > 0 && (
+                <>
+                  {!notes && <View style={styles.fullSeparator} />}
+                  {(ins.supportingDocuments || ins.SupportingDocuments).map(
+                    (d, i) => (
+                      <View key={i} style={styles.docRow}>
+                        <Image
+                          source={require('../assets/notification-status.png')}
+                          style={styles.docIcon}
+                        />
+                        <Text style={styles.docText}>{d.fileName || d.FileName}</Text>
+                      </View>
+                    )
+                  )}
+                </>
+              )}
+
               <View style={styles.fullSeparator} />
-              <View style={styles.addonHeader}>
+              <TouchableOpacity style={styles.claimBtn} onPress={() => {}}>
+                <Text style={styles.claimBtnText}>Make a claim</Text>
+              </TouchableOpacity>
+              <View style={styles.claimRow}>
                 <Image
-                  source={require('../assets/receipt-text.png')}
-                  style={styles.addonIcon}
+                  source={require('../assets/ClaimNotification.png')}
+                  style={styles.claimIcon}
                 />
-                <Text style={styles.addonTitleText}>Add on Benefits</Text>
+                <Text style={styles.claimText}>
+                  Notify your broker that you want to claim
+                </Text>
               </View>
-              {renderBenefits(notes)}
             </View>
           );
         })}
@@ -316,6 +352,49 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   benefitDesc: {
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.black,
+  },
+  docRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  docIcon: {
+    width: 17,
+    height: 17,
+    resizeMode: 'contain',
+    marginRight: 8,
+  },
+  docText: {
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.black,
+  },
+  claimBtn: {
+    alignSelf: 'flex-start',
+    width: '40%',
+    backgroundColor: withOpacity(COLORS.secondary, 0.8),
+    paddingVertical: 6,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  claimBtnText: {
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.black,
+    fontSize: 14,
+  },
+  claimRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  claimIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+    marginRight: 8,
+  },
+  claimText: {
     fontFamily: 'Poppins_400Regular',
     color: COLORS.black,
   },
