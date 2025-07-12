@@ -4,7 +4,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function DrawerMenu({ visible, onClose, onLogout }) {
+export default function DrawerMenu({ visible, onClose, onLogout, onHome }) {
+  const handleHome = () => {
+    onClose && onClose();
+    if (onHome) onHome();
+  };
   const options = [
     { label: 'Option A', icon: 'star' },
     { label: 'Option B', icon: 'planet' },
@@ -25,7 +29,7 @@ export default function DrawerMenu({ visible, onClose, onLogout }) {
       <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <TouchableOpacity style={styles.backdrop} onPress={onClose} />
         <View style={styles.menu} pointerEvents="auto">
-          <TouchableOpacity onPress={onClose} style={[styles.itemRow, styles.homeButton]}>
+          <TouchableOpacity onPress={handleHome} style={[styles.itemRow, styles.homeButton]}>
             <Ionicons name="home" size={20} color="#fff" style={styles.itemIcon} />
             <Text style={styles.item}>Home</Text>
           </TouchableOpacity>

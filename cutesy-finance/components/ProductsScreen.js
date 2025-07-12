@@ -109,7 +109,9 @@ export default function ProductsScreen({ navigation, onLogout }) {
               key={p.key}
               style={[styles.panel, { backgroundColor: p.color }]}
               activeOpacity={0.8}
-              onPress={() => navigation.navigate('InsuranceList')}
+              onPress={() =>
+                navigation.navigate('InsuranceList', { insurances })
+              }
             >
               <Text style={styles.panelHeader}>{p.title}</Text>
               <View style={styles.folderLayerTwo} />
@@ -160,6 +162,7 @@ export default function ProductsScreen({ navigation, onLogout }) {
           visible={menuVisible}
           onClose={() => setMenuVisible(false)}
           onLogout={onLogout}
+          onHome={() => navigation.navigate('Products')}
         />
       </ScrollView>
     </Animated.View>

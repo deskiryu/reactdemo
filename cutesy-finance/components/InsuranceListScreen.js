@@ -8,17 +8,18 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import DrawerMenu from './DrawerMenu';
-import { COLORS } from './Theme';
+import { COLORS, withOpacity } from './Theme';
 import { getInsurance } from '../services/InsuranceService';
 import { InsuranceEnum } from '../enums';
 import { getEnumKeyByValue } from '../utils/enumUtils';
 
-export default function InsuranceListScreen({ navigation }) {
-  const [insurances, setInsurances] = useState([]);
-  const [menuVisible, setMenuVisible] = useState(false);
+export default function InsuranceListScreen({ navigation, route }) {
+  const [insurances, setInsurances] = useState(
+    Array.isArray(route?.params?.insurances) ? route.params.insurances : []
+  );
 
   useEffect(() => {
+    if (insurances.length > 0) return;
     const load = async () => {
       try {
         const data = await getInsurance();
@@ -30,7 +31,7 @@ export default function InsuranceListScreen({ navigation }) {
       }
     };
     load();
-  }, []);
+  }, [insurances]);
 
   const renderRow = (label, value, icon, index, last = false) => (
     <View key={index}>
@@ -67,14 +68,15 @@ export default function InsuranceListScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={24} color={COLORS.textDark} />
-      </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-        <Ionicons name="chevron-back" size={24} color={COLORS.textDark} />
+        <Ionicons
+          name="chevron-back"
+          size={24}
+          color={withOpacity(COLORS.primary, 0.6)}
+        />
       </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.header}>My Insurance</Text>
+        <Text style={styles.header}>Insurance</Text>
         {insurances.map((ins, idx) => {
           const startDate = new Date(ins.startDate || ins.StartDate || 0);
           const endDate = new Date(ins.endDate || ins.EndDate || 0);
@@ -159,7 +161,6 @@ export default function InsuranceListScreen({ navigation }) {
           );
         })}
       </ScrollView>
-      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} />
     </View>
   );
 }
@@ -174,18 +175,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 40,
   },
-  burger: {
+  back: {
     position: 'absolute',
     left: 10,
     top: 40,
-    padding: 4,
-    zIndex: 1,
-  },
-  back: {
-    position: 'absolute',
-    left: 50,
-    top: 40,
-    padding: 4,
+    padding: 6,
+    borderRadius: 20,
+    backgroundColor: withOpacity(COLORS.primary, 0.2),
     zIndex: 1,
   },
   header: {
@@ -193,9 +189,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     color: COLORS.black,
     marginBottom: 10,
-    marginLeft: 50,
     marginTop: 5,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   panel: {
     width: '90%',
