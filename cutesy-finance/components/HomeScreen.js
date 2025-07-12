@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   },
   folderLayerOne: {
     position: 'absolute',
-    bottom: 145,
+    bottom: 139,
     alignSelf: 'center',
     width: '90%',
     height: 20,
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   },
   folderLayerTwo: {
     position: 'absolute',
-    bottom: 160,
+    bottom: 154,
     alignSelf: 'center',
     width: '80%',
     height: 20,
@@ -304,6 +304,10 @@ const styles = StyleSheet.create({
   },
   exploreButton: {
     alignSelf: 'flex-start',
+    marginTop: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   exploreIcon: {
     marginLeft: 5,
