@@ -4,10 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS, PrimaryButton, withOpacity } from './Theme';
 import { getInsurance } from '../services/InsuranceService';
+import { InsuranceEnum } from '../enums';
+import { getEnumKeyByValue } from '../utils/enumUtils';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export default function ProductsScreen({ onLogout }) {
+export default function ProductsScreen({ navigation, onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [insurances, setInsurances] = useState([]);
   const drawerAnim = useRef(new Animated.Value(0)).current;
@@ -103,19 +105,30 @@ export default function ProductsScreen({ onLogout }) {
           }
 
           return (
-            <View key={p.key} style={[styles.panel, { backgroundColor: p.color }]}>
+            <TouchableOpacity
+              key={p.key}
+              style={[styles.panel, { backgroundColor: p.color }]}
+              activeOpacity={0.8}
+              onPress={() =>
+                navigation.navigate('InsuranceList', { insurances })
+              }
+            >
               <Text style={styles.panelHeader}>{p.title}</Text>
               <View style={styles.folderLayerTwo} />
               <View style={styles.folderLayerOne} />
               <View style={[styles.panelInner, styles.insurancePanel]}>
                 <Image source={p.image} style={styles.insuranceIcon} />
                 <View style={styles.insuranceInfo}>
-                  <Text style={styles.insuranceType}>{String(ins.insType || ins.InsType)}</Text>
+                  <Text style={styles.insuranceType}>{getEnumKeyByValue(InsuranceEnum, ins.insType || ins.InsType)}</Text>
                   <View style={styles.insuranceNameRow}>
                     <Text style={styles.insuranceName}>{ins.name || ins.Name}</Text>
 
                   </View>
-                  <PrimaryButton style={styles.reviewButton} textStyle={styles.reviewButtonText}>
+                  <PrimaryButton
+                    style={styles.reviewButton}
+                    textStyle={styles.reviewButtonText}
+                    onPress={(e) => e.stopPropagation()}
+                  >
                     Book review
                   </PrimaryButton>
                 </View>
@@ -127,7 +140,7 @@ export default function ProductsScreen({ onLogout }) {
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }
         return (
@@ -149,6 +162,7 @@ export default function ProductsScreen({ onLogout }) {
           visible={menuVisible}
           onClose={() => setMenuVisible(false)}
           onLogout={onLogout}
+          onHome={() => navigation.navigate('Products')}
         />
       </ScrollView>
     </Animated.View>

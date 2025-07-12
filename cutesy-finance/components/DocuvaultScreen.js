@@ -198,6 +198,7 @@ export default function DocuvaultScreen({ onLogout }) {
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
         onLogout={onLogout}
+        onHome={() => navigation.navigate('Docuvault')}
       />
     </Animated.View>
   );
