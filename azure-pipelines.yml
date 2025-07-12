@@ -99,11 +99,16 @@ steps:
   displayName: 'Install dependencies'
    
 
-- script: |
-    cd cutesy-finance
-    eas build --platform ios --local --non-interactive --profile production
-  env:
-    EXPO_TOKEN: $(EXPO_TOKEN)
+  - script: |
+      set -ex                          # echo commands as they run
+      export COCOAPODS_PARALLEL_CODE_SIGN=1
+      export EXPO_DEBUG=1              # show verbose EAS output
+      cd cutesy-finance
+      eas build --platform ios --local --non-interactive --profile production
+    env:
+      EXPO_TOKEN: $(EXPO_TOKEN)
+    displayName: 'Run EAS Build (verbose)'
+
 
 
 - script: |
