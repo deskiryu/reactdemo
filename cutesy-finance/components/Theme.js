@@ -94,17 +94,10 @@ export const CHAT_STYLES = {
     justifyContent: 'center',
     height: '100%',
   },
-  waveformIcon: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+  audioWaveImage: {
     width: '100%',
     height: '100%',
-  },
-  waveBar: {
-    width: 4,
-    backgroundColor: COLORS.white,
-    marginHorizontal: 2,
+    resizeMode: 'cover',
   },
 };
 
