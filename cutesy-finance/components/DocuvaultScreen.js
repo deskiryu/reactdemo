@@ -10,13 +10,17 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS } from './Theme';
-import { getDocumentVaultTypes } from '../services/DocumentVaultTypeService';
+import {
+  getDocumentVaultTypes,
+} from '../services/DocumentVaultTypeService';
+import { getRequiredDocuments } from '../services/DocumentsRequirementService';
 
 export default function DocuvaultScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('requested');
   const [vaultTypes, setVaultTypes] = useState([]);
-  const [loadingTypes, setLoadingTypes] = useState(false);
+  const [requirements, setRequirements] = useState([]);
+  const [loadingReqs, setLoadingReqs] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
@@ -29,20 +33,37 @@ export default function DocuvaultScreen({ onLogout }) {
   }, [menuVisible, drawerAnim]);
 
   useEffect(() => {
-    if (activeTab === 'requested' && vaultTypes.length === 0 && !loadingTypes) {
-      loadVaultTypes();
+    if (activeTab === 'requested' && requirements.length === 0 && !loadingReqs) {
+      loadRequirements();
     }
   }, [activeTab]);
 
-  const loadVaultTypes = async () => {
-    setLoadingTypes(true);
+  const loadRequirements = async () => {
+    setLoadingReqs(true);
     try {
-      const data = await getDocumentVaultTypes();
-      setVaultTypes(Array.isArray(data) ? data : []);
+      const [reqData, typeData] = await Promise.all([
+        getRequiredDocuments(),
+        getDocumentVaultTypes(),
+      ]);
+
+      setVaultTypes(Array.isArray(typeData) ? typeData : []);
+
+      const typeMap = new Map();
+      if (Array.isArray(typeData)) {
+        typeData.forEach((t) => typeMap.set(t.id, t));
+      }
+
+      const enriched = Array.isArray(reqData)
+        ? reqData.map((r) => ({
+            ...r,
+            ...(typeMap.get(r.docuVaultType ?? r.docuVaultTypeId) || {}),
+          }))
+        : [];
+      setRequirements(enriched);
     } catch (e) {
-      console.warn('Failed to load document vault types', e);
+      console.warn('Failed to load document requirements', e);
     } finally {
-      setLoadingTypes(false);
+      setLoadingReqs(false);
     }
   };
 
@@ -67,7 +88,7 @@ export default function DocuvaultScreen({ onLogout }) {
     ],
   };
 
-  const uploadsRequested = vaultTypes.length;
+  const uploadsRequested = requirements.length;
   const myUploads = 0;
 
   return (
@@ -120,8 +141,8 @@ export default function DocuvaultScreen({ onLogout }) {
 
       {activeTab === 'requested' && (
         <ScrollView style={styles.reqList} contentContainerStyle={styles.reqContent}>
-          {loadingTypes && <Text style={styles.loadingText}>Loading...</Text>}
-          {vaultTypes.map((r) => (
+          {loadingReqs && <Text style={styles.loadingText}>Loading...</Text>}
+          {requirements.map((r) => (
             <View key={r.id} style={styles.reqPanel}>
               <View style={styles.reqTop}>
                 <Ionicons
