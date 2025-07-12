@@ -30,3 +30,16 @@ The app uses the **Poppins** font via `@expo-google-fonts/poppins`, so the first
 - Dashboard with panels, bottom tabs, burger menu and logout
 
 Everything is heavily commented in the code for learning purposes.
+
+## Services
+
+The app talks to a backend API using a few small service modules. Two of the
+services relate specifically to the document vault feature:
+
+- **DocumentsRequirementService** – fetches the list of document requirements
+  that the user still needs to provide. Each requirement record references a
+  DocuVault type.
+- **DocumentVaultTypeService** – returns metadata for each DocuVault type (name
+  and additional details). The DocuVault type information can be cross-matched
+  with the requirements from `DocumentsRequirementService` to display the
+  correct descriptions on the uploads page.

@@ -1,6 +1,10 @@
 import { getBaseUrl, getToken } from './LoginService';
 import * as SecureStore from 'expo-secure-store';
 
+// Retrieves the list of document requirements that the currently logged in user
+// still needs to supply. Each requirement includes a DocuVault type identifier
+// which can be matched with the metadata returned by DocumentVaultTypeService.
+
 const REQUIRED_PATH = 'DocumentsRequirement/requireddocuments';
 
 export const getRequiredDocuments = async () => {

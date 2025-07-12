@@ -1,6 +1,10 @@
 import { getBaseUrl, getToken } from './LoginService';
 import * as SecureStore from 'expo-secure-store';
 
+// Provides metadata about available DocuVault types. The returned information
+// (name, prompts, etc.) can be used to enrich the requirements loaded via
+// DocumentsRequirementService.
+
 const VAULT_TYPE_PATH = 'documentvaulttype';
 
 export const getDocumentVaultTypes = async () => {
