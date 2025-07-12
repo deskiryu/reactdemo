@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Anima
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS, PrimaryButton, withOpacity } from './Theme';
+import { getInsurance } from '../services/InsuranceService';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function ProductsScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [insurances, setInsurances] = useState([]);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -17,6 +19,20 @@ export default function ProductsScreen({ onLogout }) {
       useNativeDriver: true,
     }).start();
   }, [menuVisible, drawerAnim]);
+
+  useEffect(() => {
+    const loadInsurance = async () => {
+      try {
+        const data = await getInsurance();
+        if (Array.isArray(data) && data.length > 0) {
+          setInsurances(data);
+        }
+      } catch (e) {
+        console.warn('Failed to load insurance', e);
+      }
+    };
+    loadInsurance();
+  }, []);
 
   const animatedStyles = {
     transform: [
@@ -72,6 +88,55 @@ export default function ProductsScreen({ onLogout }) {
       <Text style={styles.header}>Products</Text>
       {panels.map((p) => {
         const IconComponent = p.icon.lib;
+        if (p.key === 'insurance' && insurances.length > 0) {
+          const ins = insurances[0];
+          const reviewDate = new Date(ins.reviewDate || ins.ReviewDate || 0);
+          const expiryDate = new Date(ins.expiryDate || ins.ExpiryDate || 0);
+          const now = new Date();
+          const threeMonths = new Date(now);
+          threeMonths.setMonth(now.getMonth() + 3);
+          let statusLabel = 'Active';
+          let statusColor = 'green';
+          if (expiryDate < now) {
+            statusLabel = 'Lapsed';
+            statusColor = 'red';
+          } else if (expiryDate <= threeMonths) {
+            statusLabel = 'Need Review';
+            statusColor = 'orange';
+          }
+
+          return (
+            <View key={p.key} style={[styles.panel, { backgroundColor: p.color }]}>
+              <Text style={styles.panelHeader}>{p.title}</Text>
+              <View style={styles.folderLayerTwo} />
+              <View style={styles.folderLayerOne} />
+              <View style={[styles.panelInner, styles.insurancePanel]}>
+                <IconComponent
+                  name={p.icon.name}
+                  size={30}
+                  color={p.icon.color}
+                  style={styles.insuranceIcon}
+                />
+                <View style={styles.insuranceInfo}>
+                  <Text style={styles.insuranceType}>{String(ins.insType || ins.InsType)}</Text>
+                  <View style={styles.insuranceNameRow}>
+                    <Text style={styles.insuranceName}>{ins.name || ins.Name}</Text>
+                    <PrimaryButton style={styles.reviewButton} textStyle={styles.reviewButtonText}>
+                      Book review
+                    </PrimaryButton>
+                  </View>
+                </View>
+                <View style={styles.reviewSection}>
+                  <Text style={styles.reviewLabel}>Review date</Text>
+                  <Text style={styles.reviewDate}>{isNaN(reviewDate) ? '' : reviewDate.toLocaleDateString()}</Text>
+                  <View style={[styles.statusPill, { backgroundColor: statusColor }]}>
+                    <Text style={styles.statusText}>{statusLabel}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          );
+        }
         return (
           <View key={p.key} style={[styles.panel, { backgroundColor: p.color }]}>
             <Text style={styles.panelHeader}>{p.title}</Text>
@@ -187,5 +252,61 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 5,
+  },
+  insurancePanel: {
+    alignItems: 'center',
+  },
+  insuranceIcon: {
+    marginRight: 10,
+  },
+  insuranceInfo: {
+    flex: 1,
+  },
+  insuranceType: {
+    fontFamily: 'Poppins_400Regular',
+    fontWeight: 'bold',
+    color: COLORS.black,
+    marginBottom: 4,
+  },
+  insuranceNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  insuranceName: {
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.black,
+    marginRight: 8,
+  },
+  reviewButton: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+  },
+  reviewButtonText: {
+    fontSize: 12,
+  },
+  reviewSection: {
+    width: '30%',
+    alignItems: 'flex-start',
+  },
+  reviewLabel: {
+    fontFamily: 'Poppins_400Regular',
+    fontWeight: 'bold',
+    color: COLORS.black,
+  },
+  reviewDate: {
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.black,
+    marginBottom: 4,
+  },
+  statusPill: {
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  statusText: {
+    color: COLORS.white,
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
   },
 });
