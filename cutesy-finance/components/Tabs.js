@@ -4,7 +4,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { View, Text, StyleSheet } from 'react-native';
-import Dashboard from './Dashboard';
+import HomeScreen from './HomeScreen';
+import ProductsScreen from './ProductsScreen';
 import DocuvaultScreen from './DocuvaultScreen';
 import ChatScreen from './ChatScreen';
 
@@ -28,29 +29,25 @@ export default function Tabs({ onLogout }) {
           let iconName, IconComponent;
 
           switch (route.name) {
-            case 'Dashboard':
-              iconName = 'folder';
+            case 'Home':
+              iconName = 'home';
+              IconComponent = Ionicons;
+              break;
+            case 'Products':
+              iconName = 'folder-open';
               IconComponent = Ionicons;
               break;
             case 'Docuvault':
-              iconName = 'arrow-up-circle';
+              iconName = 'document-outline';
               IconComponent = Ionicons;
               break;
             case 'Chat':
               iconName = 'chatbubbles';
               IconComponent = Ionicons;
               break;
-            case 'Logout':
-              iconName = 'log-out';
-              IconComponent = Ionicons;
-              break;
           }
 
           const iconColor = focused ? '#cebffa' : '#ffffff';
-
-          if (route.name === 'Logout') {
-            return <IconComponent name={iconName} size={size} color={iconColor} />;
-          }
 
           return focused ? (
             <View style={styles.pill}>
@@ -63,28 +60,20 @@ export default function Tabs({ onLogout }) {
         },
       })}
     >
-      <Tab.Screen name="Dashboard" options={{ headerShown: false }}>
-        {() => <Dashboard onLogout={onLogout} />}
+      <Tab.Screen name="Home" options={{ headerShown: false }}>
+        {() => <HomeScreen onLogout={onLogout} />}
+      </Tab.Screen>
+
+      <Tab.Screen name="Products" options={{ headerShown: false }}>
+        {() => <ProductsScreen onLogout={onLogout} />}
       </Tab.Screen>
 
       <Tab.Screen name="Docuvault" options={{ headerShown: false }}>
         {() => <DocuvaultScreen onLogout={onLogout} />}
       </Tab.Screen>
+
       <Tab.Screen name="Chat" options={{ headerShown: false }}>
         {() => <ChatScreen onLogout={onLogout} />}
-      </Tab.Screen>
-
-      <Tab.Screen
-        name="Logout"
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            onLogout();
-          },
-        }}
-        options={{ headerShown: false }}
-      >
-        {() => null}
       </Tab.Screen>
     </Tab.Navigator>
 

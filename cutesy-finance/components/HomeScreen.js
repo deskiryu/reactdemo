@@ -1,0 +1,257 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, ScrollView, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import DrawerMenu from './DrawerMenu';
+import { COLORS, PrimaryButton } from './Theme';
+import { STRINGS } from './strings';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+export default function HomeScreen({ navigation, onLogout }) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const drawerAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(drawerAnim, {
+      toValue: menuVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [menuVisible, drawerAnim]);
+
+  const animatedStyles = {
+    transform: [
+      {
+        translateX: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 180],
+        }),
+      },
+      {
+        scale: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.85],
+        }),
+      },
+    ],
+  };
+
+  const actions = [
+    STRINGS.actionMortgage,
+    STRINGS.actionInsurance,
+    STRINGS.actionWealth,
+    STRINGS.actionGoal,
+  ];
+
+  return (
+    <Animated.ScrollView style={[styles.container, animatedStyles]} contentContainerStyle={styles.content}>
+      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
+        <Ionicons name="menu" size={32} color={COLORS.primary} />
+      </TouchableOpacity>
+
+      <View style={styles.budgetBox}>
+        <View style={styles.budgetText}>
+          <Text style={styles.budgetTitle}>{STRINGS.budgetPlannerTitle}</Text>
+          <Text style={styles.budgetDesc}>{STRINGS.budgetPlannerDesc}</Text>
+          <PrimaryButton style={styles.budgetBtn}>{STRINGS.budgetPlannerCta}</PrimaryButton>
+        </View>
+        <Ionicons name="wallet" size={60} color={COLORS.primary} style={styles.budgetIcon} />
+      </View>
+
+      <View style={styles.profileBox}>
+        <View style={styles.progressCircle}>
+          <Text style={styles.progressText}>60%</Text>
+        </View>
+        <View style={styles.profileText}>
+          <Text style={styles.profileTitle}>{STRINGS.profileTitle}</Text>
+          <Text style={styles.profileProgress}>{STRINGS.profileProgress}</Text>
+        </View>
+        <PrimaryButton style={styles.profileBtn}>{STRINGS.profileCta}</PrimaryButton>
+      </View>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.actionScroll} contentContainerStyle={styles.actionContent}>
+        {actions.map((a) => (
+          <View key={a} style={styles.actionPanel}>
+            <Text style={styles.actionText}>{a}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      <View style={styles.separator} />
+
+      <Text style={styles.sectionTitle}>{STRINGS.myProducts}</Text>
+
+      <View style={styles.productsBox}>
+        <Ionicons name="folder" size={80} color="#fff" style={styles.folderIcon} />
+        <TouchableOpacity style={styles.explorePanel} onPress={() => navigation.navigate('Products')}>
+          <View style={styles.exploreTextBox}>
+            <Text style={styles.exploreText}>{STRINGS.exploreText}</Text>
+            <PrimaryButton style={styles.exploreButton}>{STRINGS.exploreButton}</PrimaryButton>
+          </View>
+          <Ionicons name="briefcase" size={40} color={COLORS.primary} style={styles.exploreIcon} />
+        </TouchableOpacity>
+      </View>
+
+      <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+    </Animated.ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 50,
+  },
+  content: {
+    alignItems: 'center',
+    paddingBottom: 40,
+  },
+  burger: {
+    position: 'absolute',
+    left: 10,
+    top: 50,
+    padding: 6,
+    zIndex: 1,
+  },
+  budgetBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    backgroundColor: 'rgba(206,191,250,0.4)',
+    borderRadius: 12,
+    padding: 15,
+    minHeight: SCREEN_HEIGHT * 0.2,
+    marginTop: 20,
+  },
+  budgetText: {
+    flex: 1,
+  },
+  budgetTitle: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 18,
+    color: COLORS.black,
+    marginBottom: 4,
+  },
+  budgetDesc: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: COLORS.black,
+    marginBottom: 10,
+  },
+  budgetBtn: {
+    alignSelf: 'flex-start',
+  },
+  budgetIcon: {
+    marginLeft: 10,
+  },
+  profileBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    backgroundColor: 'rgba(206,191,250,0.2)',
+    borderRadius: 12,
+    padding: 15,
+    minHeight: SCREEN_HEIGHT * 0.1,
+    marginTop: 20,
+  },
+  progressCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  progressText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    color: COLORS.black,
+  },
+  profileText: {
+    flex: 1,
+  },
+  profileTitle: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.black,
+  },
+  profileProgress: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    color: COLORS.black,
+  },
+  profileBtn: {
+    paddingHorizontal: 12,
+  },
+  actionScroll: {
+    width: '100%',
+    marginTop: 15,
+  },
+  actionContent: {
+    paddingHorizontal: 20,
+  },
+  actionPanel: {
+    backgroundColor: '#eee',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginRight: 10,
+  },
+  actionText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    color: COLORS.black,
+  },
+  separator: {
+    width: '90%',
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 20,
+  },
+  sectionTitle: {
+    width: '90%',
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 18,
+    marginBottom: 10,
+    color: COLORS.black,
+  },
+  productsBox: {
+    width: '90%',
+    backgroundColor: 'rgba(206,191,250,0.8)',
+    borderRadius: 12,
+    padding: 15,
+    minHeight: SCREEN_HEIGHT * 0.3,
+    justifyContent: 'space-between',
+  },
+  folderIcon: {
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+  explorePanel: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 15,
+    alignItems: 'center',
+  },
+  exploreTextBox: {
+    flex: 1,
+    marginRight: 10,
+  },
+  exploreText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: COLORS.black,
+    marginBottom: 6,
+  },
+  exploreButton: {
+    alignSelf: 'flex-start',
+  },
+  exploreIcon: {
+    marginLeft: 5,
+  },
+});
