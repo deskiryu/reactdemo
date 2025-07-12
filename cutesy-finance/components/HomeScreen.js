@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, ScrollView, Dimensions, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS, PrimaryButton } from './Theme';
@@ -57,7 +57,10 @@ export default function HomeScreen({ navigation, onLogout }) {
           <Text style={styles.budgetDesc}>{STRINGS.budgetPlannerDesc}</Text>
           <PrimaryButton style={styles.budgetBtn}>{STRINGS.budgetPlannerCta}</PrimaryButton>
         </View>
-        <Ionicons name="wallet" size={60} color={COLORS.primary} style={styles.budgetIcon} />
+        <Image
+          source={require('../assets/coinpurse.png')}
+          style={styles.budgetImage}
+        />
       </View>
 
       <View style={styles.profileBox}>
@@ -161,8 +164,11 @@ const styles = StyleSheet.create({
   budgetBtn: {
     alignSelf: 'flex-start',
   },
-  budgetIcon: {
+  budgetImage: {
+    width: 60,
+    height: 60,
     marginLeft: 10,
+    resizeMode: 'contain',
   },
   profileBox: {
     flexDirection: 'row',
