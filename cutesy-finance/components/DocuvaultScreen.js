@@ -10,13 +10,14 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS } from './Theme';
-import { getRequiredDocuments } from '../services/DocumentsRequirementService';
+import { getDocumentVaultTypes } from '../services/DocumentVaultTypeService';
 
 export default function DocuvaultScreen({ onLogout }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('requested');
-  const [requirements, setRequirements] = useState([]);
-  const [loadingReqs, setLoadingReqs] = useState(false);
+  const [vaultTypes, setVaultTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState(false);
+  const [expandedId, setExpandedId] = useState(null);
   const drawerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -28,21 +29,25 @@ export default function DocuvaultScreen({ onLogout }) {
   }, [menuVisible, drawerAnim]);
 
   useEffect(() => {
-    if (activeTab === 'requested' && requirements.length === 0 && !loadingReqs) {
-      loadRequirements();
+    if (activeTab === 'requested' && vaultTypes.length === 0 && !loadingTypes) {
+      loadVaultTypes();
     }
   }, [activeTab]);
 
-  const loadRequirements = async () => {
-    setLoadingReqs(true);
+  const loadVaultTypes = async () => {
+    setLoadingTypes(true);
     try {
-      const data = await getRequiredDocuments();
-      setRequirements(Array.isArray(data) ? data : []);
+      const data = await getDocumentVaultTypes();
+      setVaultTypes(Array.isArray(data) ? data : []);
     } catch (e) {
-      console.warn('Failed to load requirements', e);
+      console.warn('Failed to load document vault types', e);
     } finally {
-      setLoadingReqs(false);
+      setLoadingTypes(false);
     }
+  };
+
+  const toggleInfo = (id) => {
+    setExpandedId((prev) => (prev === id ? null : id));
   };
 
   const animatedStyles = {
@@ -62,7 +67,7 @@ export default function DocuvaultScreen({ onLogout }) {
     ],
   };
 
-  const uploadsRequested = requirements.length;
+  const uploadsRequested = vaultTypes.length;
   const myUploads = 0;
 
   return (
@@ -115,16 +120,34 @@ export default function DocuvaultScreen({ onLogout }) {
 
       {activeTab === 'requested' && (
         <ScrollView style={styles.reqList} contentContainerStyle={styles.reqContent}>
-          {loadingReqs && <Text style={styles.loadingText}>Loading...</Text>}
-          {requirements.map((r) => (
+          {loadingTypes && <Text style={styles.loadingText}>Loading...</Text>}
+          {vaultTypes.map((r) => (
             <View key={r.id} style={styles.reqPanel}>
               <View style={styles.reqTop}>
-                <Ionicons name="document-text" size={24} color={COLORS.textDark} style={styles.reqIcon} />
-                <Text style={styles.reqDesc}>{r.description}</Text>
+                <Ionicons
+                  name="document-text"
+                  size={24}
+                  color={COLORS.textDark}
+                  style={styles.reqIcon}
+                />
+                <Text style={styles.reqDesc}>{r.name}</Text>
+                <TouchableOpacity
+                  onPress={() => toggleInfo(r.id)}
+                  style={styles.infoBtn}
+                >
+                  <Ionicons
+                    name="information-circle-outline"
+                    size={20}
+                    color={COLORS.textDark}
+                  />
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.uploadBtn}>
                   <Text style={styles.uploadBtnText}>Upload Now</Text>
                 </TouchableOpacity>
               </View>
+              {expandedId === r.id && (
+                <Text style={styles.infoText}>{r.additionalDetail}</Text>
+              )}
               <View style={styles.reqBottom}>
                 <View style={styles.pendingPill}>
                   <Text style={styles.pendingText}>Pending</Text>
@@ -285,6 +308,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     color: COLORS.textDark,
     fontSize: 14,
+  },
+  infoBtn: {
+    paddingHorizontal: 6,
+  },
+  infoText: {
+    marginTop: 6,
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.textDark,
+    fontSize: 12,
   },
   uploadBtn: {
     backgroundColor: COLORS.primary,
