@@ -1,0 +1,16 @@
+export const WarningType = Object.freeze({
+  SelfEmployedMortgageNoProtection: 1,
+  SelfEmployedMortgageLifeCINoIP: 2,
+  SelfEmployedMortgageLifeNoCINoIP: 3,
+  SelfEmployedMortgageCINoLifeNoIP: 4,
+  SelfEmployedMortgageCIIPNoLife: 5,
+  SelfEmployedMortgageIPNoLifeNoCI: 6,
+  EmployedMortgageNoProtection: 7,
+  EmployedMortgageHasLifeNoCriticalIlness: 8,
+  EmployedMortgageHasCriticalIlnessNoLife: 9,
+  PensionNoGoals: 10,
+  PensionOrInvestmentNoProtection: 11,
+  PensionOrInvestmentLifeNoIP: 12,
+  PensionOrInvestmentIPNoLife: 13,
+  HightNetWorthNoWillNorTrust: 14,
+});
