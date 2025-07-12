@@ -86,18 +86,23 @@ export default function HomeScreen({ navigation, onLogout }) {
 
       <Text style={styles.sectionTitle}>Products</Text>
 
-      <TouchableOpacity style={styles.productsBox} activeOpacity={0.8} onPress={() => navigation.navigate('Products')}>
+      <View style={styles.productsBox}>
         <Text style={styles.productsHeader}>{STRINGS.myProducts}</Text>
         <View style={styles.folderLayerTwo} />
         <View style={styles.folderLayerOne} />
-        <View style={styles.explorePanel} pointerEvents="none">
+        <View style={styles.explorePanel}>
           <View style={styles.exploreTextBox}>
             <Text style={styles.exploreText}>{STRINGS.exploreText}</Text>
-            <PrimaryButton style={styles.exploreButton}>{STRINGS.exploreButton}</PrimaryButton>
+            <PrimaryButton
+              style={styles.exploreButton}
+              onPress={() => navigation.navigate('Products')}
+            >
+              {STRINGS.exploreButton}
+            </PrimaryButton>
           </View>
           <Ionicons name="briefcase" size={40} color={COLORS.primary} style={styles.exploreIcon} />
         </View>
-      </TouchableOpacity>
+      </View>
 
       <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
     </Animated.ScrollView>

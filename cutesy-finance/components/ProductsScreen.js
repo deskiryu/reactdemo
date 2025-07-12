@@ -1,11 +1,39 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { COLORS } from './Theme';
+import DrawerMenu from './DrawerMenu';
+import { COLORS, PrimaryButton } from './Theme';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export default function ProductsScreen() {
+export default function ProductsScreen({ onLogout }) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const drawerAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(drawerAnim, {
+      toValue: menuVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [menuVisible, drawerAnim]);
+
+  const animatedStyles = {
+    transform: [
+      {
+        translateX: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 180],
+        }),
+      },
+      {
+        scale: drawerAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.85],
+        }),
+      },
+    ],
+  };
   const panels = [
     {
       key: 'mortgage',
@@ -25,13 +53,20 @@ export default function ProductsScreen() {
       key: 'wealth',
       title: 'My Wealth',
       text: 'Learn how to grow, manage, and protect your financial future.',
-      color: 'rgba(206,191,250,0.6)',
+      color: 'rgba(42,126,53,0.6)',
       icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.primary },
     },
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <Animated.ScrollView
+      style={[styles.container, animatedStyles]}
+      contentContainerStyle={styles.content}
+    >
+      <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
+        <Ionicons name="menu" size={24} color={COLORS.textDark} />
+      </TouchableOpacity>
+      <Text style={styles.header}>Products</Text>
       {panels.map((p) => {
         const IconComponent = p.icon.lib;
         return (
@@ -39,9 +74,10 @@ export default function ProductsScreen() {
             <Text style={styles.panelHeader}>{p.title}</Text>
             <View style={styles.folderLayerTwo} />
             <View style={styles.folderLayerOne} />
-            <View style={styles.panelInner} pointerEvents="none">
+            <View style={styles.panelInner}>
               <View style={styles.textBox}>
                 <Text style={styles.panelText}>{p.text}</Text>
+                <PrimaryButton style={styles.exploreButton}>Explore Now</PrimaryButton>
               </View>
               <IconComponent
                 name={p.icon.name}
@@ -53,16 +89,38 @@ export default function ProductsScreen() {
           </View>
         );
       })}
-    </ScrollView>
+      <DrawerMenu
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onLogout={onLogout}
+      />
+    </Animated.ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 40,
+    flex: 1,
     backgroundColor: COLORS.white,
+    paddingTop: 40,
+  },
+  content: {
+    alignItems: 'center',
+    paddingBottom: 40,
+  },
+  burger: {
+    position: 'absolute',
+    left: 10,
+    top: 40,
+    padding: 4,
+    zIndex: 1,
+  },
+  header: {
+    fontSize: 18,
+    fontFamily: 'Poppins_400Regular',
+    color: COLORS.primary,
+    marginTop: 10,
+    marginBottom: 10,
   },
   panel: {
     width: '90%',
@@ -115,6 +173,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
     fontSize: 14,
     color: COLORS.black,
+  },
+  exploreButton: {
+    alignSelf: 'flex-start',
+    marginTop: 6,
   },
   icon: {
     marginLeft: 5,
