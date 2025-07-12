@@ -8,7 +8,6 @@ export const STRINGS = {
   actionMortgage: 'Add Mortgage',
   actionInsurance: 'Add Insurance',
   actionWealth: 'Add Wealth',
-  actionGoal: 'Add Goal',
   exploreText: 'Explore your product options from Insurance to Wealth.',
   exploreButton: 'Explore Now',
   myProducts: 'My Products',

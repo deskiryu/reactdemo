@@ -37,10 +37,21 @@ export default function HomeScreen({ navigation, onLogout }) {
   };
 
   const actions = [
-    STRINGS.actionMortgage,
-    STRINGS.actionInsurance,
-    STRINGS.actionWealth,
-    STRINGS.actionGoal,
+    {
+      key: 'mortgage',
+      label: STRINGS.actionMortgage,
+      icon: require('../assets/circle-plus-solid.png'),
+    },
+    {
+      key: 'insurance',
+      label: STRINGS.actionInsurance,
+      icon: require('../assets/shield-halved-solid.png'),
+    },
+    {
+      key: 'wealth',
+      label: STRINGS.actionWealth,
+      icon: require("../assets/wallet-solid 1.png"),
+    },
   ];
 
   return (
@@ -74,13 +85,18 @@ export default function HomeScreen({ navigation, onLogout }) {
         <PrimaryButton style={styles.profileBtn}>{STRINGS.profileCta}</PrimaryButton>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.actionScroll} contentContainerStyle={styles.actionContent}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.actionScroll}
+        contentContainerStyle={styles.actionContent}
+      >
         {actions.map((a) => (
-          <View key={a} style={styles.actionPanel}>
+          <View key={a.key} style={styles.actionPanel}>
             <View style={styles.actionIconContainer}>
-              <Ionicons name="add" size={14} color={COLORS.white} />
+              <Image source={a.icon} style={styles.actionIcon} />
             </View>
-            <Text style={styles.actionText}>{a}</Text>
+            <Text style={styles.actionText}>{a.label}</Text>
           </View>
         ))}
       </ScrollView>
@@ -253,6 +269,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 6,
+  },
+  actionIcon: {
+    width: 14,
+    height: 14,
+    resizeMode: 'contain',
+    tintColor: COLORS.black,
   },
   actionText: {
     fontFamily: 'Poppins_400Regular',
