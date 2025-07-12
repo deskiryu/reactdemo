@@ -127,7 +127,12 @@ export default function HomeScreen({ navigation, onLogout }) {
         </View>
       </View>
 
-        <DrawerMenu visible={menuVisible} onClose={() => setMenuVisible(false)} onLogout={onLogout} />
+        <DrawerMenu
+          visible={menuVisible}
+          onClose={() => setMenuVisible(false)}
+          onLogout={onLogout}
+          onHome={() => navigation.navigate('Home')}
+        />
       </ScrollView>
     </Animated.View>
   );

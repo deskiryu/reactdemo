@@ -12,7 +12,7 @@ export const getInsurance = async () => {
     throw new Error('Missing insurance configuration');
   }
 
-  const url = `${baseUrl.replace(/\/+$/, '')}/${INSURANCE_PATH}/${userId}`;
+  const url = `${baseUrl.replace(/\/+$/, '')}/${INSURANCE_PATH}/${userId}?eagerload=true&supportingDocuments=true&documentLoad=false`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {
