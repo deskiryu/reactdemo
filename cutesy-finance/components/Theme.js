@@ -17,6 +17,15 @@ export const SIZES = {
   padding: 12,
 };
 
+export function withOpacity(hex, opacity = 1) {
+  const normalized = hex.replace('#', '');
+  const bigint = parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r},${g},${b},${opacity})`;
+}
+
 export function PrimaryButton({ children, style, textStyle, ...props }) {
   return (
     <TouchableOpacity style={[styles.primaryButton, style]} {...props}>
