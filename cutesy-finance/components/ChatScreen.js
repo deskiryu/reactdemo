@@ -230,11 +230,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   header: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Poppins_400Regular',
-    color: COLORS.primary,
+    color: COLORS.black,
     marginBottom: 10,
-    marginLeft: 60,
+    marginLeft: 50,
     marginTop: 5,
   },
   scroll: {

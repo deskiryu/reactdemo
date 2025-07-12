@@ -149,11 +149,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   header: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Poppins_400Regular',
-    color: COLORS.primary,
+    color: COLORS.black,
     marginTop: 10,
     marginBottom: 10,
+    marginLeft: 50,
+    alignSelf: 'flex-start',
   },
   budgetBox: {
     flexDirection: 'row',
