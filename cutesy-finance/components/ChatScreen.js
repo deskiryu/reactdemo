@@ -136,7 +136,7 @@ export default function ChatScreen({ onLogout }) {
   return (
     <Animated.View style={[styles.container, animatedStyles]}>
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.burger}>
-        <Ionicons name="menu" size={32} color={COLORS.primary} />
+        <Ionicons name="menu" size={24} color={COLORS.textDark} />
       </TouchableOpacity>
       <Text style={styles.header}>Chats</Text>
       <FlatList
@@ -220,21 +220,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 50,
+    paddingTop: 40,
   },
   burger: {
     position: 'absolute',
     left: 10,
-    top: 50,
-    padding: 6,
+    top: 40,
+    padding: 4,
     zIndex: 1,
   },
   header: {
-    fontSize: 24,
+    fontSize: 16,
     fontFamily: 'Poppins_400Regular',
-    color: COLORS.primary,
-    marginBottom: 30,
-    marginLeft: 60,
+    color: COLORS.black,
+    marginBottom: 10,
+    marginLeft: 50,
     marginTop: 5,
   },
   scroll: {

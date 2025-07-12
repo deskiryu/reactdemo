@@ -3,19 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 
-
-const WaveformIcon = ({ styles }) => {
-  const pattern = [4, 7, 5, 6, 4];
-  const bars = [];
-  for (let r = 0; r < 3; r++) {
-    pattern.forEach((h, i) => {
-      bars.push(
-        <View key={`${r}-${i}`} style={[styles.waveBar, { height: h * 2 }]} />
-      );
-    });
-  }
-  return <View style={styles.waveformIcon}>{bars}</View>;
-};
+const soundwaveImg = require('../assets/soundwave.png');
 
 export default function ChatMessage({ item, previous, styles, setVideoUrl, setAudioUrl, setImageUri, openPdf, openUrl }) {
 
@@ -119,12 +107,15 @@ export default function ChatMessage({ item, previous, styles, setVideoUrl, setAu
             )
           )}
           {item.isAudio && item.audioUrl && (
-            <TouchableOpacity onPress={() => setAudioUrl(item.audioUrl)} style={styles.audioContainer}>
+            <TouchableOpacity
+              onPress={() => setAudioUrl(item.audioUrl)}
+              style={styles.audioContainer}
+            >
               <View style={styles.audioPlay}>
                 <Ionicons name="play-circle" size={32} color="#fff" />
               </View>
               <View style={styles.audioWave}>
-                <WaveformIcon styles={styles} />
+                <Image source={soundwaveImg} style={styles.audioWaveImage} />
               </View>
             </TouchableOpacity>
           )}

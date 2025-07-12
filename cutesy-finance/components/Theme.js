@@ -5,8 +5,8 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export const COLORS = {
   primary: '#cebffa',
-  secondary: '#FEC8D8',
-  tertiary: '#FFDFD3',
+  secondary: '#f1c780',
+  tertiary: '#97dca2',
   white: '#fff',
   textDark: '#555',
   black: '#000',
@@ -16,6 +16,15 @@ export const SIZES = {
   radius: 8,
   padding: 12,
 };
+
+export function withOpacity(hex, opacity = 1) {
+  const normalized = hex.replace('#', '');
+  const bigint = parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r},${g},${b},${opacity})`;
+}
 
 export function PrimaryButton({ children, style, textStyle, ...props }) {
   return (
@@ -85,17 +94,10 @@ export const CHAT_STYLES = {
     justifyContent: 'center',
     height: '100%',
   },
-  waveformIcon: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+  audioWaveImage: {
     width: '100%',
     height: '100%',
-  },
-  waveBar: {
-    width: 4,
-    backgroundColor: COLORS.white,
-    marginHorizontal: 2,
+    resizeMode: 'cover',
   },
 };
 
