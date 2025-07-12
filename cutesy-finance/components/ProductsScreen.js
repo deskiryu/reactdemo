@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Animated, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import DrawerMenu from './DrawerMenu';
 import { COLORS, PrimaryButton, withOpacity } from './Theme';
 import { getInsurance } from '../services/InsuranceService';
@@ -57,7 +57,7 @@ export default function ProductsScreen({ onLogout }) {
       text: 'Explore your mortgage options — from first-time buyers to remortgaging.',
       color: withOpacity(COLORS.primary, 0.8),
       buttonColor: withOpacity(COLORS.primary, 0.8),
-      icon: { lib: Ionicons, name: 'home', color: COLORS.primary },
+      image: require('../assets/mymortgage.png'),
     },
     {
       key: 'insurance',
@@ -65,7 +65,7 @@ export default function ProductsScreen({ onLogout }) {
       text: 'Discover how to protect your home, income, & more with right coverage.',
       color: withOpacity(COLORS.secondary, 0.8),
       buttonColor: withOpacity(COLORS.secondary, 0.8),
-      icon: { lib: Ionicons, name: 'document-text', color: COLORS.secondary },
+      image: require('../assets/myinsurance.png'),
     },
     {
       key: 'wealth',
@@ -73,7 +73,7 @@ export default function ProductsScreen({ onLogout }) {
       text: 'Learn how to grow, manage, and protect your financial future.',
       color: withOpacity(COLORS.tertiary, 0.8),
       buttonColor: withOpacity(COLORS.tertiary, 0.8),
-      icon: { lib: FontAwesome5, name: 'pound-sign', color: COLORS.tertiary },
+      image: require('../assets/mywealth.png'),
     },
   ];
 
@@ -87,7 +87,6 @@ export default function ProductsScreen({ onLogout }) {
       </TouchableOpacity>
       <Text style={styles.header}>Products</Text>
       {panels.map((p) => {
-        const IconComponent = p.icon.lib;
         if (p.key === 'insurance' && insurances.length > 0) {
           const ins = insurances[0];
           const reviewDate = new Date(ins.reviewDate || ins.ReviewDate || 0);
@@ -111,12 +110,7 @@ export default function ProductsScreen({ onLogout }) {
               <View style={styles.folderLayerTwo} />
               <View style={styles.folderLayerOne} />
               <View style={[styles.panelInner, styles.insurancePanel]}>
-                <IconComponent
-                  name={p.icon.name}
-                  size={30}
-                  color={p.icon.color}
-                  style={styles.insuranceIcon}
-                />
+                <Image source={p.image} style={styles.insuranceIcon} />
                 <View style={styles.insuranceInfo}>
                   <Text style={styles.insuranceType}>{String(ins.insType || ins.InsType)}</Text>
                   <View style={styles.insuranceNameRow}>
@@ -147,12 +141,7 @@ export default function ProductsScreen({ onLogout }) {
                 <Text style={styles.panelText}>{p.text}</Text>
                 <PrimaryButton style={[styles.exploreButton, { backgroundColor: p.buttonColor }]}>Explore Now</PrimaryButton>
               </View>
-              <IconComponent
-                name={p.icon.name}
-                size={40}
-                color={p.icon.color}
-                style={styles.icon}
-              />
+              <Image source={p.image} style={styles.icon} />
             </View>
           </View>
         );
@@ -252,12 +241,18 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 5,
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
   },
   insurancePanel: {
     alignItems: 'center',
   },
   insuranceIcon: {
     marginRight: 10,
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
   insuranceInfo: {
     flex: 1,
