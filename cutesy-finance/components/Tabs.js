@@ -61,19 +61,19 @@ export default function Tabs({ onLogout }) {
       })}
     >
       <Tab.Screen name="Home" options={{ headerShown: false }}>
-        {() => <HomeScreen onLogout={onLogout} />}
+        {(props) => <HomeScreen {...props} onLogout={onLogout} />}
       </Tab.Screen>
 
       <Tab.Screen name="Products" options={{ headerShown: false }}>
-        {() => <ProductsScreen onLogout={onLogout} />}
+        {(props) => <ProductsScreen {...props} onLogout={onLogout} />}
       </Tab.Screen>
 
       <Tab.Screen name="Docuvault" options={{ headerShown: false }}>
-        {() => <DocuvaultScreen onLogout={onLogout} />}
+        {(props) => <DocuvaultScreen {...props} onLogout={onLogout} />}
       </Tab.Screen>
 
       <Tab.Screen name="Chat" options={{ headerShown: false }}>
-        {() => <ChatScreen onLogout={onLogout} />}
+        {(props) => <ChatScreen {...props} onLogout={onLogout} />}
       </Tab.Screen>
     </Tab.Navigator>
 
